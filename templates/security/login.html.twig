@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+
+    <!-- sign up model starts here -->
+    <div id="signupModal" class="modal fade">
+        <div class="modal-dialog modal-dialog-vertical-center" role="document">
+            <div class="modal-content bd-0 tx-14">
+                <div class="modal-header">
+                    <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Wanna join portal</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body pd-25">
+                    <p class="mg-b-5">
+                        Do you rely wanna join portal just contact with your <b>Admin</b> or <b>Coordinator.</b>
+                    </p>
+                </div>
+            </div>
+        </div><!-- modal-dialog -->
+    </div>
+    <!-- sign up model ends here-->
+
+    <div class="d-md-flex flex-row-reverse">
+        <div class="signin-right">
+            <div class="signin-box">
+                <h2 class="signin-title-primary">Welcome back!</h2>
+                <h3 class="signin-title-secondary">Sign in to continue.</h3>
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <form method="post">
+                    <div class="form-group">
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+                    </div><!-- form-group -->
+                    <div class="form-group">
+                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    </div><!-- form-group -->
+                    <div class="form-group mg-b-50 d-flex justify-content-between">
+                        <label class="ckbox">
+                            <input type="checkbox" checked name="_remember_me">
+                            <span>Keep me sign in.</span>
+                        </label>
+                        <a href="#" class="text-small forgot-password text-black">Forgot Password?</a>
+                    </div>
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
+                    <button type="submit" class="btn btn-primary btn-block btn-signin">Sign In</button>
+                </form>
+                <p class="mg-b-0">Don't have an account? <a href data-toggle="modal" data-target="#signupModal">Sign Up</a></p>
+            </div>
+
+        </div><!-- signin-right -->
+        <div class="signin-left">
+            <div class="signin-box">
+                <h2 class="slim-logo"><a href="{{ url('dashboard_home') }}">ISP<span>.</span></a></h2>
+
+                <p>We are excited to launch our new company and product Slim. After being featured in too many magazines to mention and having created an online stir, we know that ThemePixels is going to be big. We also hope to win Startup Fictional Business of the Year this year.</p>
+
+                <p>Browse our site and see for yourself why you need Slim.</p>
+
+                <p><a href="" class="btn btn-outline-secondary pd-x-25">Learn More</a></p>
+
+                <p class="tx-12">&copy; Copyright 2019. All Rights Reserved.</p>
+            </div>
+        </div><!-- signin-left -->
+    </div><!-- d-flex -->
+{% endblock %}

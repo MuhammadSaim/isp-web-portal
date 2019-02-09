@@ -1,0 +1,48 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Computer Sciences{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="manager-header">
+                    <div class="slim-pageheader">
+                        <ol class="breadcrumb slim-breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                        </ol>
+                        <h6 class="slim-pagetitle">{{ departmentDetails.department  }}</h6>
+                    </div><!-- slim-pageheader -->
+                </div>
+                <div class="manager-wrapper">
+                    <div class="manager-right">
+                        <div class="row row-sm">
+                            {% if departmentDetails.cources is not null %}
+                                    {% for course in departmentDetails.cources %}
+                                        <div class="col-sm-6 col-lg-4 {%  if loop.index > 3 %}mg-t-20{% endif %}">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ course.course }}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                            {% else %}
+                                <div class="alert alert-danger">
+                                    Ooops! No record found
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="manager-left">
+                        {% include 'partials/department_sidebar.html.twig' with { 'departmentDetails' : departmentDetails } %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

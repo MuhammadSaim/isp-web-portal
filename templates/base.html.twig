@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Portal | {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('assets/lib/font-awesome/css/font-awesome.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/lib/Ionicons/css/ionicons.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/slim.min.css') }}">
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+
+        {% block body %}
+        {% endblock %}
+
+        <script src="{{ asset('assets/lib/jquery/js/jquery.js') }}"></script>
+        <script src="{{ asset('assets/lib/popper.js/js/popper.js') }}"></script>
+        <script src="{{ asset('assets/lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/slim.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

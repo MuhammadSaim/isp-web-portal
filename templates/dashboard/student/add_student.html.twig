@@ -1,0 +1,115 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Add Student{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% form_theme form 'form/form_errors.html.twig' %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">add student</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">add student</label>
+                            <div class="form-layout">
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ label }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                {{ form_start(form, {'attr': { 'id': 'addStudent' }}) }}
+                                <div class="row mg-b-25 mg-t-25">
+                                    <div class="col-lg-4">
+                                        {{ form_label(form.email) }}
+                                        {{ form_widget(form.email) }}
+                                        {{ form_errors(form.email) }}
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            {{ form_label(form.regno) }}
+                                            {{ form_widget(form.regno) }}
+                                            {{ form_errors(form.regno) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <div id="slParsleyWrapper" class="parsley-select">
+                                                {{ form_label(form.gender) }}
+                                                {{ form_widget(form.gender) }}
+                                                {{ form_errors(form.gender) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mg-b-25">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            {{ form_label(form.departments) }}
+                                            {{ form_widget(form.departments) }}
+                                            {{ form_errors(form.departments) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            {{ form_label(form.courses) }}
+                                            {{ form_widget(form.courses) }}
+                                            {{ form_errors(form.courses) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            {{ form_label(form.is_CR_GR, 'CR or GR') }}
+                                            {{ form_widget(form.is_CR_GR) }}
+                                            {{ form_errors(form.is_CR_GR) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-layout-footer">
+                                    <button type="submit" class="btn btn-primary bd-0">ADD STUDENT</button>
+                                </div>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $('.form-layout .form-control').on('focusin', function () {
+                $(this).closest('.form-group').addClass('form-group-active');
+            });
+
+            $('.form-layout .form-control').on('focusout', function () {
+                $(this).closest('.form-group').removeClass('form-group-active');
+            });
+            $('.s2-depart, .s2-courses').select2();
+
+            $('#addStudent').parsley();
+        });
+    </script>
+{% endblock %}

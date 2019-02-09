@@ -1,0 +1,33 @@
+<div class="slim-sidebar ps ps--theme_default ps--active-y">
+    <label class="sidebar-label">Navigation</label>
+    <ul class="nav nav-sidebar">
+        <li class="sidebar-nav-item">
+            <a href="{{ url('dashboard_home') }}" class="sidebar-nav-link active"><i class="fa fa-home mr-3"></i> Dashboard</a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="page-messages.html" class="sidebar-nav-link"><i class="fa fa-comments mr-3"></i> Messages</a>
+        </li>
+        <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-university mr-3"></i> Departments</a>
+            <ul class="nav sidebar-nav-sub">
+                {% for department in departments %}
+                    <li class="nav-sub-item"><a href="{{ path('department_teacher', {'slug': department.slug }) }}" class="nav-sub-link">{{ department.department }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-book mr-3"></i> Students</a>
+            <ul class="nav sidebar-nav-sub">
+                <li class="nav-sub-item"><a href="#" class="nav-sub-link">All Students</a></li>
+                <li class="nav-sub-item"><a href="{{ url('student_add') }}" class="nav-sub-link">Add Student</a></li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-graduation-cap mr-3"></i>Staff</a>
+            <ul class="nav sidebar-nav-sub">
+                <li class="nav-sub-item"><a href="page-profile.html" class="nav-sub-link">All Staff</a></li>
+                <li class="nav-sub-item"><a href="{{ url('staff_add') }}" class="nav-sub-link">Add Staff</a></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; right: 0px; height: 549px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 471px;"></div></div></div>

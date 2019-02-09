@@ -1,0 +1,11 @@
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors | length > 0 %}
+            {% for error in errors %}
+                {% if loop.first %}
+                    <div class="invalid-feedback">{{ error.message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

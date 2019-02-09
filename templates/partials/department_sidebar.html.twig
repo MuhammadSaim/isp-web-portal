@@ -1,0 +1,26 @@
+<nav class="nav">
+    <a href="{{ path('department_teacher' , {'slug': departmentDetails.slug } ) }}" class="nav-link {% if active_class == 'teacher' %}active{% endif %}">
+        <span>Teachers</span>
+        {% if departmentDetails.staffDetails.count < 10 %}
+            <span>0{{ departmentDetails.staffDetails.count }}</span>
+        {% else %}
+            <span>0{{ departmentDetails.staffDetails.count }}</span>
+        {% endif %}
+    </a>
+    <a href="{{ path('department_student' , {'slug': departmentDetails.slug } ) }}" class="nav-link {% if active_class == 'student' %}active{% endif %}">
+        <span>Students</span>
+        {% if departmentDetails.studentDetails.count < 10 %}
+            <span>0{{ departmentDetails.studentDetails.count }}</span>
+        {% else %}
+            <span>0{{ departmentDetails.studentDetails.count }}</span>
+        {% endif %}
+    </a>
+    <a href="{{ path('department_courses' , {'slug': departmentDetails.slug } ) }}" class="nav-link {% if active_class == 'courses' %}active{% endif %}">
+        <span>Courses</span>
+        {% if departmentDetails.cources.count < 10 %}
+            <span>0{{ departmentDetails.cources.count }}</span>
+        {% else %}
+            <span>0{{ departmentDetails.cources.count }}</span>
+        {% endif %}
+    </a>
+</nav>
