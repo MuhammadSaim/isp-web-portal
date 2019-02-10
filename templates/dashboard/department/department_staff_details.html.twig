@@ -1,6 +1,6 @@
 {% extends 'dashboard_base.html.twig' %}
 
-{% block title %}Computer Sciences{% endblock %}
+{% block title %}{{ departmentDetails.department }}{% endblock %}
 
 {% block body %}
     {% include 'partials/header.html.twig' %}
@@ -14,52 +14,56 @@
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
                         </ol>
-                        <h6 class="slim-pagetitle">{{ departmentDetails.department  }}</h6>
+                        <h6 class="slim-pagetitle">{{ departmentDetails.department }}</h6>
                     </div><!-- slim-pageheader -->
                 </div>
                 <div class="manager-wrapper">
                     <div class="manager-right">
                         <div class="row row-sm">
-                            {% if departmentDetails.staffDetails is not null %}
-                            {% for staff in departmentDetails.staffDetails %}
-                            <div class="col-sm-6 col-lg-4 {%  if loop.index > 3 %}mg-t-20{% endif %}">
-                                <div class="card-contact">
-                                    <div class="tx-center">
-                                        <a href=""><img src="{{ asset('assets/upload/avatar/' ~ staff.avatar ) }}" class="card-img" alt="{{ staff.user.email | shortEmail }}"></a>
-                                        <h5 class="mg-t-10 mg-b-5">
-                                            <a href="" class="contact-name">
-                                                {% if staff.fullname is not null %}
-                                                    {{ staff.fullname }}
-                                                {% else %}
-                                                    {{ staff.user.email | shortEmail }}
-                                                {% endif %}
-                                            </a>
-                                        </h5>
-                                        <p>{{ staff.designation }}</p>
-                                        <p class="contact-social">
-                                            <a href=""><i class="fa fa-facebook"></i></a>
-                                            <a href=""><i class="fa fa-twitter"></i></a>
-                                            <a href=""><i class="fa fa-google"></i></a>
-                                        </p>
-                                    </div><!-- tx-center -->
-                                    <p class="contact-item">
-                                        <span>Phone:</span>
-                                        <span>+1 012 3456 789</span>
-                                    </p><!-- contact-item -->
-                                    <p class="contact-item">
-                                        <span>Email:</span>
-                                        <a href="">person1@domain.com</a>
-                                    </p><!-- contact-item -->
-                                    <p class="contact-item">
-                                        <span>URL:</span>
-                                        <a href="">http://thmpxls.me</a>
-                                    </p><!-- contact-item -->
-                                </div><!-- card -->
-                            </div>
-                            {% endfor %}
+                            {% if departmentDetails.staffDetails.count > 0 %}
+                                {% for staff in departmentDetails.staffDetails %}
+                                    <div class="col-sm-6 col-lg-4 mg-b-20">
+                                        <div class="card-contact">
+                                            <div class="tx-center">
+                                                <a href=""><img
+                                                            src="{{ asset('assets/upload/avatar/' ~ staff.avatar ) }}"
+                                                            class="card-img" alt="{{ staff.user.email | shortEmail }}"></a>
+                                                <h5 class="mg-t-10 mg-b-5">
+                                                    <a href="" class="contact-name">
+                                                        {% if staff.fullname is not null %}
+                                                            {{ staff.fullname }}
+                                                        {% else %}
+                                                            {{ staff.user.email | shortEmail }}
+                                                        {% endif %}
+                                                    </a>
+                                                </h5>
+                                                <p>{{ staff.designation }}</p>
+                                                <p class="contact-social">
+                                                    <a href=""><i class="fa fa-facebook"></i></a>
+                                                    <a href=""><i class="fa fa-twitter"></i></a>
+                                                    <a href=""><i class="fa fa-google"></i></a>
+                                                </p>
+                                            </div><!-- tx-center -->
+                                            <p class="contact-item">
+                                                <span>Phone:</span>
+                                                <span>Not Available</span>
+                                            </p><!-- contact-item -->
+                                            <p class="contact-item">
+                                                <span>Email:</span>
+                                                <a href="">{{ staff.user.email }}</a>
+                                            </p><!-- contact-item -->
+                                            <p class="contact-item">
+                                                <span>URL:</span>
+                                                <a href="">Not Available</a>
+                                            </p><!-- contact-item -->
+                                        </div><!-- card -->
+                                    </div>
+                                {% endfor %}
                             {% else %}
-                                <div class="alert alert-danger">
-                                    Ooops! No record found
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <div class="alert alert-danger">
+                                        Ooops! No record found
+                                    </div>
                                 </div>
                             {% endif %}
                         </div>

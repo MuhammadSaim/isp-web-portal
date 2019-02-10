@@ -1,6 +1,6 @@
 {% extends 'dashboard_base.html.twig' %}
 
-{% block title %}Computer Sciences{% endblock %}
+{% block title %}{{ departmentDetails.department }}{% endblock %}
 
 {% block body %}
     {% include 'partials/header.html.twig' %}
@@ -14,30 +14,39 @@
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
                         </ol>
-                        <h6 class="slim-pagetitle">{{ departmentDetails.department  }}</h6>
+                        <h6 class="slim-pagetitle">{{ departmentDetails.department }}</h6>
                     </div><!-- slim-pageheader -->
                 </div>
                 <div class="manager-wrapper">
                     <div class="manager-right">
                         <div class="row row-sm">
-                            {% if departmentDetails.cources is not null %}
-                                    {% for course in departmentDetails.cources %}
-                                        <div class="col-sm-6 col-lg-4 {%  if loop.index > 3 %}mg-t-20{% endif %}">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">{{ course.course }}</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
+                            {% if departmentDetails.cources.count > 0 %}
+                                <div class="col-sm-12 col-md-12 col-lg-12 mg-b-20">
+                                    <ul class="list-group list-group-striped">
+                                        {% for course in departmentDetails.cources %}
+                                            <li class="list-group-item">
+                                                <strong class="tx-medium tx-inverse">
+                                                    {% if loop.index < 10 %}
+                                                        0{{ loop.index }}
+                                                    {% else %}
+                                                        {{ loop.index }}
+                                                    {% endif %}
+                                                </strong>
+                                                <span class="text-muted">{{ course.course }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             {% else %}
-                                <div class="alert alert-danger">
-                                    Ooops! No record found
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <div class="alert alert-danger">
+                                        Ooops! No record found
+                                    </div>
                                 </div>
                             {% endif %}
                         </div>
                     </div>
-                    <div class="manager-left">
+                    <div class="manager-left d-sm">
                         {% include 'partials/department_sidebar.html.twig' with { 'departmentDetails' : departmentDetails } %}
                     </div>
                 </div>

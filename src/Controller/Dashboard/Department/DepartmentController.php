@@ -30,8 +30,6 @@ class DepartmentController extends AbstractController
     public function department_staff_details($slug)
     {
         $department_details = $this->getDoctrine()->getRepository(Departments::class)->findOneBy(['slug' => $slug]);
-        dump($department_details);
-//        die();
         if($department_details == null){
             throw $this->createNotFoundException();
         }
