@@ -2,13 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Courses;
 use App\Entity\Departments;
+use App\Entity\Programs;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -72,7 +70,7 @@ class AddStudentType extends AbstractType
                 'required' => true
             ])
             ->add('courses', EntityType::class, [
-                'class' => Courses::class,
+                'class' => Programs::class,
                 'attr' => [
                     'class' => 'form-control s2-courses',
                     'data-placeholder' => "Choose Course"

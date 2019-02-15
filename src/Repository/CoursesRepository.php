@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Courses[]    findAll()
  * @method Courses[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CourcesRepository extends ServiceEntityRepository
+class CoursesRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

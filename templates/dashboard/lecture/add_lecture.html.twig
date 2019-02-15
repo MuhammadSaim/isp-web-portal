@@ -1,0 +1,113 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Lectures{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">Add lecture</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            {{ form_start(form) }}
+                            <label class="section-title">Add Lecture</label>
+                            <form method="post" action="">
+                                <div class="form-layout">
+                                    <div class="row mg-b-25 mg-t-25">
+                                        <div class="col-lg-4">
+                                            {{ form_label(form.department) }}
+                                            {{ form_widget(form.department) }}
+                                            {{ form_errors(form.department) }}
+                                        </div>
+                                        <div class="col-lg-4">
+                                            {{ form_label(form.course) }}
+                                            {{ form_widget(form.course) }}
+                                            {{ form_errors(form.course) }}
+                                        </div>
+                                        <div class="col-lg-4">
+                                            {{ form_label(form.semester) }}
+                                            {{ form_widget(form.semester) }}
+                                            {{ form_errors(form.semester) }}
+                                        </div>
+                                    </div>
+                                    <div class="row mg-b-25">
+                                        <div class="col-lg-6">
+                                            {{ form_label(form.section) }}
+                                            {{ form_widget(form.section) }}
+                                            {{ form_errors(form.section) }}
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="custom-file">
+                                                {{ form_widget(form.file) }}
+                                                {{ form_label(form.file) }}
+                                                {{ form_errors(form.file) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-layout-footer">
+                                    <button type="submit" class="btn btn-primary">ADD LECTURE</button>
+                                </div>
+                            </form>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2();
+
+            let courseField = $('#add_lecture_course');
+            let departmentField = $('#add_lecture_department');
+            let department = departmentField.val();
+            getCourses(courseField);
+            //onChange department select course
+            $('#add_lecture_department').on('change', function (e) {
+                department = $(this).val();
+                getCourses(courseField);
+            });
+            
+            
+            function getCourses(el) {
+                $.get('{{ url('api_courses_department') }}', {
+                    'departmentId' : department
+                }, function (data) {
+                    console.log(data.length);
+                    if(data.length != 0){
+                        $(el).attr('disabled', false);
+                        for(var i=0; i<data.length; i++){
+                            $('#add_lecture_course').append(`<option value="${data[i].id}">${data[i].course}</option>`);
+                        }
+                    }else{
+                        $(el).attr('disabled', true);
+                        $('#add_lecture_course').html('');
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

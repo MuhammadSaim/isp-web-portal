@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class StaffDetails
 {
+
+
+    public function __construct()
+    {
+    }
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -29,6 +36,13 @@ class StaffDetails
     private $department;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Designations", inversedBy="staffDetails")
+     * @ORM\JoinColumn(name="designation_id", referencedColumnName="id")
+     */
+    private $designation;
+
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $fullname;
@@ -38,17 +52,41 @@ class StaffDetails
      */
     private $avatar;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Designations", inversedBy="staffDetails")
-     * @ORM\JoinColumn(name="designation_id", referencedColumnName="id")
-     */
-    private $designation;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $bio;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $facebookProfile;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $twitterProfile;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $googleProfile;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $siteUrl;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $isPhoneAvailable = 0;
 
     /**
      * @ORM\Column(type="datetime")
@@ -145,6 +183,7 @@ class StaffDetails
         $this->designation = $designation;
     }
 
+
     /**
      * @return mixed
      */
@@ -160,6 +199,103 @@ class StaffDetails
     {
         $this->bio = $bio;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * @param mixed $phoneNumber
+     */
+    public function setPhoneNumber($phoneNumber): void
+    {
+        $this->phoneNumber = $phoneNumber;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookProfile()
+    {
+        return $this->facebookProfile;
+    }
+
+    /**
+     * @param mixed $facebookProfile
+     */
+    public function setFacebookProfile($facebookProfile): void
+    {
+        $this->facebookProfile = $facebookProfile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwitterProfile()
+    {
+        return $this->twitterProfile;
+    }
+
+    /**
+     * @param mixed $twitterProfile
+     */
+    public function setTwitterProfile($twitterProfile): void
+    {
+        $this->twitterProfile = $twitterProfile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGoogleProfile()
+    {
+        return $this->googleProfile;
+    }
+
+    /**
+     * @param mixed $googleProfile
+     */
+    public function setGoogleProfile($googleProfile): void
+    {
+        $this->googleProfile = $googleProfile;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisPhoneAvailable()
+    {
+        return $this->isPhoneAvailable;
+    }
+
+    /**
+     * @param mixed $isPhoneAvailable
+     */
+    public function setIsPhoneAvailable($isPhoneAvailable): void
+    {
+        $this->isPhoneAvailable = $isPhoneAvailable;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSiteUrl()
+    {
+        return $this->siteUrl;
+    }
+
+    /**
+     * @param mixed $siteUrl
+     */
+    public function setSiteUrl($siteUrl): void
+    {
+        $this->siteUrl = $siteUrl;
+    }
+
 
     /**
      * @return mixed

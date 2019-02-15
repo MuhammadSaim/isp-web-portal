@@ -20,21 +20,17 @@ class CoursesResponse extends AbstractController
 {
 
     /**
-     * @Route("/department/{departmentId}", name="department")
+     * @Route("/department", name="department")
      */
-    public function getCoursesWithDepartment($departmentId)
+    public function getCoursesWithDepartment(Request $request)
     {
-
+        $departmentId = $request->query->get('departmentId');
         $em = $this->getDoctrine()->getManager();
-
         $repoCourses = $em->getRepository(Courses::class);
-
         $courses = $repoCourses->findBy([
             'department' => $em->getRepository(Departments::class)->findOneBy(['id' => $departmentId])
         ]);
-
         $jsonCoursesArray = array();
-
         foreach ($courses as $course){
             $jsonCoursesArray[] = array(
                 'id' => $course->getId(),
@@ -42,7 +38,6 @@ class CoursesResponse extends AbstractController
                 'course' => $course->getCourse()
             );
         }
-
         return new JsonResponse($jsonCoursesArray);
     }
 

@@ -38,24 +38,48 @@
                                                         {% endif %}
                                                     </a>
                                                 </h5>
-                                                <p>{{ student.course }}</p>
+                                                <p>{{ student.program }}</p>
                                                 <p class="contact-social">
-                                                    <a href=""><i class="fa fa-facebook"></i></a>
-                                                    <a href=""><i class="fa fa-twitter"></i></a>
-                                                    <a href=""><i class="fa fa-google"></i></a>
+                                                    {% if student.facebookProfile is null or student.facebookProfile is empty%}
+                                                        <a href="#"><i class="fa fa-facebook text-black-50 disable"></i></a>
+                                                    {% else %}
+                                                        <a target="_blank" href="{{ student.facebookProfile }}"><i class="fa fa-facebook"></i></a>
+                                                    {% endif %}
+                                                    {% if student.twitterProfile is null or student.twitterProfile is empty %}
+                                                        <a href="#"><i class="fa fa-twitter text-black-50 disable"></i></a>
+                                                    {% else %}
+                                                        <a target="_blank" href="{{ student.twitterProfile }}"><i class="fa fa-twitter"></i></a>
+                                                    {% endif %}
+                                                    {% if student.googleProfile is null or student.googleProfile is empty %}
+                                                        <a href="#"><i class="fa fa-google text-black-50 disable"></i></a>
+                                                    {% else %}
+                                                        <a target="_blank" href="{{ student.googleProfile }}"><i class="fa fa-google"></i></a>
+                                                    {% endif %}
                                                 </p>
                                             </div><!-- tx-center -->
                                             <p class="contact-item">
                                                 <span>Phone:</span>
-                                                <span>Not Available</span>
+                                                <span>
+                                                    {% if student.phoneNumber is null or student.isPhoneAvailable == 0 or student.phoneNumber is empty %}
+                                                        Not Available
+                                                    {% else %}
+                                                        {{ student.phoneNumber }}
+                                                    {% endif %}
+                                                </span>
                                             </p><!-- contact-item -->
                                             <p class="contact-item">
                                                 <span>Email:</span>
-                                                <a href="">{{ student.user.email }}</a>
+                                                <a href="#" data-toggle="tooltip-primary" data-placement="top" title="{{ student.user.email }}">{{ student.user.email | shortText }}</a>
                                             </p><!-- contact-item -->
                                             <p class="contact-item">
                                                 <span>URL:</span>
-                                                <a href="">Not Available</a>
+                                                    {% if student.siteUrl is null or student.siteUrl is empty %}
+                                                        Not Available
+                                                    {% else %}
+                                                    <a target="_blank" href="{{ student.siteUrl }}">
+                                                        {{ student.siteUrl | shortText }}
+                                                    </a>
+                                                    {% endif %}
                                             </p><!-- contact-item -->
                                         </div><!-- card -->
                                     </div>

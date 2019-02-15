@@ -155,7 +155,7 @@ class StudentController extends AbstractController
                 $em->persist($user);
                 $studentDetails->setUser($user);
                 $studentDetails->setDepartment($studentData['departments']);
-                $studentDetails->setCourse($studentData['courses']);
+                $studentDetails->setProgram($studentData['courses']);
                 $studentDetails->setAvatar($avatar);
                 $studentDetails->setRegNo(strtoupper($studentData['regno']));
                 $studentDetails->setCreatedAt(new \DateTime());

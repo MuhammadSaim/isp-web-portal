@@ -27,10 +27,11 @@
                                             <div class="tx-center">
                                                 <a href=""><img
                                                             src="{{ asset('assets/upload/avatar/' ~ staff.avatar ) }}"
-                                                            class="card-img" alt="{{ staff.user.email | shortEmail }}"></a>
+                                                            class="card-img"
+                                                            alt="{{ staff.user.email | shortEmail }}"></a>
                                                 <h5 class="mg-t-10 mg-b-5">
                                                     <a href="" class="contact-name">
-                                                        {% if staff.fullname is not null %}
+                                                        {% if staff.fullname is not null or staff.fullname is not empty %}
                                                             {{ staff.fullname }}
                                                         {% else %}
                                                             {{ staff.user.email | shortEmail }}
@@ -39,22 +40,46 @@
                                                 </h5>
                                                 <p>{{ staff.designation }}</p>
                                                 <p class="contact-social">
-                                                    <a href=""><i class="fa fa-facebook"></i></a>
-                                                    <a href=""><i class="fa fa-twitter"></i></a>
-                                                    <a href=""><i class="fa fa-google"></i></a>
+                                                    {% if staff.facebookProfile is null or staff.facebookProfile is empty%}
+                                                        <a href="#"><i class="fa fa-facebook text-black-50 disable"></i></a>
+                                                    {% else %}
+                                                        <a target="_blank" href="{{ staff.facebookProfile }}"><i class="fa fa-facebook"></i></a>
+                                                    {% endif %}
+                                                    {% if staff.twitterProfile is null or staff.twitterProfile is empty %}
+                                                        <a href="#"><i class="fa fa-twitter text-black-50 disable"></i></a>
+                                                    {% else %}
+                                                        <a target="_blank" href="{{ staff.twitterProfile }}"><i class="fa fa-twitter"></i></a>
+                                                    {% endif %}
+                                                    {% if staff.googleProfile is null or staff.googleProfile is empty %}
+                                                        <a href="#"><i class="fa fa-google text-black-50 disable"></i></a>
+                                                    {% else %}
+                                                        <a target="_blank" href="{{ staff.googleProfile }}"><i class="fa fa-google"></i></a>
+                                                    {% endif %}
                                                 </p>
                                             </div><!-- tx-center -->
                                             <p class="contact-item">
                                                 <span>Phone:</span>
-                                                <span>Not Available</span>
+                                                <span>
+                                                    {% if staff.phoneNumber is null or staff.isPhoneAvailable == 0 or staff.phoneNumber is empty %}
+                                                        Not Available
+                                                    {% else %}
+                                                        {{ staff.phoneNumber }}
+                                                    {% endif %}
+                                                </span>
                                             </p><!-- contact-item -->
                                             <p class="contact-item">
                                                 <span>Email:</span>
-                                                <a href="">{{ staff.user.email }}</a>
+                                                <a href="#" data-toggle="tooltip-primary" data-placement="top" title="{{ staff.user.email }}">{{ staff.user.email | shortText }}</a>
                                             </p><!-- contact-item -->
                                             <p class="contact-item">
                                                 <span>URL:</span>
-                                                <a href="">Not Available</a>
+                                                {% if staff.siteUrl is null or staff.siteUrl is empty %}
+                                                    Not Available
+                                                {% else %}
+                                                    <a target="_blank" href="{{ staff.siteUrl }}">
+                                                        {{ staff.siteUrl | shortText }}
+                                                    </a>
+                                                {% endif %}
                                             </p><!-- contact-item -->
                                         </div><!-- card -->
                                     </div>

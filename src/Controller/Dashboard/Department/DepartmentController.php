@@ -70,10 +70,10 @@ class DepartmentController extends AbstractController
             throw $this->createNotFoundException();
         }
         return $this->render(
-            "dashboard/department/department_courses_details.html.twig",[
+            "dashboard/department/department_programs_details.html.twig",[
             'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
             'departmentDetails' => $department_details,
-            'active_class' => 'courses'
+            'active_class' => 'programs'
         ]);
     }
 

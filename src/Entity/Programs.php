@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CoursesRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProgramsRepository")
  * @UniqueEntity("slug")
  */
-class Courses
+class Programs
 {
 
     public function __construct()
@@ -26,7 +26,18 @@ class Courses
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SemesterCourseMapping", mappedBy="course", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="programs")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     */
+    private $department;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\StudentDetails", mappedBy="program")
+     */
+    private $studentDetails;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SemesterCourseMapping", mappedBy="program", fetch="EXTRA_LAZY")
      */
     private $courses;
 
@@ -38,17 +49,7 @@ class Courses
     /**
      * @ORM\Column(type="string")
      */
-    private $course;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $courseCode;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $creditHours;
+    private $program;
 
     /**
      * @ORM\Column(type="datetime")
@@ -63,6 +64,22 @@ class Courses
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param mixed $department
+     */
+    public function setDepartment($department): void
+    {
+        $this->department = $department;
     }
 
     /**
@@ -101,49 +118,33 @@ class Courses
     /**
      * @return mixed
      */
-    public function getCourse()
+    public function getProgram()
     {
-        return $this->course;
+        return $this->program;
     }
 
     /**
-     * @param mixed $course
+     * @param mixed $program
      */
-    public function setCourse($course): void
+    public function setProgram($program): void
     {
-        $this->course = $course;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCourseCode()
-    {
-        return $this->courseCode;
-    }
-
-    /**
-     * @param mixed $courseCode
-     */
-    public function setCourseCode($courseCode): void
-    {
-        $this->courseCode = $courseCode;
+        $this->program = $program;
     }
 
     /**
      * @return mixed
      */
-    public function getCreditHours()
+    public function getStudentDetails()
     {
-        return $this->creditHours;
+        return $this->studentDetails;
     }
 
     /**
-     * @param mixed $creditHours
+     * @param mixed $studentDetails
      */
-    public function setCreditHours($creditHours): void
+    public function setStudentDetails($studentDetails): void
     {
-        $this->creditHours = $creditHours;
+        $this->studentDetails = $studentDetails;
     }
 
     /**
@@ -176,6 +177,12 @@ class Courses
     public function setModifiedAt($modifiedAt): void
     {
         $this->modifiedAt = $modifiedAt;
+    }
+
+
+    public function __toString()
+    {
+        return $this->program;
     }
 
 }

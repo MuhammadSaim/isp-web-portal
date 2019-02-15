@@ -20,10 +20,10 @@
                 <div class="manager-wrapper">
                     <div class="manager-right">
                         <div class="row row-sm">
-                            {% if departmentDetails.cources.count > 0 %}
+                            {% if departmentDetails.programs.count > 0 %}
                                 <div class="col-sm-12 col-md-12 col-lg-12 mg-b-20">
                                     <ul class="list-group list-group-striped">
-                                        {% for course in departmentDetails.cources %}
+                                        {% for course in departmentDetails.programs %}
                                             <li class="list-group-item">
                                                 <strong class="tx-medium tx-inverse">
                                                     {% if loop.index < 10 %}
@@ -31,8 +31,9 @@
                                                     {% else %}
                                                         {{ loop.index }}
                                                     {% endif %}
+                                                    -
                                                 </strong>
-                                                <span class="text-muted">{{ course.course }}</span>
+                                                <span class="text-muted">{{ course.program }}</span>
                                             </li>
                                         {% endfor %}
                                     </ul>

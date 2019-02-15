@@ -19,7 +19,7 @@ class DashboardController extends AbstractController
      */
     public function index()
     {
-//        dump($this->getUser());
+//        dump($this->getUser()->getStudentDetails()->getSemester());
         return $this->render('dashboard/index.html.twig', [
             'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll()
         ]);

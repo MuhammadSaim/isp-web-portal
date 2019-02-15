@@ -4,20 +4,17 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\DepartmentsRepository")
- * @UniqueEntity("slug")
+ * @ORM\Entity(repositoryClass="App\Repository\SemestersRepository")
  */
-class Departments
+class Semesters
 {
+
     public function __construct()
     {
         $this->studentDetails = new ArrayCollection();
-        $this->staffDetails = new ArrayCollection();
         $this->lectures = new ArrayCollection();
-        $this->programs = new ArrayCollection();
         $this->courses = new ArrayCollection();
     }
 
@@ -29,39 +26,25 @@ class Departments
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\StudentDetails", mappedBy="department", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\StudentDetails", mappedBy="semester", fetch="EXTRA_LAZY")
      */
     private $studentDetails;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\StaffDetails", mappedBy="department", fetch="EXTRA_LAZY")
-     */
-    private $staffDetails;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="department", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="semester", fetch="EXTRA_LAZY")
      */
     private $lectures;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Programs", mappedBy="department", fetch="EXTRA_LAZY")
-     */
-    private $programs;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SemesterCourseMapping", mappedBy="department", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\SemesterCourseMapping", mappedBy="semester", fetch="EXTRA_LAZY")
      */
     private $courses;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     */
-    private $slug;
-
-    /**
      * @ORM\Column(type="string")
      */
-    private $department;
+    private $semester;
 
     /**
      * @ORM\Column(type="datetime")
@@ -87,27 +70,11 @@ class Departments
     }
 
     /**
-     * @param $studentDetails
+     * @param mixed $studentDetails
      */
     public function setStudentDetails($studentDetails): void
     {
         $this->studentDetails[] = $studentDetails;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStaffDetails()
-    {
-        return $this->staffDetails;
-    }
-
-    /**
-     * @param mixed $staffDetails
-     */
-    public function setStaffDetails($staffDetails): void
-    {
-        $this->staffDetails[] = $staffDetails;
     }
 
     /**
@@ -129,17 +96,17 @@ class Departments
     /**
      * @return mixed
      */
-    public function getPrograms()
+    public function getSemester()
     {
-        return $this->programs;
+        return $this->semester;
     }
 
     /**
-     * @param mixed $programs
+     * @param mixed $semester
      */
-    public function setPrograms($programs): void
+    public function setSemester($semester): void
     {
-        $this->programs[] = $programs;
+        $this->semester = $semester;
     }
 
     /**
@@ -158,38 +125,6 @@ class Departments
         $this->courses[] = $courses;
     }
 
-
-    /**
-     * @return mixed
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param mixed $slug
-     */
-    public function setSlug($slug): void
-    {
-        $this->slug = $slug;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDepartment()
-    {
-        return $this->department;
-    }
-
-    /**
-     * @param mixed $department
-     */
-    public function setDepartment($department): void
-    {
-        $this->department = $department;
-    }
 
     /**
      * @return mixed
@@ -223,11 +158,8 @@ class Departments
         $this->modifiedAt = $modifiedAt;
     }
 
-
     public function __toString()
     {
-        return $this->department;
+        return $this->semester;
     }
-
-
 }

@@ -8,6 +8,12 @@
             <a href="page-messages.html" class="sidebar-nav-link"><i class="fa fa-comments mr-3"></i> Messages</a>
         </li>
         <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-paperclip mr-3"></i> Lectures</a>
+            <ul class="nav sidebar-nav-sub">
+                <li class="nav-sub-item"><a href="{{ url('lectures_add') }}" class="nav-sub-link">Add Lecture</a></li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-item with-sub">
             <a href="" class="sidebar-nav-link"><i class="fa fa-university mr-3"></i> Departments</a>
             <ul class="nav sidebar-nav-sub">
                 {% for department in departments %}

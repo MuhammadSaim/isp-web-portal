@@ -19,8 +19,8 @@ class User implements UserInterface, \Serializable
 
     public function __construct()
     {
-        $this->studentDetails = new ArrayCollection();
-        $this->staffDetails = new ArrayCollection();
+//        $this->studentDetails = new ArrayCollection();
+//        $this->staffDetails = new ArrayCollection();
     }
 
 
@@ -97,7 +97,7 @@ class User implements UserInterface, \Serializable
      */
     public function setStudentDetails(StudentDetails $studentDetails): void
     {
-        $this->studentDetails[] = $studentDetails;
+        $this->studentDetails = $studentDetails;
     }
 
     /**
@@ -113,7 +113,7 @@ class User implements UserInterface, \Serializable
      */
     public function setStaffDetails($staffDetails): void
     {
-        $this->staffDetails[] = $staffDetails;
+        $this->staffDetails = $staffDetails;
     }
 
     /**
