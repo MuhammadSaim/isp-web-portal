@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CoursesRepository")
  * @UniqueEntity("slug")
+ * @UniqueEntity("courseCode")
  */
 class Courses
 {
@@ -26,26 +28,24 @@ class Courses
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SemesterCourseMapping", mappedBy="course", fetch="EXTRA_LAZY")
-     */
-    private $courses;
-
-    /**
      * @ORM\Column(type="string", unique=true)
      */
     private $slug;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      */
     private $course;
 
     /**
-     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", unique=true)
      */
     private $courseCode;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="integer")
      */
     private $creditHours;
@@ -176,6 +176,11 @@ class Courses
     public function setModifiedAt($modifiedAt): void
     {
         $this->modifiedAt = $modifiedAt;
+    }
+
+    public function __toString()
+    {
+        return $this->course.' ('.$this->courseCode.')';
     }
 
 }

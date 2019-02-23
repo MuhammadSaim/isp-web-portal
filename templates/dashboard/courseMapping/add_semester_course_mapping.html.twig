@@ -1,0 +1,120 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Add Student{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% form_theme form 'form/form_errors.html.twig' %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">Semester Course mapping</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">Course Mapping</label>
+                            {{ form_start(form, {'attr' : {'id': 'semesterCourseMapping'}}) }}
+                            <div class="form-layout">
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ label }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                <div class="row mg-t-25 mg-b-25">
+                                    <div class="col-lg-4">
+                                        {{ form_label(form.department) }}
+                                        {{ form_widget(form.department) }}
+                                        {{ form_errors(form.department) }}
+                                    </div>
+                                    <div class="col-lg-4">
+                                        {{ form_label(form.program) }}
+                                        {{ form_widget(form.program) }}
+                                        {{ form_errors(form.program) }}
+                                    </div>
+                                    <div class="col-lg-4">
+                                        {{ form_label(form.semester) }}
+                                        {{ form_widget(form.semester) }}
+                                        {{ form_errors(form.semester) }}
+                                    </div>
+                                </div>
+                                <div class="row mg-b-20">
+                                    <div class="col-lg-12">
+                                        {{ form_label(form.courses) }}
+                                        {{ form_widget(form.courses) }}
+                                        {{ form_errors(form.courses) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-layout-footer">
+                                <button class="btn btn-primary" type="submit">ADD MAPPING</button>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $('.form-layout .form-control').on('focusin', function () {
+                $(this).closest('.form-group').addClass('form-group-active');
+            });
+
+            $('.form-layout .form-control').on('focusout', function () {
+                $(this).closest('.form-group').removeClass('form-group-active');
+            });
+            $('.select2').select2();
+
+            $('#semesterCourseMapping').parsley();
+
+            let courseField = $('#semester_course_mapping_program');
+            let departmentField = $('#semester_course_mapping_department');
+            let department = departmentField.val();
+            getCourses(courseField);
+            //onChange department select course
+            $('#semester_course_mapping_program').on('change', function (e) {
+                department = $(this).val();
+                getCourses(courseField);
+            });
+
+
+            function getCourses(el) {
+                $.get('{{ url('api_courses_department') }}', {
+                    'departmentId' : department
+                }, function (data) {
+                    console.log(data.length);
+                    if(data.length != 0){
+                        $(el).attr('disabled', false);
+                        for(var i=0; i<data.length; i++){
+                            $('#semester_course_mapping_program').append(`<option value="${data[i].id}">${data[i].course}</option>`);
+                        }
+                    }else{
+                        $(el).attr('disabled', true);
+                        $('#semester_course_mapping_program').html('');
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

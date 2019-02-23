@@ -3,6 +3,7 @@
 namespace App\Controller\JsonResponse;
 
 use App\Entity\Departments;
+use App\Entity\Programs;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +27,7 @@ class CoursesResponse extends AbstractController
     {
         $departmentId = $request->query->get('departmentId');
         $em = $this->getDoctrine()->getManager();
-        $repoCourses = $em->getRepository(Courses::class);
+        $repoCourses = $em->getRepository(Programs::class);
         $courses = $repoCourses->findBy([
             'department' => $em->getRepository(Departments::class)->findOneBy(['id' => $departmentId])
         ]);
@@ -35,7 +36,7 @@ class CoursesResponse extends AbstractController
             $jsonCoursesArray[] = array(
                 'id' => $course->getId(),
                 'slug' => $course->getSlug(),
-                'course' => $course->getCourse()
+                'course' => $course->getProgram()
             );
         }
         return new JsonResponse($jsonCoursesArray);

@@ -15,6 +15,7 @@ class Sections
     {
         $this->studentDetails = new ArrayCollection();
         $this->lectures = new ArrayCollection();
+        $this->coursesmap = new ArrayCollection();
     }
 
     /**
@@ -34,6 +35,7 @@ class Sections
      * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="section", fetch="EXTRA_LAZY")
      */
     private $lectures;
+
 
     /**
      * @ORM\Column(type="string")
@@ -87,6 +89,21 @@ class Sections
         $this->lectures[] = $lectures;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCoursesmap()
+    {
+        return $this->coursesmap;
+    }
+
+    /**
+     * @param mixed $coursesmap
+     */
+    public function setCoursesmap($coursesmap): void
+    {
+        $this->coursesmap[] = $coursesmap;
+    }
 
 
 

@@ -47,4 +47,15 @@ class ProgramsRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findValueWithDepart($departmentId, $programId)
+    {
+        return $this->createQueryBuilder('p')
+                    ->andWhere('p.department = :department')
+                    ->andWhere('p.id = :program')
+                    ->setParameter('department', $departmentId)
+                    ->setParameter('program', $programId)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
 }

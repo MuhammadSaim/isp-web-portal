@@ -47,4 +47,12 @@ class CoursesRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllWithAscOrder()
+    {
+        return $this->createQueryBuilder('c')
+                    ->orderBy('c.id', 'DESC')
+                    ->getQuery()
+                    ->getResult();
+    }
 }

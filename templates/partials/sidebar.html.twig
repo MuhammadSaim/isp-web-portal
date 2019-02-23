@@ -14,6 +14,12 @@
             </ul>
         </li>
         <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-map-signs mr-3"></i> Courses Mapping</a>
+            <ul class="nav sidebar-nav-sub">
+                <li class="nav-sub-item"><a href="{{ url('course_mapping_semester') }}" class="nav-sub-link">Semester</a></li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-item with-sub">
             <a href="" class="sidebar-nav-link"><i class="fa fa-university mr-3"></i> Departments</a>
             <ul class="nav sidebar-nav-sub">
                 {% for department in departments %}
@@ -33,6 +39,13 @@
             <ul class="nav sidebar-nav-sub">
                 <li class="nav-sub-item"><a href="page-profile.html" class="nav-sub-link">All Staff</a></li>
                 <li class="nav-sub-item"><a href="{{ url('staff_add') }}" class="nav-sub-link">Add Staff</a></li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-file-text mr-3"></i>Courses</a>
+            <ul class="nav sidebar-nav-sub">
+                <li class="nav-sub-item"><a href="{{ url('course_add') }}" class="nav-sub-link">Add Course</a></li>
+                <li class="nav-sub-item"><a href="{{ url('course_all') }}" class="nav-sub-link">All Courses</a></li>
             </ul>
         </li>
     </ul>

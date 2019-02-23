@@ -47,4 +47,17 @@ class SemesterCourseMappingRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function recordExists($departmentId, $programId, $semesterId)
+    {
+        return $this->createQueryBuilder('s')
+                    ->andWhere('s.department = :department')
+                    ->andWhere('s.program = :program')
+                    ->andWhere('s.semester = :semester')
+                    ->setParameter('department', $departmentId)
+                    ->setParameter('program', $programId)
+                    ->setParameter('semester', $semesterId)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
 }

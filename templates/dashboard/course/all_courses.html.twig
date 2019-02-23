@@ -1,0 +1,72 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}All Courses{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+<div class="slim-body">
+    {% include 'partials/sidebar.html.twig' with departments %}
+    <div class="slim-mainpanel">
+        <div class="container">
+            <div class="slim-pageheader">
+                <ol class="breadcrumb slim-breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                </ol>
+                <h6 class="slim-pagetitle">All course</h6>
+            </div><!-- slim-pageheader -->
+            <div class="section-wrapper">
+                <label class="section-title">All courses</label>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        {% for label, messages in app.flashes %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ label }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% if courses is not empty %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="thead-colored bg-primary">
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Course</th>
+                                        <th>Course Code</th>
+                                        <th>Credit Hours</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for course in courses %}
+                                        <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ course.course }}</td>
+                                            <td>{{ course.courseCode }}</td>
+                                            <td>{{ course.creditHours }}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-success">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                <a href="{{ url('course_delete', {'slug':course.slug}) }}" class="btn btn-danger">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger">
+                            OoOops! No record found
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

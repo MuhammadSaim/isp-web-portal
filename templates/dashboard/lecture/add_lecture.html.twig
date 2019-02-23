@@ -90,8 +90,7 @@
                 department = $(this).val();
                 getCourses(courseField);
             });
-            
-            
+
             function getCourses(el) {
                 $.get('{{ url('api_courses_department') }}', {
                     'departmentId' : department

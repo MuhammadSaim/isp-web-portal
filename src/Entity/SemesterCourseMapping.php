@@ -35,10 +35,9 @@ class SemesterCourseMapping
     private $semester;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Courses", inversedBy="courses")
-     * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
+     * @ORM\Column(type="json_array")
      */
-    private $course;
+    private $courseIds;
 
     /**
      * @ORM\Column(type="datetime")
@@ -106,17 +105,34 @@ class SemesterCourseMapping
     /**
      * @return mixed
      */
-    public function getCourse()
+    public function getSection()
     {
-        return $this->course;
+        return $this->section;
     }
 
     /**
-     * @param mixed $course
+     * @param mixed $section
      */
-    public function setCourse($course): void
+    public function setSection($section): void
     {
-        $this->course = $course;
+        $this->section = $section;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getCourseIds()
+    {
+        return $this->courseIds;
+    }
+
+    /**
+     * @param mixed $courseIds
+     */
+    public function setCourseIds($courseIds): void
+    {
+        $this->courseIds = $courseIds;
     }
 
     /**
