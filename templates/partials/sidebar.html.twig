@@ -7,16 +7,14 @@
         <li class="sidebar-nav-item">
             <a href="page-messages.html" class="sidebar-nav-link"><i class="fa fa-comments mr-3"></i> Messages</a>
         </li>
-        <li class="sidebar-nav-item with-sub">
-            <a href="" class="sidebar-nav-link"><i class="fa fa-paperclip mr-3"></i> Lectures</a>
-            <ul class="nav sidebar-nav-sub">
-                <li class="nav-sub-item"><a href="{{ url('lectures_add') }}" class="nav-sub-link">Add Lecture</a></li>
-            </ul>
+        <li class="sidebar-nav-item">
+            <a href="{{ url('lectures_all') }}" class="sidebar-nav-link"><i class="fa fa-paperclip mr-3"></i> Lectures</a>
         </li>
         <li class="sidebar-nav-item with-sub">
             <a href="" class="sidebar-nav-link"><i class="fa fa-map-signs mr-3"></i> Courses Mapping</a>
             <ul class="nav sidebar-nav-sub">
                 <li class="nav-sub-item"><a href="{{ url('course_mapping_semester') }}" class="nav-sub-link">Semester</a></li>
+                <li class="nav-sub-item"><a href="{{ url('course_mapping_teacher') }}" class="nav-sub-link">Teacher</a></li>
             </ul>
         </li>
         <li class="sidebar-nav-item with-sub">

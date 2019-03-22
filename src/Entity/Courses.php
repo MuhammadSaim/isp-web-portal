@@ -17,7 +17,7 @@ class Courses
 
     public function __construct()
     {
-        $this->courses = new ArrayCollection();
+        $this->teacherCourseMap = new ArrayCollection();
     }
 
     /**
@@ -26,6 +26,16 @@ class Courses
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TeacherCourseMapping", mappedBy="course", fetch="EAGER")
+     */
+    private $teacherCourseMap;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="course", fetch="EXTRA_LAZY")
+     */
+    private $lectures;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -178,9 +188,43 @@ class Courses
         $this->modifiedAt = $modifiedAt;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTeacherCourseMap()
+    {
+        return $this->teacherCourseMap;
+    }
+
+    /**
+     * @param mixed $teacherCourseMap
+     */
+    public function setTeacherCourseMap($teacherCourseMap): void
+    {
+        $this->teacherCourseMap[] = $teacherCourseMap;
+    }
+
+
+
     public function __toString()
     {
         return $this->course.' ('.$this->courseCode.')';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLectures()
+    {
+        return $this->lectures;
+    }
+
+    /**
+     * @param mixed $lectures
+     */
+    public function setLectures($lectures): void
+    {
+        $this->lectures = $lectures;
     }
 
 }

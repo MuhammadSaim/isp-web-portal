@@ -87,34 +87,6 @@
             $('.select2').select2();
 
             $('#semesterCourseMapping').parsley();
-
-            let courseField = $('#semester_course_mapping_program');
-            let departmentField = $('#semester_course_mapping_department');
-            let department = departmentField.val();
-            getCourses(courseField);
-            //onChange department select course
-            $('#semester_course_mapping_program').on('change', function (e) {
-                department = $(this).val();
-                getCourses(courseField);
-            });
-
-
-            function getCourses(el) {
-                $.get('{{ url('api_courses_department') }}', {
-                    'departmentId' : department
-                }, function (data) {
-                    console.log(data.length);
-                    if(data.length != 0){
-                        $(el).attr('disabled', false);
-                        for(var i=0; i<data.length; i++){
-                            $('#semester_course_mapping_program').append(`<option value="${data[i].id}">${data[i].course}</option>`);
-                        }
-                    }else{
-                        $(el).attr('disabled', true);
-                        $('#semester_course_mapping_program').html('');
-                    }
-                });
-            }
         });
     </script>
 {% endblock %}

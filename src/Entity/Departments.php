@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\DependencyInjection\Tests\A;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DepartmentsRepository")
@@ -19,6 +20,7 @@ class Departments
         $this->lectures = new ArrayCollection();
         $this->programs = new ArrayCollection();
         $this->courses = new ArrayCollection();
+        $this->teacherCourseMap = new ArrayCollection();
     }
 
     /**
@@ -32,6 +34,11 @@ class Departments
      * @ORM\OneToMany(targetEntity="App\Entity\StudentDetails", mappedBy="department", fetch="EXTRA_LAZY")
      */
     private $studentDetails;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TeacherCourseMapping", mappedBy="department", fetch="EXTRA_LAZY")
+     */
+    private $teacherCourseMap;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\StaffDetails", mappedBy="department", fetch="EXTRA_LAZY")
@@ -222,6 +229,25 @@ class Departments
     {
         $this->modifiedAt = $modifiedAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTeacherCourseMap()
+    {
+        return $this->teacherCourseMap;
+    }
+
+    /**
+     * @param mixed $teacherCourseMap
+     */
+    public function setTeacherCourseMap($teacherCourseMap): void
+    {
+        $this->teacherCourseMap[] = $teacherCourseMap;
+    }
+
+
+
 
 
     public function __toString()

@@ -16,6 +16,7 @@ class Semesters
         $this->studentDetails = new ArrayCollection();
         $this->lectures = new ArrayCollection();
         $this->courses = new ArrayCollection();
+        $this->teacherCourseMap = new ArrayCollection();
     }
 
     /**
@@ -24,6 +25,11 @@ class Semesters
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TeacherCourseMapping", mappedBy="semester", fetch="EXTRA_LAZY")
+     */
+    private $teacherCourseMap;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\StudentDetails", mappedBy="semester", fetch="EXTRA_LAZY")
@@ -157,6 +163,24 @@ class Semesters
     {
         $this->modifiedAt = $modifiedAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTeacherCourseMap()
+    {
+        return $this->teacherCourseMap;
+    }
+
+    /**
+     * @param mixed $teacherCourseMap
+     */
+    public function setTeacherCourseMap($teacherCourseMap): void
+    {
+        $this->teacherCourseMap[] = $teacherCourseMap;
+    }
+
+
 
     public function __toString()
     {

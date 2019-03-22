@@ -16,6 +16,7 @@ class Programs
     public function __construct()
     {
         $this->courses = new ArrayCollection();
+        $this->teacherCourseMap = new ArrayCollection();
     }
 
     /**
@@ -30,6 +31,16 @@ class Programs
      * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
      */
     private $department;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="program", fetch="EXTRA_LAZY")
+     */
+    private $lectures;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TeacherCourseMapping", mappedBy="program", fetch="EXTRA_LAZY")
+     */
+    private $teacherCourseMap;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\StudentDetails", mappedBy="program")
@@ -177,6 +188,38 @@ class Programs
     public function setModifiedAt($modifiedAt): void
     {
         $this->modifiedAt = $modifiedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeacherCourseMap()
+    {
+        return $this->teacherCourseMap;
+    }
+
+    /**
+     * @param mixed $teacherCourseMap
+     */
+    public function setTeacherCourseMap($teacherCourseMap): void
+    {
+        $this->teacherCourseMap[] = $teacherCourseMap;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLectures()
+    {
+        return $this->lectures;
+    }
+
+    /**
+     * @param mixed $lectures
+     */
+    public function setLectures($lectures): void
+    {
+        $this->lectures = $lectures;
     }
 
 

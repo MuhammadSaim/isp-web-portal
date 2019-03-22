@@ -47,4 +47,30 @@ class LecturesRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getTopLecturesOfStudents($user, $numberOfLectures = 5)
+    {
+        return $this->createQueryBuilder('l')
+                    ->andWhere('l.department = :department')
+                    ->andWhere('l.program = :program')
+                    ->andWhere('l.semester = :semester')
+                    ->setParameter('department', $user->getDepartment())
+                    ->setParameter('program', $user->getProgram())
+                    ->setParameter('semester', $user->getSemester())
+                    ->orderBy('l.createdAt', 'DESC')
+                    ->setMaxResults($numberOfLectures)
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    public function getTopLecturesOfTeacher($user, $numberOfLectures = 5)
+    {
+        return $this->createQueryBuilder('l')
+                    ->where('l.teacher = :teacherId')
+                    ->setParameter('teacherId', $user)
+                    ->orderBy('l.createdAt', 'DESC')
+                    ->setMaxResults($numberOfLectures)
+                    ->getQuery()
+                    ->getResult();
+    }
 }

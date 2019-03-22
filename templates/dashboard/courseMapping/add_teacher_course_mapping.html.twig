@@ -1,0 +1,234 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Add Student{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">Teacher Course mapping</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">Teacher Mapping</label>
+                            <form method="post" novalidate id="teacherCourseMap">
+                                <div class="form-layout">
+                                    {% for label, messages in app.flashes %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ label }}">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="department" class="required">Department</label>
+                                                <select name="department" data-department-id="null" id="department" required class="form-control select2">
+                                                    <option value="">Chose Department</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="program" class="required">Program</label>
+                                                <select name="program" data-program-id="null" id="program" required class="form-control select2" disabled>
+                                                    <option value="">Chose Program</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="semester" class="required">Semester</label>
+                                                <select name="semester" data-semester-id="null" id="semester" required class="form-control select2" disabled>
+                                                    <option value="">Chose Semester</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="section" class="required">Section</label>
+                                                <select name="section" id="section" required class="form-control select2" disabled>
+                                                    <option value="">Chose Section</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mg-t-5">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="teacher" class="required">Teacher</label>
+                                                <select name="teacher" id="teacher" required class="form-control select2">
+                                                    <option value="">Chose Teacher</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="course" class="required">Course</label>
+                                                <select name="course" id="course" disabled required class="form-control select2">
+                                                    <option value="">Chose Course</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-layout-footer">
+                                        <button class="btn btn-primary" type="submit">Add Teacher</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            //parsely form errors
+            // $('#teacherCourseMap').parsley();
+            //init select2
+            $('.select2').select2();
+
+            var data = {
+                department: null,
+                program: null,
+                semester: null
+            };
+
+            var departmentEl = $("#department");
+            $.get("{{ url('api_all_departments') }}", function(data) {
+                    if(data.length > 0){
+                        dep = true;
+                        for(var i=0; i<data.length; i++){
+                            $(departmentEl).append(`<option value="${data[i].id}">${data[i].department}</option>`);
+                        }
+                    }else{
+                        $(departmentEl).attr('disabled', true);
+                        dep = false;
+                    }
+            });
+
+            var programEl = $("#program");
+            $("#department").on('change', function(el) {
+                var departmentId = $("#department").val();
+                data.department = departmentId;
+                getCourses();
+                $.get("{{ url('api_courses_department') }}", {
+                    departmentId: departmentId
+                }, function(data) {
+                     if(data.length > 0){
+                         $(programEl).attr('disabled', false);
+                        for(var i=0; i<data.length; i++){
+                            $(programEl).append(`<option value="${data[i].id}">${data[i].program}</option>`);
+                        }
+                    }else{
+                        $(programEl).html(`<option value="">Chose Program</option>`);
+                        $(programEl).attr('disabled', true);
+                    }
+                });
+            });
+
+
+            var semesterEl = $("#semester");
+            $(programEl).on('change', function(e) {
+                data.program = programEl.val();
+                getCourses();
+                $.get('{{ url('api_all_semesters') }}', function(data) {
+                     if(data.length > 0){
+                         semesterEl.html(`<option value="">Chose semester</option>`);
+                         semesterEl.attr('disabled', false);
+                         for (i=0;i<data.length;i++){
+                             semesterEl.append(`<option value="${data[i].id}">${data[i].semester}</option>`);
+                         }
+                     }else{
+                         semesterEl.attr('disabled', true);
+                         semesterEl.html(`<option value="">Chose semester</option>`);
+                     }
+                });
+            });
+
+            var sectionEl = $("#section");
+            $(semesterEl).on('change', function(e) {
+                data.semester = semesterEl.val();
+                getCourses();
+                $.get('{{ url('api_all_sections') }}', function(data) {
+                     if(data.length > 0){
+                         sectionEl.attr('disabled', false);
+                         for (i=0;i<data.length;i++){
+                             sectionEl.append(`<option value="${data[i].id}">${data[i].section}</option>`);
+                         }
+                     }else{
+                         sectionEl.attr('disabled', false);
+                     }
+                });
+            });
+
+
+
+            function getCourses() {
+                coursesEl = $("#course");
+              if(
+                  (data.department != null && data.department != "") &&
+                  (data.program != null && data.program != "") &&
+                  (data.semester != null && data.semester != "")
+                  ){
+
+                  console.log(data);
+
+                  $.get('{{ url('api_all_courses') }}', data, function(data) {
+                    if(data.length > 0){
+                        console.log(data);
+                        coursesEl.attr('disabled', false);
+                        for(i=0; i<data.length; i++){
+                            coursesEl.append(`
+                            <option value="${data[i].id}">${data[i].course} (${data[i].code})</option>
+                            `);
+                        }
+                    }else{
+                        coursesEl.attr('disabled', true);
+                        coursesEl.html(`<option value="">Chose course</option>`);
+                    }
+                  });
+
+
+              }
+            }
+
+            var teacherEl = $("#teacher");
+            $.get('{{ url('api_all_teachers') }}', function(data) {
+              if(data.length > 0){
+                  for(i=0;i<data.length;i++){
+                  teacherEl.append(`
+                        <option value="${data[i].id}">${ data[i].email }</option>
+                    `);
+                    }
+              }
+            });
+
+
+
+
+        //jquery close here
+        });
+    </script>
+{% endblock %}

@@ -14,6 +14,7 @@ class StaffDetails
 
     public function __construct()
     {
+        $this->lectures = new ArrayCollection();
     }
 
     /**
@@ -328,4 +329,7 @@ class StaffDetails
     {
         $this->modifiedAt = $modifiedAt;
     }
+
+
+
 }

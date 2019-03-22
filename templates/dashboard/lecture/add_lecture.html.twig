@@ -22,38 +22,81 @@
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <div class="section-wrapper">
-                            {{ form_start(form) }}
                             <label class="section-title">Add Lecture</label>
-                            <form method="post" action="">
+                            <form method="post" id="addLecture" action="" enctype="multipart/form-data">
                                 <div class="form-layout">
+                                    {% for label, messages in app.flashes %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ label }}">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
                                     <div class="row mg-b-25 mg-t-25">
                                         <div class="col-lg-4">
-                                            {{ form_label(form.department) }}
-                                            {{ form_widget(form.department) }}
-                                            {{ form_errors(form.department) }}
+                                            <div class="form-group">
+                                                <label for="department">Department</label>
+                                                <select name="department" id="department" class="form-control select2" required>
+                                                    <option value="">Chose Department</option>
+                                                    {% for department in data.departments %}
+                                                        <option value="{{ department.department }}">{{ department.department | getDepartment }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="col-lg-4">
-                                            {{ form_label(form.course) }}
-                                            {{ form_widget(form.course) }}
-                                            {{ form_errors(form.course) }}
+                                            <div class="form-group">
+                                                <label for="program">Program</label>
+                                                <select name="program" id="program" class="form-control select2" required>
+                                                    <option value="">Chose Program</option>
+                                                    {% for program in data.programs %}
+                                                        <option value="{{ program.program }}">{{ program.program | getProgram }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="col-lg-4">
-                                            {{ form_label(form.semester) }}
-                                            {{ form_widget(form.semester) }}
-                                            {{ form_errors(form.semester) }}
+                                            <div class="form-group">
+                                                <label for="program">Course</label>
+                                                <select name="course" id="course" class="form-control select2" required>
+                                                    <option value="">Chose course</option>
+                                                    {% for course in data.courses %}
+                                                        <option value="{{ course.course }}">{{ course.course | getCourse }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mg-b-25">
-                                        <div class="col-lg-6">
-                                            {{ form_label(form.section) }}
-                                            {{ form_widget(form.section) }}
-                                            {{ form_errors(form.section) }}
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="semester">Semester</label>
+                                                <select name="semester" id="semester" class="form-control select2" required>
+                                                    <option value="">Chose Semester</option>
+                                                    {% for semester in data.semesters %}
+                                                        <option value="{{ semester.semester }}">{{ semester.semester | getSemester }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="custom-file">
-                                                {{ form_widget(form.file) }}
-                                                {{ form_label(form.file) }}
-                                                {{ form_errors(form.file) }}
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="section">Section</label>
+                                                <select name="section" id="section" class="form-control select2" required>
+                                                    <option value="">Chose section</option>
+                                                    {% for section in data.sections %}
+                                                        <option value="{{ section.section }}">{{ section.section | getSection }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="lecture">Lecture</label>
+                                                <div class="custom-file">
+                                                    <input required type="file" name="lecture" class="custom-file-input" id="customFile2">
+                                                    <label class="custom-file-label custom-file-label-primary" for="customFile">Choose file</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -62,7 +105,6 @@
                                     <button type="submit" class="btn btn-primary">ADD LECTURE</button>
                                 </div>
                             </form>
-                            {{ form_end(form) }}
                         </div>
                     </div>
                 </div>
@@ -81,32 +123,7 @@
         $(document).ready(function () {
             $(".select2").select2();
 
-            let courseField = $('#add_lecture_course');
-            let departmentField = $('#add_lecture_department');
-            let department = departmentField.val();
-            getCourses(courseField);
-            //onChange department select course
-            $('#add_lecture_department').on('change', function (e) {
-                department = $(this).val();
-                getCourses(courseField);
-            });
-
-            function getCourses(el) {
-                $.get('{{ url('api_courses_department') }}', {
-                    'departmentId' : department
-                }, function (data) {
-                    console.log(data.length);
-                    if(data.length != 0){
-                        $(el).attr('disabled', false);
-                        for(var i=0; i<data.length; i++){
-                            $('#add_lecture_course').append(`<option value="${data[i].id}">${data[i].course}</option>`);
-                        }
-                    }else{
-                        $(el).attr('disabled', true);
-                        $('#add_lecture_course').html('');
-                    }
-                });
-            }
+            $("#addLecture").parsley();
         });
     </script>
 {% endblock %}

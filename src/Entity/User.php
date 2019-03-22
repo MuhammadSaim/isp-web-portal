@@ -19,8 +19,8 @@ class User implements UserInterface, \Serializable
 
     public function __construct()
     {
-//        $this->studentDetails = new ArrayCollection();
-//        $this->staffDetails = new ArrayCollection();
+        $this->teacherCourseMap = new ArrayCollection();
+        $this->lectures = new ArrayCollection();
     }
 
 
@@ -32,6 +32,11 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TeacherCourseMapping", mappedBy="teacher", fetch="EAGER")
+     */
+    private $teacherCourseMap;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\StudentDetails", mappedBy="user", fetch="EXTRA_LAZY")
      */
     private $studentDetails;
@@ -40,6 +45,11 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToOne(targetEntity="App\Entity\StaffDetails", mappedBy="user", fetch="EXTRA_LAZY")
      */
     private $staffDetails;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="teacher", fetch="EXTRA_LAZY")
+     */
+    private $lectures;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -170,8 +180,6 @@ class User implements UserInterface, \Serializable
     public function getRoles()
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_STUDENT';
-
         return array_unique($roles);
     }
 
@@ -242,6 +250,24 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * @return mixed
+     */
+    public function getTeacherCourseMap()
+    {
+        return $this->teacherCourseMap;
+    }
+
+    /**
+     * @param mixed $teacherCourseMap
+     */
+    public function setTeacherCourseMap($teacherCourseMap): void
+    {
+        $this->teacherCourseMap[] = $teacherCourseMap;
+    }
+
+
+
+    /**
      * @param mixed $id
      */
     public function setId($id): void
@@ -298,6 +324,22 @@ class User implements UserInterface, \Serializable
     {
         // TODO: Implement __toString() method.
         return $this->getUsername();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLectures()
+    {
+        return $this->lectures;
+    }
+
+    /**
+     * @param mixed $lectures
+     */
+    public function setLectures($lectures): void
+    {
+        $this->lectures[] = $lectures;
     }
 
 

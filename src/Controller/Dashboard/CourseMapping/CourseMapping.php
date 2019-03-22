@@ -2,9 +2,14 @@
 
 namespace App\Controller\Dashboard\CourseMapping;
 
+use App\Entity\Courses;
 use App\Entity\Departments;
 use App\Entity\Programs;
+use App\Entity\Sections;
 use App\Entity\SemesterCourseMapping;
+use App\Entity\Semesters;
+use App\Entity\TeacherCourseMapping;
+use App\Entity\User;
 use App\Form\SemesterCourseMappingType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +30,7 @@ class CourseMapping extends AbstractController
      */
     public function semesterCourseMapping(Request $request)
     {
-        $semesterCourseMapping = new SemesterCourseMapping();
+        $semesterCourseMapping = new CourseMapping();
         $form = $this->createForm(SemesterCourseMappingType::class, []);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -53,7 +58,7 @@ class CourseMapping extends AbstractController
                 return $this->redirectToRoute('course_mapping_semester');
             }
 
-            $findRecord = $this->getDoctrine()->getRepository(SemesterCourseMapping::class)->recordExists($departmentId, $programId, $data['semester']);
+            $findRecord = $this->getDoctrine()->getRepository(CourseMapping::class)->recordExists($departmentId, $programId, $data['semester']);
             if(!empty($findRecord)){
                 $this->addFlash('danger', 'This mapping is already exists.');
 //                return $this->render('dashboard/courseMapping/add_semester_course_mapping.html.twig',[
@@ -88,6 +93,69 @@ class CourseMapping extends AbstractController
             "dashboard/courseMapping/add_semester_course_mapping.html.twig",[
             'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
             'form'        => $form->createView()
+        ]);
+    }
+
+
+    /**
+     * @Route("/teacher-add", name="teacher")
+     */
+    public function teacherCourseMapping(Request $request)
+    {
+        $teacherCourseMapping = new TeacherCourseMapping();
+        if($request->isMethod('post')){
+            $department = $request->request->get('department');
+            $program = $request->request->get('program');
+            $semester = $request->request->get('semester');
+            $section = $request->request->get('section');
+            $teacher = $request->request->get('teacher');
+            $course = $request->request->get('course');
+
+            $tcmRepo = $this->getDoctrine()->getRepository(TeacherCourseMapping::class);
+            $check_data = $tcmRepo->createQueryBuilder('t')
+                                  ->andWhere('t.course = :course')
+                                  ->andWhere('t.department = :department')
+                                  ->andWhere('t.program = :program')
+                                  ->andWhere('t.section = :section')
+                                  ->andWhere('t.teacher = :teacher')
+                                  ->andWhere('t.semester = :semester')
+                                  ->setParameter('course', $course)
+                                  ->setParameter('department', $department)
+                                  ->setParameter('program', $program)
+                                  ->setParameter('section', $section)
+                                  ->setParameter('semester', $semester)
+                                  ->setParameter('teacher', $teacher)
+                                  ->getQuery()
+                                  ->getResult();
+
+
+            if(!empty($check_data)){
+                $this->addFlash('danger', 'This teacher mapping is already exists.');
+                return $this->render(
+                    "dashboard/courseMapping/add_teacher_course_mapping.html.twig",[
+                    'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
+                ]);
+            }
+
+            $teacherCourseMapping->setSemester($this->getDoctrine()->getRepository(Semesters::class)->find($semester));
+            $teacherCourseMapping->setProgram($this->getDoctrine()->getRepository(Programs::class)->find($program));
+            $teacherCourseMapping->setDepartment($this->getDoctrine()->getRepository(Departments::class)->find($department));
+            $teacherCourseMapping->setCourse($this->getDoctrine()->getRepository(Courses::class)->find($course));
+            $teacherCourseMapping->setTeacher($this->getDoctrine()->getRepository(User::class)->find($teacher));
+            $teacherCourseMapping->setSection($this->getDoctrine()->getRepository(Sections::class)->find($section));
+            $teacherCourseMapping->setCreatedAt(new \DateTime());
+            $teacherCourseMapping->setModifiedAt(new \DateTime());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($teacherCourseMapping);
+            $em->flush();
+
+
+            $this->addFlash('success', 'Mapping is added successfully.');
+        }
+
+        return $this->render(
+            "dashboard/courseMapping/add_teacher_course_mapping.html.twig",[
+            'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
         ]);
     }
 

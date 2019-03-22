@@ -36,7 +36,7 @@ class CoursesResponse extends AbstractController
             $jsonCoursesArray[] = array(
                 'id' => $course->getId(),
                 'slug' => $course->getSlug(),
-                'course' => $course->getProgram()
+                'program' => $course->getProgram()
             );
         }
         return new JsonResponse($jsonCoursesArray);

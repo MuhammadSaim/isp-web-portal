@@ -1,0 +1,19 @@
+{% if is_granted('ROLE_STUDENT') == true  %}
+    <nav class="nav">
+        {% for id in coursesIds %}
+        <a href="{{ url('lectures_show_lectuers', { 'departmentId' : course.department.id, 'programId': course.program.id, 'semesterId': course.semester.id, 'courseSlug' : id | getCourseSlug }) }}" class="nav-link {% if active == id | getCourseSlug and active is not empty %} active {% endif %}">
+            <span>{{ id | getCourse }}</span>
+        </a>
+        {% endfor %}
+    </nav>
+{% endif %}
+{% if is_granted('ROLE_TEACHER') == true %}
+    <a href="{{ url('lectures_add') }}" class="btn btn-contact-new">Upload File</a>
+    <nav class="nav">
+       {% for course in courses %}
+           <a href="{{ url('lectures_show_lectuers', { 'departmentId' : course.department.id, 'programId': course.program.id, 'semesterId': course.semester.id, 'courseSlug' : course.course.id | getCourseSlug }) }}" class="nav-link {% if active == course.course.id | getCourseSlug and active is not empty %} active {% endif %}">
+               <span>{{ course.course.id | getCourse }}</span>
+           </a>
+       {% endfor %}
+    </nav>
+{% endif %}

@@ -16,6 +16,7 @@ class Sections
         $this->studentDetails = new ArrayCollection();
         $this->lectures = new ArrayCollection();
         $this->coursesmap = new ArrayCollection();
+        $this->teacherCourseMap = new ArrayCollection();
     }
 
     /**
@@ -25,6 +26,11 @@ class Sections
      */
     private $id;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TeacherCourseMapping", mappedBy="section", fetch="EXTRA_LAZY")
+     */
+    private $teacherCourseMap;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\StudentDetails", mappedBy="section", fetch="EXTRA_LAZY")
@@ -71,22 +77,6 @@ class Sections
     public function setStudentDetails(ArrayCollection $studentDetails): void
     {
         $this->studentDetails[] = $studentDetails;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLectures()
-    {
-        return $this->lectures;
-    }
-
-    /**
-     * @param mixed $lectures
-     */
-    public function setLectures($lectures): void
-    {
-        $this->lectures[] = $lectures;
     }
 
     /**
@@ -154,6 +144,41 @@ class Sections
     {
         $this->modifiedAt = $modifiedAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTeacherCourseMap()
+    {
+        return $this->teacherCourseMap;
+    }
+
+    /**
+     * @param mixed $teacherCourseMap
+     */
+    public function setTeacherCourseMap($teacherCourseMap): void
+    {
+        $this->teacherCourseMap[] = $teacherCourseMap;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getLectures()
+    {
+        return $this->lectures;
+    }
+
+    /**
+     * @param mixed $lectures
+     */
+    public function setLectures($lectures): void
+    {
+        $this->lectures = $lectures;
+    }
+
+
 
     public function __toString()
     {

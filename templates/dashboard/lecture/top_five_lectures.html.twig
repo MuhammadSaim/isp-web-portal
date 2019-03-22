@@ -1,0 +1,61 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Lectures{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="manager-header">
+                    <div class="slim-pageheader">
+                        <ol class="breadcrumb slim-breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                        </ol>
+                        <h6 class="slim-pagetitle">Lectures</h6>
+                    </div><!-- slim-pageheader -->
+                </div>
+                <div class="manager-wrapper">
+                    <div class="manager-right">
+                        <div class="file-group">
+                            {% for lecture in topFiveLectures %}
+                                <div class="file-item">
+                                    <div class="row no-gutters wd-100p">
+                                        <div class="col-9 col-sm-5 d-flex align-items-center">
+                                            <img class="mr-2" width="25" src="{{ asset('assets/images/file-icons/' ~ lecture.getFileExtension ~ '.svg') }}" alt="">
+                                            <a href="#" download="{{ asset('uploads/lectures/' ~ lecture.getFileServerName ) }}">{{ lecture.getFileClientName }}</a>
+                                        </div><!-- col-6 -->
+                                        <div class="col-3 col-sm-2 tx-right tx-sm-left">{{ lecture.getFileSize }}</div>
+                                        <div class="col-6 col-sm-4 mg-t-5 mg-sm-t-0">{{ lecture.getCreatedAt | humanReadableDate }}</div>
+                                        <div class="col-6 col-sm-1 tx-right mg-t-5 mg-sm-t-0">
+                                            {% if is_granted('ROLE_STUDENT') == true  %}
+                                                <a href="#" download="{{ asset('uploads/lectures/' ~ lecture.getFileServerName ) }}">
+                                                    <i class="fa fa-download"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_TEACHER') == true  %}
+                                                <a href=""><i class="fa fa-trash-o"></i></a>
+                                            {% endif %}
+                                        </div>
+                                    </div><!-- row -->
+                                </div><!-- file-item -->
+                            {% else %}
+                                <div class="alert alert-danger">Ooops! No lecture found</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="manager-left">
+                        {% if is_granted('ROLE_STUDENT') == true  %}
+                            {% include 'partials/lectures_sidebar.html.twig' with coursesIds %}
+                        {% endif %}
+                        {% if is_granted('ROLE_TEACHER') == true  %}
+                            {% include 'partials/lectures_sidebar.html.twig' with courses %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
