@@ -17,6 +17,7 @@ class Sections
         $this->lectures = new ArrayCollection();
         $this->coursesmap = new ArrayCollection();
         $this->teacherCourseMap = new ArrayCollection();
+        $this->assignments = new ArrayCollection();
     }
 
     /**
@@ -41,6 +42,11 @@ class Sections
      * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="section", fetch="EXTRA_LAZY")
      */
     private $lectures;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Assignments", mappedBy="section", fetch="EXTRA_LAZY")
+     */
+    private $assignments;
 
 
     /**

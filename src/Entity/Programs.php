@@ -17,6 +17,8 @@ class Programs
     {
         $this->courses = new ArrayCollection();
         $this->teacherCourseMap = new ArrayCollection();
+        $this->assignments = new ArrayCollection();
+        $this->studentDetails = new ArrayCollection();
     }
 
     /**
@@ -43,7 +45,7 @@ class Programs
     private $teacherCourseMap;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\StudentDetails", mappedBy="program")
+     * @ORM\OneToMany(targetEntity="App\Entity\StudentDetails", mappedBy="program")
      */
     private $studentDetails;
 
@@ -51,6 +53,11 @@ class Programs
      * @ORM\OneToMany(targetEntity="App\Entity\SemesterCourseMapping", mappedBy="program", fetch="EXTRA_LAZY")
      */
     private $courses;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Assignments", mappedBy="program", fetch="EXTRA_LAZY")
+     */
+    private $assignments;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -155,7 +162,7 @@ class Programs
      */
     public function setStudentDetails($studentDetails): void
     {
-        $this->studentDetails = $studentDetails;
+        $this->studentDetails[] = $studentDetails;
     }
 
     /**
@@ -220,6 +227,22 @@ class Programs
     public function setLectures($lectures): void
     {
         $this->lectures = $lectures;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
+    }
+
+    /**
+     * @param mixed $assignments
+     */
+    public function setAssignments($assignments): void
+    {
+        $this->assignments[] = $assignments;
     }
 
 

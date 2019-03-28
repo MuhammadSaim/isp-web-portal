@@ -18,6 +18,7 @@ class Courses
     public function __construct()
     {
         $this->teacherCourseMap = new ArrayCollection();
+        $this->assignments = new ArrayCollection();
     }
 
     /**
@@ -36,6 +37,11 @@ class Courses
      * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="course", fetch="EXTRA_LAZY")
      */
     private $lectures;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Assignments", mappedBy="course", fetch="EXTRA_LAZY")
+     */
+    private $assignments;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -217,6 +223,22 @@ class Courses
     public function getLectures()
     {
         return $this->lectures;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
+    }
+
+    /**
+     * @param mixed $assignments
+     */
+    public function setAssignments($assignments): void
+    {
+        $this->assignments[] = $assignments;
     }
 
     /**

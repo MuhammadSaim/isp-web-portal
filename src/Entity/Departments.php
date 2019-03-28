@@ -21,6 +21,7 @@ class Departments
         $this->programs = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->teacherCourseMap = new ArrayCollection();
+        $this->assignments = new ArrayCollection();
     }
 
     /**
@@ -59,6 +60,11 @@ class Departments
      * @ORM\OneToMany(targetEntity="App\Entity\SemesterCourseMapping", mappedBy="department", fetch="EXTRA_LAZY")
      */
     private $courses;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Assignments", mappedBy="department", fetch="EXTRA_LAZY")
+     */
+    private $assignments;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -246,8 +252,21 @@ class Departments
         $this->teacherCourseMap[] = $teacherCourseMap;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
+    }
 
-
+    /**
+     * @param mixed $assignments
+     */
+    public function setAssignments($assignments): void
+    {
+        $this->assignments[] = $assignments;
+    }
 
 
     public function __toString()

@@ -1,0 +1,60 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Lectures{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="manager-header">
+                    <div class="slim-pageheader">
+                        <ol class="breadcrumb slim-breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                        </ol>
+                        <h6 class="slim-pagetitle">Assignments</h6>
+                    </div><!-- slim-pageheader -->
+                </div>
+                <div class="manager-wrapper">
+                    <div class="manager-right">
+                        <div class="file-group">
+                            {% for assignment in topFiveAssignments %}
+                                <div class="file-item">
+                                    <div class="row no-gutters wd-100p">
+                                        <div class="col-9 col-sm-5 d-flex align-items-center">
+                                            <a href="{{ url('assignment_show', {'assignmentSlug': assignment.getSlug }) }}">{{ assignment.getAssignmentTitle }}</a>
+                                        </div><!-- col-6 -->
+                                        <div class="col-3 col-sm-2 tx-right tx-sm-left">{{ assignment.getTotalMarks }} Marks</div>
+                                        <div class="col-3 col-sm-2 mg-t-5 mg-sm-t-0">{{ assignment.getSubmissionDate|date('F d, Y') }}</div>
+                                        <div class="col-4 col-sm-3 mg-t-5 mg-sm-t-0 d-flex">
+                                            {% if is_granted('ROLE_STUDENT') == true  %}
+                                                <div class="progress wd-100p">
+                                                    <div class="progress-bar progress-bar-animated progress-bar-striped bg-danger" role="progressbar" style="width: 50%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_TEACHER') == true  %}
+                                                <a href=""><i class="fa fa-trash-o"></i></a>
+                                            {% endif %}
+                                        </div>
+                                    </div><!-- row -->
+                                </div><!-- file-item -->
+                            {% else %}
+                                <div class="alert alert-danger">Ooops! No assigment found</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="manager-left">
+                        {% if is_granted('ROLE_STUDENT') == true  %}
+                            {% include 'partials/assignments_sidebar.html.twig' with coursesIds %}
+                        {% endif %}
+                        {% if is_granted('ROLE_TEACHER') == true  %}
+                            {% include 'partials/assignments_sidebar.html.twig' with courses %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

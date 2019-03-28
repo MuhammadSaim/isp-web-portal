@@ -21,6 +21,8 @@ class User implements UserInterface, \Serializable
     {
         $this->teacherCourseMap = new ArrayCollection();
         $this->lectures = new ArrayCollection();
+        $this->assignments = new ArrayCollection();
+        $this->assignmentSubmissions = new ArrayCollection();
     }
 
 
@@ -50,6 +52,17 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="App\Entity\Lectures", mappedBy="teacher", fetch="EXTRA_LAZY")
      */
     private $lectures;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Assignments", mappedBy="teacher", fetch="EXTRA_LAZY")
+     */
+    private $assignments;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AssignmentSubmissions", mappedBy="student", fetch="EXTRA_LAZY")
+     */
+    private $assignmentSubmissions;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -340,6 +353,38 @@ class User implements UserInterface, \Serializable
     public function setLectures($lectures): void
     {
         $this->lectures[] = $lectures;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
+    }
+
+    /**
+     * @param mixed $assignments
+     */
+    public function setAssignments($assignments): void
+    {
+        $this->assignments[] = $assignments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignmentSubmissions()
+    {
+        return $this->assignmentSubmissions;
+    }
+
+    /**
+     * @param mixed $assignmentSubmissions
+     */
+    public function setAssignmentSubmissions($assignmentSubmissions): void
+    {
+        $this->assignmentSubmissions[] = $assignmentSubmissions;
     }
 
 

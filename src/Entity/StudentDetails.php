@@ -47,7 +47,7 @@ class StudentDetails
     private $department;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Programs", inversedBy="studentDetails")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Programs", inversedBy="studentDetails")
      * @ORM\JoinColumn(name="program_id", referencedColumnName="id")
      */
     private $program;

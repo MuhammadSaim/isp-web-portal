@@ -1,0 +1,54 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Assignment | {{ assignment.getAssignmentTitle }}{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">Submit Answer</label>
+                            <form action="" method="post" enctype="multipart/form-data" id="assignment-submit">
+                                <div class="form-layout">
+                                    {% for label, messages in app.flashes %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ label }}">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="custom-file">
+                                                <input type="file" name="assignment_file" class="custom-file-input" id="file" required>
+                                                <label class="custom-file-label custom-file-label-primary" for="file">Choose file</label>
+                                            </div>
+                                            <small class="form-text text-muted">
+                                                Only pdf, docx, zip. rar files are allowed with maximum 5 MB.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-layout-footer">
+                                    <button type="submit" class="btn btn-primary">SUBMIT</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock %}

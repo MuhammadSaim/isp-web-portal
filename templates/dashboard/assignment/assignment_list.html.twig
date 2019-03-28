@@ -1,0 +1,54 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}All assignments{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+<div class="slim-body">
+    {% include 'partials/sidebar.html.twig' with departments %}
+    <div class="slim-mainpanel">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-lg-12">
+                    <div class="section-wrapper">
+                        {% if assignments is empty %}
+                            <div class="alert alert-danger">
+                                Sorry no record found.
+                            </div>
+                        {% else %}
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-colored thead-primary">
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Roll Number</th>
+                                        <th>Assignment</th>
+                                        <th>Size</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for assignment in assignments %}
+                                        <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ assignment.student.studentDetails.regNo }}</td>
+                                            <td><a href="{{ asset('uploads/assignments/submit/' ~ assignment.fileServerName ) }}" download="{{ asset('uploads/assignments/submit/' ~ assignment.fileServerName ) }}"> {{ assignment.fileClientName }} </a></td>
+                                            <td>{{ assignment.fileSize }}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-success">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

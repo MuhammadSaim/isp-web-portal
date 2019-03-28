@@ -1,0 +1,90 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}{{ assignment.getAssignmentTitle }}{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+<div class="slim-body">
+    {% include 'partials/sidebar.html.twig' with departments %}
+    <div class="slim-mainpanel">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-lg-12">
+                    <div class="section-wrapper">
+                        <label class="section-title">{{ assignment.getAssignmentTitle }}</label>
+                        <div class="d-flex my-3">
+                            <div class="mr-lg-4" data-toggle="tooltip" data-placement="left" title="Starting Date">
+                                <i class="fa fa-clock-o"></i> {{ assignment.startDate | date('F d, Y') }}
+                            </div>
+                            <div data-toggle="tooltip" data-placement="right" title="Submission Date">
+                                <i class="fa fa-clock-o"></i> {{ assignment.submissionDate | date('F d, Y') }}
+                            </div>
+                        </div>
+                        {% if assignment.fileServerName is not null %}
+                            <div class="d-flex my-3">
+                                <ul class="list-group w-100">
+                                    <li class="list-group-item">
+                                        <div class="row d-flex justify-content-between">
+                                            <div class="col-md-8">
+                                                <i class="fa fa-paperclip mr-2" style="font-size: 20px;"></i> <a href="#">{{ assignment.fileClientName }}</a>
+                                            </div>
+                                            <div class="col-md-2">
+                                                {{ assignment.fileSize }}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a href="">
+                                                    <i class="fa fa-download"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if assignment.assignmentDescription is not null %}
+                            <p class="lead text-justify">
+                                {{ assignment.assignmentDescription }}
+                            </p>
+                        {% endif %}
+                        {% if is_granted('ROLE_STUDENT') == true %}
+                            {% if assignment.submissionDate > date() and assignment.assignmentSubmissions.count == 0 %}
+                                <a href="{{ url('assignment_submit', {'assignmentSlug' : assignment.slug }) }}" class="btn btn-primary">SUBMIT ASSIGNMENT</a>
+                            {% else %}
+                                <div class="my-2">
+                                    {% if assignment.assignmentSubmissions.count == 0 %}
+                                        <p class="text-danger">You are not submit the answer</p>
+                                        {% else %}
+                                            <div class="mb-2">
+                                                <b>Total Marks: </b>   {{ assignment.totalMarks }}
+                                            </div>
+                                            <div>
+                                                <b>Obtained Marks:</b>
+                                                {% if assignment.assignmentSubmissions[0].obtainedMarks is not null and assignment.assignmentSubmissions[0].obtainedMarks is not empty %}
+                                                    {{ assignment.assignmentSubmissions[0].obtainedMarks }}
+                                                {% else %}
+                                                    <p class="text-danger d-inline-block">Not evaluated yet</p>
+                                                {% endif %}
+                                            </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if is_granted('ROLE_TEACHER') == true %}
+                            <a href="{{ url('assignment_evaluation', { 'assignmentSlug' : assignment.slug }) }}" class="btn btn-primary">Evaluate</a>
+                            <a href="{{ url('assignment_submitted', { 'assignmentSlug' : assignment.slug }) }}" class="btn btn-primary">All Assignments</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+{% endblock %}
