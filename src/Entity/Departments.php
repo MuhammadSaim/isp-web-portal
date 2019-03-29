@@ -22,6 +22,7 @@ class Departments
         $this->courses = new ArrayCollection();
         $this->teacherCourseMap = new ArrayCollection();
         $this->assignments = new ArrayCollection();
+        $this->announcements = new ArrayCollection();
     }
 
     /**
@@ -65,6 +66,11 @@ class Departments
      * @ORM\OneToMany(targetEntity="App\Entity\Assignments", mappedBy="department", fetch="EXTRA_LAZY")
      */
     private $assignments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Announcements", mappedBy="department", fetch="EXTRA_LAZY")
+     */
+    private $announcements;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -266,6 +272,22 @@ class Departments
     public function setAssignments($assignments): void
     {
         $this->assignments[] = $assignments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnnouncements()
+    {
+        return $this->announcements;
+    }
+
+    /**
+     * @param mixed $announcements
+     */
+    public function setAnnouncements($announcements): void
+    {
+        $this->announcements[] = $announcements;
     }
 
 

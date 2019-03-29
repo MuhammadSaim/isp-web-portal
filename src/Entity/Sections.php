@@ -18,6 +18,7 @@ class Sections
         $this->coursesmap = new ArrayCollection();
         $this->teacherCourseMap = new ArrayCollection();
         $this->assignments = new ArrayCollection();
+        $this->announcements = new ArrayCollection();
     }
 
     /**
@@ -47,6 +48,11 @@ class Sections
      * @ORM\OneToMany(targetEntity="App\Entity\Assignments", mappedBy="section", fetch="EXTRA_LAZY")
      */
     private $assignments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Announcements", mappedBy="section", fetch="EXTRA_LAZY")
+     */
+    private $announcements;
 
 
     /**
@@ -182,6 +188,38 @@ class Sections
     public function setLectures($lectures): void
     {
         $this->lectures = $lectures;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
+    }
+
+    /**
+     * @param mixed $assignments
+     */
+    public function setAssignments($assignments): void
+    {
+        $this->assignments[] = $assignments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnnouncements()
+    {
+        return $this->announcements;
+    }
+
+    /**
+     * @param mixed $announcements
+     */
+    public function setAnnouncements($announcements): void
+    {
+        $this->announcements[] = $announcements;
     }
 
 

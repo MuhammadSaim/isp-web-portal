@@ -23,6 +23,7 @@ class User implements UserInterface, \Serializable
         $this->lectures = new ArrayCollection();
         $this->assignments = new ArrayCollection();
         $this->assignmentSubmissions = new ArrayCollection();
+        $this->announcements = new ArrayCollection();
     }
 
 
@@ -63,6 +64,11 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="App\Entity\AssignmentSubmissions", mappedBy="student", fetch="EXTRA_LAZY")
      */
     private $assignmentSubmissions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Announcements", mappedBy="teacher", fetch="EXTRA_LAZY")
+     */
+    private $announcements;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -387,5 +393,20 @@ class User implements UserInterface, \Serializable
         $this->assignmentSubmissions[] = $assignmentSubmissions;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAnnouncements()
+    {
+        return $this->announcements;
+    }
+
+    /**
+     * @param mixed $announcements
+     */
+    public function setAnnouncements($announcements): void
+    {
+        $this->announcements[] = $announcements;
+    }
 
 }

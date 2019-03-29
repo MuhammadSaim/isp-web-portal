@@ -1,0 +1,56 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Announcements{% endblock %}
+
+{% block body %}
+{% include 'partials/header.html.twig' %}
+<div class="slim-body">
+    {% include 'partials/sidebar.html.twig' with departments %}
+    <div class="slim-mainpanel">
+        <div class="container">
+            <div class="slim-pageheader">
+                <ol class="breadcrumb slim-breadcrumb">
+                    {% if is_granted('ROLE_TEACHER') %}
+                        <a href="{{ url('announcement_add_new') }}" class="btn btn-primary">Add New</a>
+                    {% endif %}
+                </ol>
+                <h6 class="slim-pagetitle">Announcements</h6>
+            </div><!-- slim-pageheader -->
+            <div class="row">
+                    {% for announcement in announcements %}
+                        <div class="col-lg-6 mb-4">
+                            <div class="card">
+                                <div class="card-header bg-{{ announcement.announcementType }} text-white">
+                                    {{ announcement.announcementTitle }}
+                                    {% if is_granted('ROLE_TEACHER') %}
+                                        <div class="d-inline-block float-right">
+                                            <a href="#" class="text-white mr-2"><i class="fa fa-pencil"></i></a>
+                                            <a href="{{ url('announcement_delete', {'announcementSlug' : announcement.announcementSlug}) }}" class="text-white"><i class="fa fa-times"></i></a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body bd text-justify">
+                                    {{ announcement.announcementDescription }}
+                                </div>
+                                {% if is_granted('ROLE_TEACHER') %}
+                                <div class="card-footer bd-t">
+                                    {{ announcement.program.program }},
+                                    {{ announcement.semester.semester }} ({{ announcement.section.section }})
+                                </div>
+                                {% endif %}
+                                {% if is_granted('ROLE_STUDENT') %}
+                                    <div class="card-footer bd-t">
+                                        {{ announcement.course.course }} ( {{ announcement.teacher.email | shortEmail }} )
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger">You have no announcements yet</div>
+                    {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
