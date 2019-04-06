@@ -24,6 +24,8 @@ class User implements UserInterface, \Serializable
         $this->assignments = new ArrayCollection();
         $this->assignmentSubmissions = new ArrayCollection();
         $this->announcements = new ArrayCollection();
+        $this->quizzes = new ArrayCollection();
+        $this->quizeEvaluation = new ArrayCollection();
     }
 
 
@@ -69,6 +71,16 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="App\Entity\Announcements", mappedBy="teacher", fetch="EXTRA_LAZY")
      */
     private $announcements;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Quizzes", mappedBy="teacher", fetch="EXTRA_LAZY")
+     */
+    private $quizzes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\QuizzesEvaluation", mappedBy="user")
+     */
+    private $quizeEvaluation;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -408,5 +420,39 @@ class User implements UserInterface, \Serializable
     {
         $this->announcements[] = $announcements;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getQuizzes()
+    {
+        return $this->quizzes;
+    }
+
+    /**
+     * @param mixed $quizzes
+     */
+    public function setQuizzes($quizzes): void
+    {
+        $this->quizzes[] = $quizzes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuizeEvaluation()
+    {
+        return $this->quizeEvaluation;
+    }
+
+    /**
+     * @param mixed $quizeEvaluation
+     */
+    public function setQuizeEvaluation($quizeEvaluation): void
+    {
+        $this->quizeEvaluation[] = $quizeEvaluation;
+    }
+
+
 
 }

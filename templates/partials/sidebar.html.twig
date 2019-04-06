@@ -11,6 +11,9 @@
             <a href="{{ url('assignment_all') }}" class="sidebar-nav-link"><i class="fa fa-clipboard mr-3"></i> Assignments</a>
         </li>
         <li class="sidebar-nav-item">
+            <a href="{{ url('quiz_all') }}" class="sidebar-nav-link"><i class="fa fa-file-text-o mr-3"></i> Quizzes</a>
+        </li>
+        <li class="sidebar-nav-item">
             <a href="{{ url('announcement_all') }}" class="sidebar-nav-link"><i class="fa fa-bullhorn mr-3"></i> Announcements</a>
         </li>
         <li class="sidebar-nav-item with-sub">
@@ -47,6 +50,27 @@
             <ul class="nav sidebar-nav-sub">
                 <li class="nav-sub-item"><a href="{{ url('course_add') }}" class="nav-sub-link">Add Course</a></li>
                 <li class="nav-sub-item"><a href="{{ url('course_all') }}" class="nav-sub-link">All Courses</a></li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-file-text mr-3"></i>Programs</a>
+            <ul class="nav sidebar-nav-sub">
+                <li class="nav-sub-item"><a href="{{ url('program_new') }}" class="nav-sub-link">Add Program</a></li>
+                <li class="nav-sub-item"><a href="{{ url('program_all') }}" class="nav-sub-link">All Programs</a></li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-file-text mr-3"></i>Semesters</a>
+            <ul class="nav sidebar-nav-sub">
+                <li class="nav-sub-item"><a href="{{ url('semester_new') }}" class="nav-sub-link">Add Semester</a></li>
+                <li class="nav-sub-item"><a href="{{ url('semester_all') }}" class="nav-sub-link">All Semesters</a></li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-item with-sub">
+            <a href="" class="sidebar-nav-link"><i class="fa fa-file-text mr-3"></i>Section</a>
+            <ul class="nav sidebar-nav-sub">
+                <li class="nav-sub-item"><a href="{{ url('semester_new') }}" class="nav-sub-link">Add Section</a></li>
+                <li class="nav-sub-item"><a href="{{ url('section_all') }}" class="nav-sub-link">All Sections</a></li>
             </ul>
         </li>
     </ul>

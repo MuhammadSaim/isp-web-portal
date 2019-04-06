@@ -47,4 +47,12 @@ class SemestersRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllWithAscOrder()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

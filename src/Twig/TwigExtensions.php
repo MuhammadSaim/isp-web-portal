@@ -35,7 +35,15 @@ class TwigExtensions extends AbstractExtension
             new TwigFilter('getSemester', [$this, 'getSemester']),
             new TwigFilter('getSection', [$this, 'getSection']),
             new TwigFilter('getCourseSlug', [$this, 'getCourseSlug']),
+            new TwigFilter('numberFormat', [$this, 'numberFormat']),
         ];
+    }
+
+    public function numberFormat($number){
+        if($number < 10){
+            return '0'.$number;
+        }
+        return $number;
     }
 
     public function humanReadableDate($date)

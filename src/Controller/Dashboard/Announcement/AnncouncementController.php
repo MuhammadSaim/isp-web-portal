@@ -123,12 +123,67 @@ class AnncouncementController extends AbstractController
         ]);
     }
 
+    /**
+     * @Security("is_granted('ROLE_TEACHER')", statusCode=404)
+     * @Route("/update/{announcementSlug}", name="update")
+     */
+    public function updateAnnouncement(Request $request, $announcementSlug)
+    {
+        $teacherRepo = $this->getDoctrine()->getRepository(TeacherCourseMapping::class);
+        $courses = $teacherRepo->getDistinctCourses($this->getUser());
+        $program = $teacherRepo->getDistinctProgram($this->getUser());
+        $department = $teacherRepo->getDistinctDepartment($this->getUser());
+        $semester = $teacherRepo->getDistinctSemester($this->getUser());
+        $section = $teacherRepo->getDistinctSection($this->getUser());
+        $data = [
+            'courses'    => $courses,
+            'programs'    => $program,
+            'departments' => $department,
+            'semesters'   => $semester,
+            'sections'    => $section
+        ];
+        $announcement = $this->getDoctrine()
+        ->getRepository(Announcements::class)->findBy([
+            'announcementSlug' => $announcementSlug
+        ]);
+        if($announcement == null){
+            throw new NotFoundHttpException();
+        }
+        if($request->isMethod('POST')){
+            $department = $this->getDoctrine()->getRepository(Departments::class)->find($request->request->get('department'));
+            $program = $this->getDoctrine()->getRepository(Programs::class)->find($request->request->get('program'));
+            $course = $this->getDoctrine()->getRepository(Courses::class)->find($request->request->get('course'));
+            $semester = $this->getDoctrine()->getRepository(Semesters::class)->find($request->request->get('semester'));
+            $section = $this->getDoctrine()->getRepository(Sections::class)->find($request->request->get('section'));
+            $title = $request->request->get('title');
+            $type = $request->request->get('type');
+            $description = $request->request->get('description');
+            $announcement[0]->setDepartment($department);
+            $announcement[0]->setProgram($program);
+            $announcement[0]->setCourse($course);
+            $announcement[0]->setSemester($semester);
+            $announcement[0]->setSection($section);
+            $announcement[0]->setAnnouncementTitle($title);
+            $announcement[0]->setAnnouncementType($type);
+            $announcement[0]->setAnnouncementDescription($description);
+            $announcement[0]->setModifiedAt(new \DateTime());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($announcement[0]);
+            $em->flush();
+            return $this->redirectToRoute('announcement_all');
+        }
+        return $this->render('dashboard/announcements/edit_announcement.html.twig', [
+            'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
+            'data' => $data,
+            'announcement' => $announcement[0]
+        ]);
+    }
 
     /**
      * @Security("is_granted('ROLE_TEACHER')", statusCode=404)
      * @Route("/delete/{announcementSlug}", name="delete")
      */
-    public function deleteAnnouncements(Request $request, $announcementSlug)
+    public function deleteAnnouncements($announcementSlug)
     {
         $announcement = $this->getDoctrine()
             ->getRepository(Announcements::class)->findBy([

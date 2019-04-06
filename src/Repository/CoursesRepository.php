@@ -55,4 +55,15 @@ class CoursesRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getResult();
     }
+
+    public function findCode($course, $code)
+    {
+        return $this->createQueryBuilder('c')
+                    ->where('c.courseCode = :code')
+                    ->andWhere('c.id != :course')
+                    ->setParameter('course', $course)
+                    ->setParameter('code', $code)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
 }

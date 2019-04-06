@@ -60,4 +60,5 @@ class SemesterCourseMappingRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getOneOrNullResult();
     }
+
 }

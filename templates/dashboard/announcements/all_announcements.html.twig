@@ -24,7 +24,7 @@
                                     {{ announcement.announcementTitle }}
                                     {% if is_granted('ROLE_TEACHER') %}
                                         <div class="d-inline-block float-right">
-                                            <a href="#" class="text-white mr-2"><i class="fa fa-pencil"></i></a>
+                                            <a href="{{ url('announcement_update', {'announcementSlug' : announcement.announcementSlug}) }}" class="text-white mr-2"><i class="fa fa-pencil"></i></a>
                                             <a href="{{ url('announcement_delete', {'announcementSlug' : announcement.announcementSlug}) }}" class="text-white"><i class="fa fa-times"></i></a>
                                         </div>
                                     {% endif %}

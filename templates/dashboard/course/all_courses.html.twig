@@ -46,7 +46,7 @@
                                             <td>{{ course.courseCode }}</td>
                                             <td>{{ course.creditHours }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-success">
+                                                <a href="{{ url('course_update', {'slug':course.slug}) }}" class="btn btn-success">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                                 <a href="{{ url('course_delete', {'slug':course.slug}) }}" class="btn btn-danger">

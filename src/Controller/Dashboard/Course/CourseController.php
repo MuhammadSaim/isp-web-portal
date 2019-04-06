@@ -104,4 +104,39 @@ class CourseController extends AbstractController
 
     }
 
+    /**
+     * @Route("/update/{slug}", name="update")
+     */
+    public function updateCourse(Request $request, $slug)
+    {
+        $course = $this->getDoctrine()->getRepository(Courses::class)->find(
+            $this->getDoctrine()->getRepository(Courses::class)->findBy([
+                'slug' => $slug
+            ])[0]->getId()
+        );
+        $form = $this->createForm(AddCourseType::class, $course);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+//            $courseCode = $request->request->get('add_course')['courseCode'];
+//            $courseCode = $this->getDoctrine()->getRepository(Courses::class)->findCode($course, $courseCode);
+//            if($courseCode){
+//                $this->addFlash('danger', 'This '.$courseCode.' is already exists.');
+//                return $this->render('dashboard/course/update_course.html.twig', [
+//                    'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
+//                    'form'        => $form->createView()
+//                ]);
+//            }
+            $course->setModifiedAt(new \DateTime());
+            //persist data to database
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($course);
+            $em->flush();
+            $this->addFlash('success', 'Course is updated successfully.');
+        }
+        return $this->render('dashboard/course/update_course.html.twig',[
+            'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
+            'form'        => $form->createView()
+        ]);
+    }
+
 }

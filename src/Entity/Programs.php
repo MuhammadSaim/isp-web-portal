@@ -20,6 +20,7 @@ class Programs
         $this->assignments = new ArrayCollection();
         $this->studentDetails = new ArrayCollection();
         $this->announcements = new ArrayCollection();
+        $this->quizzes = new ArrayCollection();
     }
 
     /**
@@ -64,6 +65,11 @@ class Programs
      * @ORM\OneToMany(targetEntity="App\Entity\Announcements", mappedBy="program", fetch="EXTRA_LAZY")
      */
     private $announcements;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Quizzes", mappedBy="program", fetch="EXTRA_LAZY")
+     */
+    private $quizzes;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -271,6 +277,22 @@ class Programs
     public function __toString()
     {
         return $this->program;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuizzes()
+    {
+        return $this->quizzes;
+    }
+
+    /**
+     * @param mixed $quizzes
+     */
+    public function setQuizzes($quizzes): void
+    {
+        $this->quizzes[] = $quizzes;
     }
 
 }

@@ -20,6 +20,7 @@ class Courses
         $this->teacherCourseMap = new ArrayCollection();
         $this->assignments = new ArrayCollection();
         $this->announcements = new ArrayCollection();
+        $this->quizzes = new ArrayCollection();
     }
 
     /**
@@ -48,6 +49,11 @@ class Courses
      * @ORM\OneToMany(targetEntity="App\Entity\Announcements", mappedBy="course", fetch="EXTRA_LAZY")
      */
     private $announcements;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Quizzes", mappedBy="course", fetch="EXTRA_LAZY")
+     */
+    private $quizzes;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -271,6 +277,20 @@ class Courses
         $this->announcements[] = $announcements;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getQuizzes()
+    {
+        return $this->quizzes;
+    }
 
+    /**
+     * @param mixed $quizzes
+     */
+    public function setQuizzes($quizzes): void
+    {
+        $this->quizzes[] = $quizzes;
+    }
 
 }

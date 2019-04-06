@@ -1,0 +1,80 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Add Program{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">Add Program</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">add course</label>
+                            <form action="" id="addProgram" method="post">
+                            <div class="form-layout">
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ label }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                <div class="row mg-t-25 mg-b-25">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="department">Department</label>
+                                            <select required name="department" class="form-control select2">
+                                                <option value="">Chose Department</option>
+                                                {% for department in departments %}
+                                                    <option value="{{ department.id }}">{{ department.department }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="program">Program</label>
+                                            <input type="text" class="form-control" placeholder="Program" name="program" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-layout-footer">
+                                    <button type="submit" class="btn btn-primary">ADD PROGRAM</button>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2();
+
+            $("#addProgram").parsley();
+        });
+    </script>
+{% endblock %}

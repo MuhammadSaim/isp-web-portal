@@ -1,0 +1,70 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Evaluate Quiz{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <form action="{{ url('quiz_evaluate_save', {'quiz': quiz.quizSlug }) }}" method="post" id="evaluateForm">
+                                <div class="form-layout">
+                                    {% for label, messages in app.flashes %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ label }}">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sr.</th>
+                                                    <th>Roll Number</th>
+                                                    <th>Total Marks</th>
+                                                    <th>Marks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for student in students %}
+                                                    <tr>
+                                                        <td>{{ loop.index }}</td>
+                                                        <td>{{ student.user.studentDetails.regNo }}</td>
+                                                        <td>{{ quiz.totalMarks }}</td>
+                                                        <td>
+                                                            <input type="text" min="0" value="{% if old == true %}{% if student.obtainedMarks is not null %}{{ student.obtainedMarks }}{% endif %}{% endif %}" max="{{ quiz.totalMarks }}" class="form-control" name="quizForm[]" required>
+                                                            <input type="hidden" name="quizForm[]" value="{{ student.user.id }}">
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="form-layout-footer mg-t-25">
+                                    <button type="submit" class="btn btn-primary">Evaluate</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $("#evaluateForm").parsley();
+        });
+    </script>
+{% endblock %}
+

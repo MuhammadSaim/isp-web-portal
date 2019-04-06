@@ -1,0 +1,146 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}New Quiz{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">Create Quiz</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">New Quiz</label>
+                            <div class="form-layout">
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ label }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                <form action="" id="addQuiz" method="post">
+                                    <div class="row mg-b-5 mg-t-25">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="quiz_title">Quiz Title</label>
+                                                <input type="text" class="form-control" required name="quiz_title">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="quiz_date">Quiz Date</label>
+                                                <input type="date" name="quiz_date" class="form-control" placeholder="MM/DD/YYYY" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mg-b-5">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="department">Department</label>
+                                                <select name="department" id="department" class="form-control select2" required>
+                                                    <option value="">Chose Department</option>
+                                                    {% for department in data.departments %}
+                                                        <option value="{{ department.department }}">{{ department.department | getDepartment }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="program">Program</label>
+                                                <select name="program" id="program" class="form-control select2" required>
+                                                    <option value="">Chose Program</option>
+                                                    {% for program in data.programs %}
+                                                        <option value="{{ program.program }}">{{ program.program | getProgram }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="program">Course</label>
+                                                <select name="course" id="course" class="form-control select2" required>
+                                                    <option value="">Chose course</option>
+                                                    {% for course in data.courses %}
+                                                        <option value="{{ course.course }}">{{ course.course | getCourse }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mg-b-5">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="semester">Semester</label>
+                                                <select name="semester" id="semester" class="form-control select2" required>
+                                                    <option value="">Chose Semester</option>
+                                                    {% for semester in data.semesters %}
+                                                        <option value="{{ semester.semester }}">{{ semester.semester | getSemester }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="section">Section</label>
+                                                <select name="section" id="section" class="form-control select2" required>
+                                                    <option value="">Chose section</option>
+                                                    {% for section in data.sections %}
+                                                        <option value="{{ section.section }}">{{ section.section | getSection }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="quiz_marks">Total Marks</label>
+                                                <input type="number" required name="total_marks" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <textarea name="description" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-layout-footer">
+                                        <button class="btn btn-primary" type="submit">Add Assignment</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2();
+            $("#addQuiz").parsley();
+        });
+    </script>
+{% endblock %}

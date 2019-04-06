@@ -58,4 +58,13 @@ class ProgramsRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getOneOrNullResult();
     }
+
+
+    public function findAllWithAscOrder()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

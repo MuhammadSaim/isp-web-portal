@@ -1,0 +1,35 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Quiz | {{ quiz.quizTitle }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+<div class="slim-body">
+    {% include 'partials/sidebar.html.twig' with departments %}
+    <div class="slim-mainpanel">
+        <div class="container">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">
+                                {{ quiz.quizTitle }}
+                                <small>
+                                    ({{ quiz.totalMarks | numberFormat }} Marks)
+                                </small>
+                            </label>
+                            <p class="lead mt-2 text-justify">
+                                {{ quiz.quizDescription }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

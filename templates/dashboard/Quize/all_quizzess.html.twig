@@ -1,0 +1,51 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}All Quizzes{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+<div class="slim-body">
+    {% include 'partials/sidebar.html.twig' with departments %}
+    <div class="slim-mainpanel">
+        <div class="container">
+            <div class="slim-pageheader">
+                <ol class="breadcrumb slim-breadcrumb">
+                    {% if is_granted('ROLE_TEACHER') %}
+                        <a href="{{ url('quiz_new') }}" class="btn btn-primary">Add Quiz</a>
+                    {% endif %}
+                </ol>
+                <h6 class="slim-pagetitle">All Quizzes</h6>
+            </div><!-- slim-pageheader -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-group">
+                    {% for quiz in quizzes %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div><a href="{{ url('quiz_show', { 'quizSlug' : quiz.quizSlug }) }}"><strong class="tx-inverse tx-medium">{{ quiz.quizTitle }}</strong></a></div>
+                            <div>{{ quiz.course.course }} ({{ quiz.course.courseCode }}), {{ quiz.semester.semester }} ({{ quiz.section.section }})</div>
+                            <div>{{ quiz.totalMarks | numberFormat }} Marks</div>
+                            <div>{{ quiz.quizDate|date('F d, Y') }}</div>
+                            {% if is_granted('ROLE_TEACHER') %}
+                                <div>
+                                    <a href="{{ url('quiz_evaluate', {'quiz' : quiz.quizSlug }) }}" class="btn btn-info btn-sm">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                    <a href="{{ url('quiz_update', { 'quizSlug' : quiz.quizSlug }) }}" class="btn btn-success btn-sm">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a href="{{ url('quiz_delete', { 'quizSlug' : quiz.quizSlug }) }}" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% else %}
+                        <div class="alert alert-danger">Sorry there is no quiz</div>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
