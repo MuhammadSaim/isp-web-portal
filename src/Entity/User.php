@@ -26,6 +26,10 @@ class User implements UserInterface, \Serializable
         $this->announcements = new ArrayCollection();
         $this->quizzes = new ArrayCollection();
         $this->quizeEvaluation = new ArrayCollection();
+        $this->studentResults = new ArrayCollection();
+        $this->teacherResults = new ArrayCollection();
+        $this->studentAttendence = new ArrayCollection();
+        $this->teacherAttendence = new ArrayCollection();
     }
 
 
@@ -81,6 +85,26 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="App\Entity\QuizzesEvaluation", mappedBy="user")
      */
     private $quizeEvaluation;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Examination", mappedBy="student", fetch="EXTRA_LAZY")
+     */
+    private $studentResults;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Examination", mappedBy="teacher", fetch="EXTRA_LAZY")
+     */
+    private $teacherResults;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Attendence", mappedBy="student", fetch="EXTRA_LAZY")
+     */
+    private $studentAttendence;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Attendence", mappedBy="teacher", fetch="EXTRA_LAZY")
+     */
+    private $teacherAttendence;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -453,6 +477,69 @@ class User implements UserInterface, \Serializable
         $this->quizeEvaluation[] = $quizeEvaluation;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getStudentResults()
+    {
+        return $this->studentResults;
+    }
+
+    /**
+     * @param mixed $studentResults
+     */
+    public function setStudentResults($studentResults): void
+    {
+        $this->studentResults[] = $studentResults;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeacherResults()
+    {
+        return $this->teacherResults;
+    }
+
+    /**
+     * @param mixed $teacherResults
+     */
+    public function setTeacherResults($teacherResults): void
+    {
+        $this->teacherResults[] = $teacherResults;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStudentAttendence()
+    {
+        return $this->studentAttendence;
+    }
+
+    /**
+     * @param mixed $studentAttendence
+     */
+    public function setStudentAttendence($studentAttendence): void
+    {
+        $this->studentAttendence[] = $studentAttendence;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeacherAttendence()
+    {
+        return $this->teacherAttendence;
+    }
+
+    /**
+     * @param mixed $teacherAttendence
+     */
+    public function setTeacherAttendence($teacherAttendence): void
+    {
+        $this->teacherAttendence[] = $teacherAttendence;
+    }
 
 
 }

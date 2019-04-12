@@ -21,6 +21,8 @@ class Courses
         $this->assignments = new ArrayCollection();
         $this->announcements = new ArrayCollection();
         $this->quizzes = new ArrayCollection();
+        $this->results = new ArrayCollection();
+        $this->attendence = new ArrayCollection();
     }
 
     /**
@@ -54,6 +56,16 @@ class Courses
      * @ORM\OneToMany(targetEntity="App\Entity\Quizzes", mappedBy="course", fetch="EXTRA_LAZY")
      */
     private $quizzes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Examination", mappedBy="course", fetch="EXTRA_LAZY")
+     */
+    private $results;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Attendence", mappedBy="course", fetch="EXTRA_LAZY")
+     */
+    private $attendence;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -291,6 +303,38 @@ class Courses
     public function setQuizzes($quizzes): void
     {
         $this->quizzes[] = $quizzes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResults()
+    {
+        return $this->results;
+    }
+
+    /**
+     * @param mixed $results
+     */
+    public function setResults($results): void
+    {
+        $this->results[] = $results;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAttendence()
+    {
+        return $this->attendence;
+    }
+
+    /**
+     * @param mixed $attendence
+     */
+    public function setAttendence($attendence): void
+    {
+        $this->attendence[] = $attendence;
     }
 
 }

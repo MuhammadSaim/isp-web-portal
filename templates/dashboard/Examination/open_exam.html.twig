@@ -1,0 +1,125 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}All Courses{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/jquery-toggles/css/toggles-full.css') }}">
+{% endblock %}
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">All course</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="list-group">
+                            {% for exam in exams %}
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col">
+                                            {% if exam.exam == 'mid' %}
+                                                Mid Term
+                                            {% else %}
+                                                Final Term
+                                            {% endif %}
+                                        </div>
+                                        <div class="col">
+                                            <div class="toggle-wrapper">
+                                                <div class="toggle toggle-light primary {{ 'toggle-'~ exam.exam }}" data-status="{{ exam.status }}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/jquery-toggles/js/toggles.min.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function(){
+            var mid_status =   $('.toggle-mid').attr('data-status');
+            var final_status = $('.toggle-final').attr('data-status');
+            console.log(mid_status);
+            $('.toggle-mid').toggles({
+                on: false,
+                height: 26
+            });
+            // Toggles
+            $('.toggle-final').toggles({
+                on: false,
+                height: 26
+            });
+            if(mid_status == '1'){
+                // Toggles
+                $('.toggle-mid').toggles({
+                    on: true,
+                    height: 26
+                });
+                // Toggles
+                $('.toggle-final').toggles({
+                    on: false,
+                    height: 26
+                });
+            }
+            if(final_status == '1'){
+                // Toggles
+                $('.toggle-mid').toggles({
+                    on: false,
+                    height: 26
+                });
+                // Toggles
+                $('.toggle-final').toggles({
+                    on: true,
+                    height: 26
+                });
+            }
+
+            $('.toggle-mid').on('toggle', function(e, active) {
+                if (active) {
+                    $.post('{{ url('api_mid_open') }}', function (data) {
+                        if(data.status){
+                            $('.toggle-final').toggles({
+                                on: false,
+                                height: 26
+                            });
+                        }
+                    });
+                } else {
+                    $.post('{{ url('api_mid_close') }}', function (data) {});
+                }
+            });
+
+            $('.toggle-final').on('toggle', function(e, active) {
+                if (active) {
+                    $.post('{{ url('api_final_open') }}', function (data) {
+                        if(data.status){
+                            $('.toggle-mid').toggles({
+                                on: false,
+                                height: 26
+                            });
+                        }
+                    });
+                } else {
+                    $.post('{{ url('api_final_close') }}', function (data) {});
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

@@ -3,6 +3,9 @@
 namespace App\Controller\Dashboard\Student;
 
 use App\Entity\Departments;
+use App\Entity\Programs;
+use App\Entity\Sections;
+use App\Entity\Semesters;
 use App\Entity\StudentDetails;
 use App\Entity\User;
 use App\Form\AddStudentType;
@@ -10,6 +13,7 @@ use App\Utils\HelperFunction;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -32,33 +36,119 @@ class StudentController extends AbstractController
     }
 
     /**
-     * @Route("/", name="all")
+     * @Route("/all", name="all")
      */
     public function allStudents()
     {
-        return $this->render('student/index.html.twig', [
-            'controller_name' => 'StudentController',
+        $students = $this->getDoctrine()->getRepository(User::class)->findByRole('ROLE_STUDENT');
+        return $this->render('dashboard/student/index.html.twig', [
+            'departments'  => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
+            'students' => $students,
         ]);
     }
 
 
     /**
-     * @Route("/test", name="test")
+     * @param Request $request
+     * @Route("/update/{id}", name="update")
      */
-    public function test()
+    public function updateStudent(Request $request, $id)
     {
-//        $data = $this->getDoctrine()->getRepository(StudentDetails::class)->createQueryBuilder('sr')
-//            ->leftJoin('App\Entity\User', 'u', 'sr.userId = u.id')
-//            ->getQuery()
-//            ->getResult();
-//
-//
-//        dump($data);
-//        die();
+        $departments = $this->getDoctrine()->getRepository(Departments::class)->findAll();
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $studentDetails = $this->getDoctrine()->getRepository(StudentDetails::class)->findBy([
+            'user' => $user
+        ]);
+        if($user == null){
+            throw new NotFoundHttpException();
+        }
+        if($request->isMethod('POST')){
+            $roles = array('ROLE_STUDENT');
+            $department = $this->getDoctrine()->getRepository(Departments::class)->find($request->request->get('department'));
+            $program = $this->getDoctrine()->getRepository(Programs::class)->find($request->request->get('program'));
+            $semester = $this->getDoctrine()->getRepository(Semesters::class)->find($request->request->get('semester'));
+            $section = $this->getDoctrine()->getRepository(Sections::class)->find($request->request->get('section'));
+//            dump([
+//                $department,
+//                $program,
+//                $semester,
+//                $section
+//            ]);
+//            die();
+            $cr_gr = $request->request->get('cr_gr');
+            $email = $request->request->get('email');
+            $gender = $request->request->get('gender');
+            $reg = strtoupper($request->request->get('regno'));
 
+            $check_email = $this->getDoctrine()->getRepository(User::class)->findEmail($email, $id);
+            $check_reg = $this->getDoctrine()->getRepository(User::class)->findEmail($reg, $id);
+            if($check_email == null && $check_reg == null){
+                if($cr_gr === 'yes'){
+                    if($gender === 'male'){
+                        array_push($roles, 'ROLE_CR');
+                    }
+                    if($gender === 'female'){
+                        array_push($roles, 'ROLE_GR');
+                    }
+                    if($gender === 'other'){
+                        array_push($roles, 'ROLE_GR');
+                    }
+                }
+                $user->setEmail($email);
+                $user->setRoles($roles);
+                $user->setModifiedAt(new \DateTime());
+                $studentDetails[0]->setDepartment($department);
+                $studentDetails[0]->setProgram($program);
+                $studentDetails[0]->setRegNo(strtoupper($reg));
+                $studentDetails[0]->setSemester($semester);
+                $studentDetails[0]->setSection($section);
+                $studentDetails[0]->setModifiedAt(new \DateTime());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->persist($studentDetails[0]);
+                $em->flush();
+                $this->addFlash('success', 'Student is updated successfully');
+                return $this->render('dashboard/student/update_student.html.twig', [
+                    'user' => $user,
+                    'departments' => $departments,
+                    'programs'    => $this->getDoctrine()->getRepository(Programs::class)->findAll(),
+                    'semesters'    => $this->getDoctrine()->getRepository(Semesters::class)->findAll(),
+                    'sections'    => $this->getDoctrine()->getRepository(Sections::class)->findAll(),
+                ]);
+            }
 
-        dump($this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => $this->getUser()]));
-        die();
+            if($check_email != null){
+                $this->addFlash(
+                    'danger',
+                    'Email is already taken try another one.'
+                );
+            }
+            if($check_reg != null) {
+                $this->addFlash(
+                    'danger',
+                    'RegNo is already taken try another one.'
+                );
+            }
+
+            if($check_reg != null or $check_email != null){
+                return $this->render('dashboard/student/add_student.html.twig', [
+                    'user' => $user,
+                    'departments' => $departments,
+                    'programs'    => $this->getDoctrine()->getRepository(Programs::class)->findAll(),
+                    'semesters'    => $this->getDoctrine()->getRepository(Semesters::class)->findAll(),
+                    'sections'    => $this->getDoctrine()->getRepository(Sections::class)->findAll(),
+                ]);
+            }
+
+        }
+        return $this->render('dashboard/student/update_student.html.twig', [
+            'user' => $user,
+            'departments' => $departments,
+            'programs'    => $this->getDoctrine()->getRepository(Programs::class)->findAll(),
+            'semesters'    => $this->getDoctrine()->getRepository(Semesters::class)->findAll(),
+            'sections'    => $this->getDoctrine()->getRepository(Sections::class)->findAll(),
+        ]);
+
 
     }
 
@@ -155,7 +245,9 @@ class StudentController extends AbstractController
                 $em->persist($user);
                 $studentDetails->setUser($user);
                 $studentDetails->setDepartment($studentData['departments']);
-                $studentDetails->setProgram($studentData['courses']);
+                $studentDetails->setProgram($studentData['programs']);
+                $studentDetails->setSection($studentData['sections']);
+                $studentDetails->setSemester($studentData['semesters']);
                 $studentDetails->setAvatar($avatar);
                 $studentDetails->setRegNo(strtoupper($studentData['regno']));
                 $studentDetails->setCreatedAt(new \DateTime());
@@ -183,7 +275,6 @@ class StudentController extends AbstractController
             'departments' => $departments
         ]);
     }
-
 
     public function sendWelcomeEmail($data){
         $message = (new \Swift_Message('Welcome To ISP Portal'))

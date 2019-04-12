@@ -1,0 +1,116 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Examinations{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+{#                        <li class="breadcrumb-item"><a href="#">Home</a></li>#}
+{#                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>#}
+                    </ol>
+                    <h6 class="slim-pagetitle"></h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">Exam details</label>
+                            <div class="form-layout">
+                                <form action="" id="examDetails" method="post">
+                                    <div class="row mg-t-20 mg-b-5">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="department">Department</label>
+                                                <select name="department" id="department" required class="form-control select2">
+                                                    {% for department in departments %}
+                                                        <option value="{{ department.id }}">{{ department.department }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="program">Program</label>
+                                                <select name="program" id="program" required class="form-control select2">
+                                                    {% for program in data.programs %}
+                                                        <option value="{{ program.id }}">{{ program.program }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="courses">Courses</label>
+                                                <select name="course" id="course" required class="form-control select2">
+                                                    {% for course in data.courses %}
+                                                        <option value="{{ course.id }}">{{ course.course ~ ' (' ~ course.courseCode ~ ')' }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="semester">Semester</label>
+                                                <select name="semester" id="semester" required class="form-control select2">
+                                                    {% for semester in data.semesters %}
+                                                        <option value="{{ semester.id }}">{{ semester.semester }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="section">Sections</label>
+                                                <select name="section" id="section" required class="form-control select2">
+                                                    {% for section in data.sections %}
+                                                        <option value="{{ section.id }}">{{ section.section }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="session">Session</label>
+                                                <select name="session" id="session" required class="form-control select2">
+                                                    {% for session in data.sessions %}
+                                                        <option value="{{ session.id }}">{{ session.session }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-layout-footer">
+                                        <button class="btn btn-primary" type="submit">Exam Details</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2();
+            $("#examDetails").parsley();
+        });
+    </script>
+{% endblock %}

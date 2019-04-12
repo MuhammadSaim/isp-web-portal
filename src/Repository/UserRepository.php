@@ -60,5 +60,27 @@ class UserRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findEmail($email, $id)
+    {
+        return $this->createQueryBuilder('u')
+                    -> andWhere('u.email = :email')
+                    ->andWhere('u.id != :id')
+                    ->setParameter('email', $email)
+                    ->setParameter("id", $id)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
+
+    public function findStaff($role)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from($this->_entityName, 'u')
+            ->where('u.roles NOT LIKE :roles')
+            ->setParameter('roles', '%"'.$role.'"%');
+
+        return $qb->getQuery()->getResult();
+    }
+
 
 }

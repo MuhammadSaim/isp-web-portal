@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\Departments;
 use App\Entity\Programs;
 
+use App\Entity\Sections;
+use App\Entity\Semesters;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,11 +25,6 @@ class AddStudentType extends AbstractType
 
         $builder
             ->add('email', EmailType::class, [
-                'constraints' => [
-                  new NotBlank(),
-                  new Email()
-
-                ],
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Email'
@@ -37,9 +34,6 @@ class AddStudentType extends AbstractType
                 ]
             ])
             ->add('regno', TextType::class, [
-                'constraints' => [
-                    new NotBlank()
-                ],
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Reg No.'
@@ -69,8 +63,24 @@ class AddStudentType extends AbstractType
                 ],
                 'required' => true
             ])
-            ->add('courses', EntityType::class, [
+            ->add('programs', EntityType::class, [
                 'class' => Programs::class,
+                'attr' => [
+                    'class' => 'form-control s2-courses',
+                    'data-placeholder' => "Choose Course"
+                ],
+                'required' => true
+            ])
+            ->add('semesters', EntityType::class, [
+                'class' => Semesters::class,
+                'attr' => [
+                    'class' => 'form-control s2-courses',
+                    'data-placeholder' => "Choose Course"
+                ],
+                'required' => true
+            ])
+            ->add('sections', EntityType::class, [
+                'class' => Sections::class,
                 'attr' => [
                     'class' => 'form-control s2-courses',
                     'data-placeholder' => "Choose Course"

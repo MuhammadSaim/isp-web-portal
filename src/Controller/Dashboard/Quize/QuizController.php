@@ -38,6 +38,7 @@ class QuizController extends AbstractController
 
     /**
      * @param Request $request
+     * @Security("is_granted('ROLE_TEACHER')", statusCode=404)
      * @Route("/new", name="new")
      */
     public function addQuiz(Request $request)
@@ -111,6 +112,14 @@ class QuizController extends AbstractController
         if($this->isGranted('ROLE_TEACHER')){
             $quizzes = $this->getDoctrine()->getRepository(Quizzes::class)->findBy([
                 'teacher' => $this->getUser()
+            ]);
+        }
+        if($this->isGranted('ROLE_STUDENT')){
+            $quizzes = $this->getDoctrine()->getRepository(Quizzes::class)->findBy([
+                'department' => $this->getUser()->getStudentDetails()->getDepartment(),
+                'program' => $this->getUser()->getStudentDetails()->getProgram(),
+                'semester' => $this->getUser()->getStudentDetails()->getSemester(),
+                'section' => $this->getUser()->getStudentDetails()->getSection(),
             ]);
         }
         return $this->render('dashboard/Quize/all_quizzess.html.twig', [

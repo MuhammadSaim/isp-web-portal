@@ -1,0 +1,91 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Examinations{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        {#                        <li class="breadcrumb-item"><a href="#">Home</a></li>#}
+                        {#                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>#}
+                    </ol>
+                    <h6 class="slim-pagetitle"></h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">Exam details</label>
+                            <div class="container">
+                                <div class="row mg-b-5">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <b>Name: </b>
+                                            {% if record.student.studentDetails.fullname is null %}
+                                                {{ record.student.email | shortEmail }}
+                                            {% else %}
+                                                {{ record.student.studentDetails.fullname }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <b>Roll No.</b>
+                                        {{ record.student.studentDetails.regNo }}
+                                    </div>
+                                </div>
+                                    {% for label, messages in app.flashes %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ label }}">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                <form action="" method="post" id="">
+                                <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="sestional">Sestional</label>
+                                                <input type="text" min="0" max="25" value="{{ record.sestional }}"
+                                                       class="form-control" name="sestional">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="mid">Mid Term</label>
+                                                <input type="text" min="0" max="25" value="{{ record.mid }}"
+                                                       class="form-control" name="mid">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="final">Final</label>
+                                                <input type="text" min="0" max="50" value="{{ record.final }}"
+                                                       class="form-control" name="final">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">UPDATE FINAL</button>
+                                        </div>
+                                </div>
+                                </form>
+                            </div>
+                    </div> <!-- section wrapper -->
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $("#examDetails").parsley();
+        });
+    </script>
+{% endblock %}

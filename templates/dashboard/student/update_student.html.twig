@@ -1,0 +1,163 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Update Student{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">add student</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">add student</label>
+                            <div class="form-layout">
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ label }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                <form action="" id="addStudent" method="post">
+                                <div class="row mg-b-25 mg-t-25">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" required value="{{ user.email }}" class="form-control" name="email">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="regno">Reg No.</label>
+                                                <input type="text" value="{{ user.studentDetails.regNo }}" class="form-control" name="regno" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div id="slParsleyWrapper" class="parsley-select">
+                                                <label for="gender">Gender</label>
+                                                <select class="form-control select2" name="gender" id="gender" required>
+                                                    <option value="{{ user.gender }}">{{ user.gender | upper }}</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                                <div id="slParsleyWrapper" class="parsley-select">
+                                                    <label for="department">Department</label>
+                                                    <select class="form-control select2" name="department" id="department" required>
+                                                        <option value="{{ user.studentDetails.department.id }}">{{ user.studentDetails.department.id | getDepartment }}</option>
+                                                        {% for department in departments %}
+                                                            <option value="{{ department.id }}">{{ department.department }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mg-b-25">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div id="slParsleyWrapper" class="parsley-select">
+                                                <label for="program">Program</label>
+                                                <select class="form-control select2" name="program" id="program" required>
+                                                    <option value="{{ user.studentDetails.program.id }}">{{ user.studentDetails.program | getProgram }}</option>
+                                                    {% for program in programs %}
+                                                        <option value="{{ program.id }}">{{ program.program }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div id="slParsleyWrapper" class="parsley-select">
+                                                <label for="semester">Semester</label>
+                                                <select class="form-control select2" name="semester" id="semester" required>
+                                                    <option value="{{ user.studentDetails.semester.id }}">{{ user.studentDetails.semester | getSemester }}</option>
+                                                    {% for semester in semesters %}
+                                                        <option value="{{ semester.id }}">{{ semester.semester }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div id="slParsleyWrapper" class="parsley-select">
+                                                <label for="section">Section</label>
+                                                <select class="form-control select2" name="section" id="section" required>
+                                                    <option value="{{ user.studentDetails.section.id }}">{{ user.studentDetails.section | getSection }}</option>
+                                                    {% for section in sections %}
+                                                        <option value="{{ section.id }}">{{ section.section }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <div id="slParsleyWrapper" class="parsley-select">
+                                                <label for="cr_gr">CR or GR</label>
+                                                <select class="form-control select2" name="cr_gr" id="cr_gr" required>
+                                                    <option value="{% if user.roles | length == 2 %}yes{% else %}no{% endif %}">{% if user.roles | length == 2 %}Yes{% else %}No{% endif %}</option>
+                                                    <option value="no">No</option>
+                                                    <option value="yes">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-layout-footer">
+                                    <button type="submit" class="btn btn-primary bd-0">UPDATE STUDENT</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $('.form-layout .form-control').on('focusin', function () {
+                $(this).closest('.form-group').addClass('form-group-active');
+            });
+
+            $('.form-layout .form-control').on('focusout', function () {
+                $(this).closest('.form-group').removeClass('form-group-active');
+            });
+            $('.select2').select2();
+
+            $('#addStudent').parsley();
+        });
+    </script>
+{% endblock %}

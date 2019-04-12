@@ -2,20 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TeacherCourseMappingRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AttendenceRepository")
  */
-class TeacherCourseMapping
+class Attendence
 {
-
-    public function __construct()
-    {
-        $this->timetable = new ArrayCollection();
-    }
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -24,45 +17,56 @@ class TeacherCourseMapping
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="studentAttendence")
+     * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
      */
-    private $department;
+    private $student;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Programs", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="program_id", referencedColumnName="id")
-     */
-    private $program;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Semesters", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
-     */
-    private $semester;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Sections", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="section_id", referencedColumnName="id")
-     */
-    private $section;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="teacherCourseMap")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="teacherAttendence")
      * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id")
      */
     private $teacher;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Courses", inversedBy="teacherCourseMap")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="attendence")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     */
+    private $department;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Programs", inversedBy="attendence")
+     * @ORM\JoinColumn(name="program_id", referencedColumnName="id")
+     */
+    private $program;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Courses", inversedBy="attendence")
      * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
      */
     private $course;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TimeTable", mappedBy="tcmId", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Semesters", inversedBy="attendence")
+     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
      */
-    private $timetable;
+    private $semester;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sections", inversedBy="attendence")
+     * @ORM\JoinColumn(name="section_id", referencedColumnName="id")
+     */
+    private $section;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $date;
 
     /**
      * @ORM\Column(type="datetime")
@@ -77,6 +81,38 @@ class TeacherCourseMapping
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStudent()
+    {
+        return $this->student;
+    }
+
+    /**
+     * @param mixed $student
+     */
+    public function setStudent($student): void
+    {
+        $this->student = $student;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeacher()
+    {
+        return $this->teacher;
+    }
+
+    /**
+     * @param mixed $teacher
+     */
+    public function setTeacher($teacher): void
+    {
+        $this->teacher = $teacher;
     }
 
     /**
@@ -114,6 +150,22 @@ class TeacherCourseMapping
     /**
      * @return mixed
      */
+    public function getCourse()
+    {
+        return $this->course;
+    }
+
+    /**
+     * @param mixed $course
+     */
+    public function setCourse($course): void
+    {
+        $this->course = $course;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getSemester()
     {
         return $this->semester;
@@ -146,33 +198,33 @@ class TeacherCourseMapping
     /**
      * @return mixed
      */
-    public function getTeacher()
+    public function getStatus()
     {
-        return $this->teacher;
+        return $this->status;
     }
 
     /**
-     * @param mixed $teacher
+     * @param mixed $status
      */
-    public function setTeacher($teacher): void
+    public function setStatus($status): void
     {
-        $this->teacher = $teacher;
+        $this->status = $status;
     }
 
     /**
      * @return mixed
      */
-    public function getCourse()
+    public function getDate()
     {
-        return $this->course;
+        return $this->date;
     }
 
     /**
-     * @param mixed $course
+     * @param mixed $date
      */
-    public function setCourse($course): void
+    public function setDate($date): void
     {
-        $this->course = $course;
+        $this->date = $date;
     }
 
     /**
@@ -206,21 +258,4 @@ class TeacherCourseMapping
     {
         $this->modifiedAt = $modifiedAt;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getTimetable()
-    {
-        return $this->timetable;
-    }
-
-    /**
-     * @param mixed $timetable
-     */
-    public function setTimetable($timetable): void
-    {
-        $this->timetable[] = $timetable;
-    }
-
 }

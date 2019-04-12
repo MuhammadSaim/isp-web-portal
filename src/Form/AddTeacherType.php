@@ -58,6 +58,20 @@ class AddTeacherType extends AbstractType
                     'data-parsley-class-handler' => '#slParsleyWrapper'
                 ]
             ])
+            ->add('roles', ChoiceType::class, [
+                'multiple' => true,
+                'choices' => [
+                    'Teacher'            => 'ROLE_TEACHER',
+                    'Admin'              => 'ROLE_ADMIN',
+                    'Coordinator'        => 'ROLE_COORDINATOR',
+                    'Course Coordinator' => 'ROLE_COURSE_COORDINATOR',
+                    'Examiner'           => 'ROLE_EXAMINER',
+                ],
+                'attr' => [
+                    'class' => 'form-control select2',
+                    'data-parsley-class-handler' => '#slParsleyWrapper'
+                ]
+            ])
         ;
     }
 

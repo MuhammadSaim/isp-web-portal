@@ -1,0 +1,63 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Add mid Result{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        {#<li class="breadcrumb-item"><a href="#">Home</a></li>#}
+                        {#<li class="breadcrumb-item active" aria-current="page">Blank Page</li>#}
+                    </ol>
+                    <h6 class="slim-pagetitle">Add Mid Result</h6>
+                </div><!-- slim-pageheader -->
+                <div class="section-wrapper">
+                    <form action="{{ url('exams_save_mid', {'course':course}) }}" method="post" id="addMidResult">
+                        <div class="form-layout">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Sr.</th>
+                                    <th>Roll No.</th>
+                                    <th>Mid Term Marks</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for student in students %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ student.regNo }}</td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="text" data-parsley-trigger="keyup" min="0" max="25" name="midMarks[]" value="0" required class="form-control">
+                                                <input type="hidden" value="{{ student.user.id }}" name="midMarks[]">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-layout-footer">
+                            <button type="submit" class="btn btn-primary">ADD MID RESULT</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $("#addMidResult").parsley();
+        });
+    </script>
+{% endblock %}

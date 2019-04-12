@@ -1,0 +1,91 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Examinations{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        {#                        <li class="breadcrumb-item"><a href="#">Home</a></li>#}
+                        {#                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>#}
+                    </ol>
+                    <h6 class="slim-pagetitle">Details</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+
+                        {% if records | length == 0 %}
+                            <div class="alert alert-danger">
+                                Ooops! no record found.
+                            </div>
+                        {% else %}
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Roll No.</th>
+                                        <th>Name</th>
+                                        <th>Sestional</th>
+                                        <th>Mid Term</th>
+                                        <th>Final Term</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in records %}
+                                        <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ record.student.studentDetails.regNo }}</td>
+                                            <td>
+                                                {% if record.student.studentDetails.fullname is null %}
+                                                    {{ record.student.email | shortEmail }}
+                                                {% else %}
+                                                    {{ record.student.studentDetails.fullname }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ record.sestional | default('Not deifined') }}
+                                            </td>
+                                            <td>
+                                                {{ record.mid | default('Not deifined') }}
+                                            </td>
+                                            <td>
+                                                {{ record.final | default('Not deifined') }}
+                                            </td>
+                                            <td>
+                                                <a href="{{ url('exams_update_details', {'id': record.id}) }}" class="btn btn-success">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2();
+            $("#examDetails").parsley();
+        });
+    </script>
+{% endblock %}

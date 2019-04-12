@@ -60,4 +60,15 @@ class StudentDetailsRepository extends ServiceEntityRepository
                     ->getOneOrNullResult();
 
     }
+
+    public function findRegNo($regNo, $id)
+    {
+        return $this->createQueryBuilder('u')
+            -> andWhere('u.regNo = :regNo')
+            ->andWhere('u.user != :id')
+            ->setParameter('email', $regNo)
+            ->setParameter("id", $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

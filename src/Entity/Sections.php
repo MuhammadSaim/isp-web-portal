@@ -20,6 +20,8 @@ class Sections
         $this->assignments = new ArrayCollection();
         $this->announcements = new ArrayCollection();
         $this->quizzes = new ArrayCollection();
+        $this->results = new ArrayCollection();
+        $this->attendence = new ArrayCollection();
     }
 
     /**
@@ -59,6 +61,16 @@ class Sections
      * @ORM\OneToMany(targetEntity="App\Entity\Quizzes", mappedBy="section", fetch="EXTRA_LAZY")
      */
     private $quizzes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Examination", mappedBy="section", fetch="EXTRA_LAZY")
+     */
+    private $results;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Attendence", mappedBy="section", fetch="EXTRA_LAZY")
+     */
+    private $attendence;
 
     /**
      * @ORM\Column(type="string")
@@ -247,5 +259,37 @@ class Sections
     {
         return $this->section;
         // TODO: Implement __toString() method.
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResults()
+    {
+        return $this->results;
+    }
+
+    /**
+     * @param mixed $results
+     */
+    public function setResults($results): void
+    {
+        $this->results[] = $results;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAttendence()
+    {
+        return $this->attendence;
+    }
+
+    /**
+     * @param mixed $attendence
+     */
+    public function setAttendence($attendence): void
+    {
+        $this->attendence[] = $attendence;
     }
 }

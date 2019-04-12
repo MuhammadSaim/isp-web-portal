@@ -12,6 +12,7 @@ namespace App\Controller\JsonResponse;
 
 use App\Entity\Courses;
 use App\Entity\Departments;
+use App\Entity\ExamsStatus;
 use App\Entity\Sections;
 use App\Entity\SemesterCourseMapping;
 use App\Entity\Semesters;
@@ -144,5 +145,62 @@ class APIResponse extends AbstractController
         //        dump();
         //        die();
     }//getCourseFunction ends here
+
+
+    /**
+     * @Route("/open-mid", name="mid_open")
+     */
+    public function openMidTermStatus()
+    {
+        $examStatus = $this->getDoctrine()->getRepository(ExamsStatus::class)->findAll();
+        $examStatus[0]->setStatus(1);
+        $examStatus[1]->setStatus(0);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($examStatus[0]);
+        $em->persist($examStatus[1]);
+        $em->flush();
+        return new JsonResponse(array('status' => true));
+    }
+
+    /**
+     * @Route("/close-mid", name="mid_close")
+     */
+    public function closeMidTermStatus()
+    {
+        $exam = $this->getDoctrine()->getRepository(ExamsStatus::class)->find(1);
+        $exam->setStatus(0);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($exam);
+        $em->flush();
+        return new JsonResponse(array('status' => true));
+    }
+
+    /**
+     * @Route("/close-final", name="final_close")
+     */
+    public function closeFinalTermStatus()
+    {
+        $exam = $this->getDoctrine()->getRepository(ExamsStatus::class)->find(2);
+        $exam->setStatus(0);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($exam);
+        $em->flush();
+        return new JsonResponse(array('status' => true));
+    }
+
+    /**
+     * @Route("/open-final", name="final_open")
+     */
+    public function openFinalTermStatus()
+    {
+        $examStatus = $this->getDoctrine()->getRepository(ExamsStatus::class)->findAll();
+        $examStatus[0]->setStatus(0);
+        $examStatus[1]->setStatus(1);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($examStatus[0]);
+        $em->persist($examStatus[1]);
+        $em->flush();
+        return new JsonResponse(array('status' => true));
+    }
 
 }

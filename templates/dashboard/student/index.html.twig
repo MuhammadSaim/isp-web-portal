@@ -1,0 +1,59 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}All Students{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                    </ol>
+                    <h6 class="slim-pagetitle">All Student</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Sr.</th>
+                                    <th>Reg No.</th>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>Program</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for student in students %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ student.studentDetails.regNo }}</td>
+                                        <td>
+                                            {% if student.studentDetails.fullname is null %}
+                                                {{ student.email | shortEmail }}
+                                            {% else %}
+                                                {{ student.studentDetails.fullname }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ student.studentDetails.department.department }}</td>
+                                        <td>{{ student.studentDetails.program.program }}</td>
+                                        <td>
+                                            <a href="{{ url('student_update', { 'id' : student.id }) }}" class="btn btn-success btn-sm">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

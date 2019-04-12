@@ -1,13 +1,12 @@
 {% extends 'dashboard_base.html.twig' %}
 
-{% block title %}Add Staff{% endblock %}
+{% block title %}Update Staff{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
 {% endblock %}
 
 {% block body %}
-    {% form_theme form 'form/form_errors.html.twig' %}
     {% include 'partials/header.html.twig' %}
     <div class="slim-body">
         {% include 'partials/sidebar.html.twig' with departments %}
@@ -18,13 +17,13 @@
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
                     </ol>
-                    <h6 class="slim-pagetitle">add staff</h6>
+                    <h6 class="slim-pagetitle">update staff</h6>
                 </div><!-- slim-pageheader -->
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <div class="section-wrapper">
-                            <label class="section-title">add staff</label>
-                            {{ form_start(form, {'attr': { 'id': 'addStaff' }}) }}
+                            <label class="section-title">update staff</label>
+                            <form action="" method="post" id="updateStaff">
                             <div class="form-layout">
                                 {% for label, messages in app.flashes %}
                                     {% for message in messages %}
@@ -36,26 +35,33 @@
                                 <div class="row mg-b-5 mg-t-5">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            {{ form_label(form.email) }}
-                                            {{ form_widget(form.email) }}
-                                            {{ form_errors(form.email) }}
+                                            <label for="email">Email</label>
+                                            <input type="email" name="email" value="{{ user.email }}" required class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <div id="slParsleyWrapper" class="parsley-select">
-                                                {{ form_label(form.gender) }}
-                                                {{ form_widget(form.gender) }}
-                                                {{ form_errors(form.gender) }}
+                                                <label for="gender">Gender</label>
+                                                <select class="form-control select2" name="gender" id="gender" required>
+                                                    <option value="{{ user.gender }}">{{ user.gender }}</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                    <option value="other">Other</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <div id="slParsleyWrapper" class="parsley-select">
-                                                {{ form_label(form.department) }}
-                                                {{ form_widget(form.department) }}
-                                                {{ form_errors(form.department) }}
+                                                <label for="department">Department</label>
+                                                <select name="department" id="department" class="form-control select2" required>
+                                                    <option value="{{ user.staffDetails.department.id }}">{{ user.staffDetails.department }}</option>
+                                                    {% for department in departments %}
+                                                        <option value="{{ department.id }}">{{ department.department }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -64,9 +70,13 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <div id="slParsleyWrapper" class="parsley-select">
-                                                {{ form_label(form.designation) }}
-                                                {{ form_widget(form.designation) }}
-                                                {{ form_errors(form.designation) }}
+                                                <label for="designation">Designation</label>
+                                                <select name="designation" id="designation" class="form-control select2">
+                                                    <option value="{{ user.staffDetails.designation.id }}">{{ user.staffDetails.designation }}</option>
+                                                    {% for designation in designations %}
+                                                        <option value="{{ designation.id }}">{{ designation.designation }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -75,18 +85,21 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <div id="slParsleyWrapper" class="parsley-select">
-                                                {{ form_label(form.roles) }}
-                                                {{ form_widget(form.roles) }}
-                                                {{ form_errors(form.roles) }}
+                                                <label for="roles">Roles</label>
+                                                <select multiple name="roles[]" id="roles" class="form-control select2">
+                                                    {% for role, value in roles %}
+                                                        <option value="{{ role }}" {% if role in user.roles %}selected{% endif %}>{{ value }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-layout-footer">
-                                    <button class="btn btn-primary" type="submit">ADD STAFF</button>
+                                    <button class="btn btn-primary" type="submit">UPDATE STAFF</button>
                                 </div>
                             </div>
-                            {{ form_end(form) }}
+                            </form>
                         </div>
                     </div>
                 </div>
