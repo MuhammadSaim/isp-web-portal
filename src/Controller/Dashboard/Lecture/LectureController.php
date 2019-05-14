@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -44,7 +45,9 @@ class LectureController extends AbstractController
     {
         if ($this->isGranted('ROLE_TEACHER')) {
             $topFiveLectures = $this->getDoctrine()->getRepository(Lectures::class)->getTopLecturesOfTeacher($this->getUser());
-            $courses = $this->getUniqueCourses();
+            $courses = $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
+                'teacher' => $this->getUser()
+            ]);;
 //            dump($topFiveLectures);
 //            die();
             return $this->render('dashboard/lecture/top_five_lectures.html.twig', [
@@ -184,7 +187,9 @@ class LectureController extends AbstractController
                 'course'   => $this->getDoctrine()->getRepository(Courses::class)->findBy(['slug' => $courseSlug]),
                 'teacher' => $this->getUser()
             ]);
-            $courses = $this->getUniqueCourses();
+            $courses = $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
+                'teacher' => $this->getUser()
+            ]);
             return $this->render('dashboard/lecture/all_lectures.html.twig', [
                 'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
                 'courses'     => $courses,
@@ -192,6 +197,24 @@ class LectureController extends AbstractController
                 'active'      => $courseSlug
             ]);
         }
+    }
+
+
+    /**
+     * @param $slug
+     * @Security("is_granted('ROLE_TEACHER')", statusCode=404)
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function deleteLectures($id)
+    {
+        $lecture = $this->getDoctrine()->getRepository(Lectures::class)->find($id);
+        if($lecture == null){
+            throw new NotFoundHttpException();
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($lecture);
+        $em->flush();
+        return $this->redirectToRoute('lectures_all');
     }
 
     private function getUniqueCourses()

@@ -32,13 +32,13 @@ class StaffDetails
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="staffDetails")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $department;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Designations", inversedBy="staffDetails")
-     * @ORM\JoinColumn(name="designation_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="designation_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $designation;
 

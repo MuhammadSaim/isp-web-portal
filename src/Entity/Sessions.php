@@ -15,6 +15,7 @@ class Sessions
     public function __construct()
     {
         $this->exams = new ArrayCollection();
+        $this->teacherCourseMapping = new ArrayCollection();
     }
 
     /**
@@ -38,6 +39,11 @@ class Sessions
      * @ORM\OneToMany(targetEntity="App\Entity\Examination", mappedBy="session")
      */
     private $exams;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TeacherCourseMapping", mappedBy="session")
+     */
+    private $teacherCourseMapping;
 
     /**
      * @ORM\Column(type="datetime")
@@ -132,6 +138,22 @@ class Sessions
     public function setSlug($slug): void
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTeacherCourseMapping()
+    {
+        return $this->teacherCourseMapping;
+    }
+
+    /**
+     * @param mixed $teacherCourseMapping
+     */
+    public function setTeacherCourseMapping($teacherCourseMapping): void
+    {
+        $this->teacherCourseMapping[] = $teacherCourseMapping;
     }
 
 }

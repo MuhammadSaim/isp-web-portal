@@ -28,12 +28,24 @@ class AttendenceController extends AbstractController
             $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
                 'teacher' => $this->getUser()
             ]);
-
+            $currentTime = date('H:i');
+            $currentDay = date('l');
+            $allRecord = array();
+            foreach ($courses as $course){
+                foreach($course->getTimetable() as $timetable) {
+                    if(strtolower(trim($timetable->getDay())) == strtolower($currentDay)){
+                        if($currentTime >= date('H:i', $timetable->getStartTime()) && $currentTime <= date('H:i', $timetable->getEndTime())){
+                            $allRecord[] = $course;
+                        }
+                    }
+                }
+            }
+            dump($allRecord);
+            die();
             return $this->render("dashboard/attendence/all_courses.html.twig", [
                 'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
                 'courses'     => $courses
             ]);
-
         }
     }
 }

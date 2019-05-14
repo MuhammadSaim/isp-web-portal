@@ -85,5 +85,58 @@ class HelperFunction
     }
 
 
+    public function getUniqueFileName()
+    {
+        return md5(uniqid());
+    }
+
+
+    public function getGPA($number)
+    {
+        if($number >= 50 && $number <= 54){
+            return 1.00;
+        }else if($number >= 55 && $number <= 59){
+            return 1.50;
+        }else if($number >= 60 && $number <= 64){
+            return 2.00;
+        }else if($number >= 65 && $number <= 69){
+            return 2.50;
+        }else if($number >= 70 && $number <= 74){
+            return 3.00;
+        }else if($number >= 75 && $number <= 79){
+            return 3.50;
+        }else if($number >= 80 && $number <= 84){
+            return 3.75;
+        }else if($number >= 85 && $number <= 100){
+            return 4.00;
+        }else{
+            return 0.00;
+        }
+    }
+
+    public function getGrade($number)
+    {
+        if($number >= 50 && $number <= 54){
+            return 'D';
+        }else if($number >= 55 && $number <= 59){
+            return 'D+';
+        }else if($number >= 60 && $number <= 64){
+            return 'C';
+        }else if($number >= 65 && $number <= 69){
+            return 'C+';
+        }else if($number >= 70 && $number <= 74){
+            return 'B';
+        }else if($number >= 75 && $number <= 79){
+            return 'B+';
+        }else if($number >= 80 && $number <= 84){
+            return 'A-';
+        }else if($number >= 85 && $number <= 100){
+            return 'A';
+        }else{
+            return 'F';
+        }
+    }
+
+
 
 }

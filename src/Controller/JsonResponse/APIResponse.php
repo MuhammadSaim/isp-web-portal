@@ -16,6 +16,8 @@ use App\Entity\ExamsStatus;
 use App\Entity\Sections;
 use App\Entity\SemesterCourseMapping;
 use App\Entity\Semesters;
+use App\Entity\StaffDetails;
+use App\Entity\StudentDetails;
 use App\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -201,6 +203,85 @@ class APIResponse extends AbstractController
         $em->persist($examStatus[1]);
         $em->flush();
         return new JsonResponse(array('status' => true));
+    }
+
+
+    /**
+     * @Route("/public-phone-staff", name="public_phone_staff")
+     */
+    public function staffPublicPhoneNumber()
+    {
+        $user = $this->getDoctrine()->getRepository(StaffDetails::class)->findOneBy([
+            'user' => $this->getUser()
+        ]);
+        $user->setIsPhoneAvailable(1);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse(array('status' => true));
+    }
+
+    /**
+     * @Route("/public-phone-staff-off", name="public_phone_staff_close")
+     */
+    public function staffPublicPhoneNumberClose()
+    {
+        $user = $this->getDoctrine()->getRepository(StaffDetails::class)->findOneBy([
+            'user' => $this->getUser()
+        ]);
+        $user->setIsPhoneAvailable(0);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse(array('status' => true));
+    }
+
+
+    /**
+     * @Route("/public-phone-student", name="public_phone_student")
+     */
+    public function studentPublicPhoneNumber()
+    {
+        $user = $this->getDoctrine()->getRepository(StudentDetails::class)->findOneBy([
+            'user' => $this->getUser()
+        ]);
+        $user->setIsPhoneAvailable(1);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse(array('status' => true));
+    }
+
+    /**
+     * @Route("/public-phone-student-off", name="public_phone_student_close")
+     */
+    public function studentPublicPhoneNumberClose()
+    {
+        $user = $this->getDoctrine()->getRepository(StudentDetails::class)->findOneBy([
+            'user' => $this->getUser()
+        ]);
+        $user->setIsPhoneAvailable(0);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse(array('status' => true));
+    }
+
+
+    /**
+     * @Route("/enable/status", name="enable_status")
+     */
+    public function enableExamsStatus()
+    {
+
+    }
+
+    /**
+     * @Route("/disable/status", name="disable_status")
+     */
+    public function disableExamsStatus()
+    {
+
     }
 
 }

@@ -18,38 +18,38 @@ class Lectures
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="lectures")
-     * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $teacher;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="lectures")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $department;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Programs", inversedBy="lectures")
-     * @ORM\JoinColumn(name="program_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="program_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $program;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Courses", inversedBy="lectures")
-     * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $course;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Semesters", inversedBy="lectures")
-     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $semester;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sections", inversedBy="lectures")
-     * @ORM\JoinColumn(name="section_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="section_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $section;
 

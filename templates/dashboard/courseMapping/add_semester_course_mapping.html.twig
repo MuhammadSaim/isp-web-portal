@@ -1,6 +1,6 @@
 {% extends 'dashboard_base.html.twig' %}
 
-{% block title %}Add Student{% endblock %}
+{% block title %}Semester course mapping{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
@@ -15,8 +15,7 @@
             <div class="container">
                 <div class="slim-pageheader">
                     <ol class="breadcrumb slim-breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                        <a href="{{ url('course_mapping_all_course_mapping') }}" class="btn btn-primary">All Courses</a>
                     </ol>
                     <h6 class="slim-pagetitle">Semester Course mapping</h6>
                 </div><!-- slim-pageheader -->

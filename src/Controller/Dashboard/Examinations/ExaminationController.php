@@ -14,6 +14,7 @@ use App\Entity\Sessions;
 use App\Entity\StudentDetails;
 use App\Entity\TeacherCourseMapping;
 use App\Entity\User;
+use App\Utils\HelperFunction;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ExaminationController extends AbstractController
 {
+
+    private $helperFunctions;
+
+    public function __construct(HelperFunction $helperFunction)
+    {
+        $this->helperFunctions = $helperFunction;
+    }
+
     /**
      * @Route("/all", name="all")
      */
@@ -35,7 +44,8 @@ class ExaminationController extends AbstractController
     {
         if($this->isGranted('ROLE_TEACHER')){
             $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
-                'teacher' => $this->getUser()
+                'teacher' => $this->getUser(),
+                'session' => $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted()
             ]);
 
             return $this->render("dashboard/Examination/all_courses.html.twig", [
@@ -43,6 +53,71 @@ class ExaminationController extends AbstractController
                 'courses'     => $courses
             ]);
 
+        }
+
+        if($this->isGranted('ROLE_STUDENT')){
+            $transCript = array(
+                'CGPA' => null,
+                'totalCreditHours' => null,
+                'semesters' => array()
+            );
+            $currentSemester = $this->getUser()->getStudentDetails()->getSemester()->getSemester();
+            $totalDegreeCreditHours = 0;
+            $totalDegreeCGPA = 0;
+            for($i = 1; $i < $currentSemester; $i++){
+                $currentSemesterId = $this->getDoctrine()->getRepository(Semesters::class)->findOneBy([
+                    'semester' => $i
+                ]);
+                $semesterResult = $this->getDoctrine()->getRepository(Examination::class)->findBy([
+                    'semester' => $currentSemesterId,
+                    'student'  => $this->getUser()
+                ]);
+                $semesterFinalResult = array(
+                    'semester' => $currentSemesterId->getSemester(),
+                    'GPA'      => null,
+                    'creditHours' => null,
+                    'courses'  => array()
+                );
+                $totalSemesetrCreditHourse = 0;
+                $totalSemesterGPA = 0;
+                foreach ($semesterResult as $result){
+                    $course = array();
+                    $totalMarks = $result->getMid() + $result->getSestional() + $result->getFinal();
+                    $getGPA = $this->helperFunctions->getGPA($totalMarks);
+                    $grade = $this->helperFunctions->getGrade($totalMarks);
+                    $totalSemesetrCreditHourse += $result->getCourse()->getCreditHours();
+                    $totalSemesterGPA += $getGPA * $result->getCourse()->getCreditHours();
+                    array_push($course, [
+                        'course' => $result->getCourse()->getCourse(),
+                        'course_code' => $result->getCourse()->getCourseCode(),
+                        'credit_hour' => $result->getCourse()->getCreditHours(),
+                        'grade'       => $grade,
+                        'totalMarks'  => $totalMarks,
+                        'mid'         => $result->getMid(),
+                        'sestional'   => $result->getSestional(),
+                        'final'       => $result->getFinal(),
+                        'GPA'         => number_format((float)($getGPA), 2, '.', '')
+                    ]);
+                    array_push($semesterFinalResult['courses'], $course);
+                }// foreach ends here
+                $totalDegreeCreditHours += $totalSemesetrCreditHourse;
+                $totalDegreeCGPA += $totalSemesterGPA;
+                $semesterFinalResult['GPA'] = number_format((float)($totalSemesterGPA/$totalSemesetrCreditHourse), 2, '.', '');
+                $semesterFinalResult['creditHours'] = $totalSemesetrCreditHourse;
+                $transCript['CGPA'] = number_format((float)($totalDegreeCGPA/$totalDegreeCreditHours), 2, '.', '');
+                $transCript['totalCreditHours'] = $totalDegreeCreditHours;
+                array_push($transCript['semesters'], $semesterFinalResult);
+            }// main for loops ends here
+//            dump($transCript);
+//            die();
+//            $results = $this->getDoctrine()->getRepository(Examination::class)->findBy([
+//                'student' => $this->getUser()
+//            ]);
+
+            return $this->render('dashboard/Examination/all_student_results.html.twig', [
+                'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
+                'results'     => $transCript
+            ]);
         }
 
     }
@@ -288,8 +363,40 @@ class ExaminationController extends AbstractController
                 'record'  => $record
             ]);
         }
+    }
 
-        dump($request);
+
+    /**
+     * @Route("/status", name="status")
+     */
+    public function examStatus()
+    {
+        $result = $this->getDoctrine()->getRepository(Examination::class)->getResults(
+            $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted()
+        );
+//        dump($result);
+//        die();
+        return $this->render('dashboard/Examination/exam_status.html.twig', [
+            'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
+            'exams'       => $result
+        ]);
+
+    }
+
+
+    /**
+     * @Route("/result", name="result")
+     */
+    public function getCurrentResult()
+    {
+        $result = $this->getDoctrine()->getRepository(Examination::class)->findBy([
+            'student'  => $this->getUser(),
+            'semester' => $this->getUser()->getStudentDetails()->getSemester(),
+            'session'  => $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted(),
+            'publish'  => 1
+        ]);
+        dump($result);
         die();
     }
+
 }

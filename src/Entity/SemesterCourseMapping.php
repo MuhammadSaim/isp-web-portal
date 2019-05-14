@@ -18,19 +18,19 @@ class SemesterCourseMapping
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="courses")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $department;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Programs", inversedBy="courses")
-     * @ORM\JoinColumn(name="program_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="program_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $program;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Semesters", inversedBy="courses")
-     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $semester;
 

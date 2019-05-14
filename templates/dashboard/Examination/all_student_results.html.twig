@@ -1,0 +1,145 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}All Result{% endblock %}
+
+{% block body %}
+    <style>
+        .semester-result{
+            z-index: 0;
+        }
+        .watermark{
+            position: absolute;
+            width: 100%;
+            overflow: hidden;
+            overflow-x: hidden;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            transform: rotate(-30deg);
+        }
+        .watermark h3{
+            font-size: 40px;
+            color: rgba(0, 0, 0, .2);
+        }
+    </style>
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <a href="javascript:getPDF()" class="btn btn-primary">GET PRINT</a>
+                    </ol>
+                    <h6 class="slim-pagetitle">All Result</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-lg-12" id="pdfTranscript">
+                        <div class="section-wrapper">
+                            <div class="row mg-b-25-force">
+                                <div class="col-lg-6">
+                                    <div class="mg-b-10">
+                                        <b>Name: </b> {{ app.user.studentDetails.fullName }}
+                                    </div>
+                                    <div class="mg-b-10">
+                                        <b>Reg No.: </b> {{ app.user.studentDetails.regNo }}
+                                    </div>
+                                    <div class="mg-b-10">
+                                        <b>Status: </b> Incomplete
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {%   for result in results.semesters %}
+                                    <div class="col-lg-6 mg-b-5 pos-relative semester-result">
+                                        <div class="watermark">
+                                            <h3>Not for Official use</h3>
+                                        </div>
+                                        <b>Semester: #{{ result.semester }}</b>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Cr. Hours</th>
+                                                    <th>Course</th>
+                                                    <th>Grade</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for course, key in result.courses %}
+                                                    <tr>
+                                                        <td>{{ key[0].credit_hour }}</td>
+                                                        <td>{{ key[0].course }}</td>
+                                                        <td>{{ key[0].grade }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <b>
+                                                           GPA | {{ result.GPA }}
+                                                        </b>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% else %}
+                                        <div class="col-md-12">
+                                            <div class="alert alert-danger">No record found.</div>
+                                        </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="float-right">
+                                        <h3 class="float-right">CGPA | {{ results.CGPA | default('0.00') }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 text-center">
+                                    <p class="lead">
+                                        This is only for information purpose not for official use.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/jsPDF/jspdf.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/html2canvas/html2canvas.min.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        function getPDF(){
+            let el = document.querySelector("#pdfTranscript");
+
+            html2canvas(el, {
+                onrendered: function (canvas) {
+                    let result = canvas.toDataURL("image/png");
+                    // let doc = new jsPDF('p', 'mm', 'a4');
+                    let doc = new jsPDF({
+                        unit: 'px',
+                        format: 'a1',
+                    });
+                    // doc.addImage(result, 'PNG', 0, 0, 211, 298);
+                    doc.addImage(result, 'JPEG', 80, 0, el.clientWidth, el.clientHeight);
+                    doc.save('trascript.pdf');
+                }
+            });
+        }
+    </script>
+{% endblock %}

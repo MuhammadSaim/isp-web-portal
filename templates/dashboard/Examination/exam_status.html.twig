@@ -1,0 +1,65 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}All Exams{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/jquery-toggles/css/toggles-full.css') }}">
+{% endblock %}
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">Status</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="list-group">
+                           {% for exam in exams %}
+                               <li class="list-group-item">
+                                  <div class="row justify-content-between">
+                                      <div class="col">{{ exam['department'] | getDepartment }}</div>
+                                      <div class="col">{{ exam['program'] | getProgram }}</div>
+                                      <div class="col">{{ exam['semester'] | getSemester }}</div>
+                                      <div class="col">
+                                          <div class="toggle-wrapper">
+                                              <div class="toggle toggle-light primary toggle-open" data-status="{{ exam['publish'] }}" data-department-id="{{ exam['department'] }}" data-program-id="{{ exam['program'] }}" data-semester-id="{{ exam['semester'] }}"></div>
+                                          </div>
+                                      </div>
+                                  </div>
+                               </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/jquery-toggles/js/toggles.min.js') }}"></script>
+{% endblock %}
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            let data_status = $(".toggle-open").attr('data-status');
+            if(data_status == 0){
+                $(".toggle-open").toggles({
+                    on: false,
+                    height: 26
+                });
+            }else{
+                $(".toggle-open").toggles({
+                    on: true,
+                    height: 26
+                });
+            }
+        });
+    </script>
+{% endblock %}

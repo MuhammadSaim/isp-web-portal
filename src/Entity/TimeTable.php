@@ -18,7 +18,7 @@ class TimeTable
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TeacherCourseMapping", inversedBy="timetable")
-     * @ORM\JoinColumn(name="teacher_course_mapping_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="teacher_course_mapping_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $tcmId;
 

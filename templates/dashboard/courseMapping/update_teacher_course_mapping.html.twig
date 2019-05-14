@@ -1,0 +1,131 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Add Student{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <a href="{{ url('course_mapping_all_teacher_course_mapping') }}" class="btn btn-primary">All Courses</a>
+                    </ol>
+                    <h6 class="slim-pagetitle">Teacher Course mapping</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">Teacher Mapping</label>
+                            <form method="post" id="teacherCourseMap">
+                                <div class="form-layout">
+                                    {% for label, messages in app.flashes %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ label }}">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="department" class="required">Department</label>
+                                                <select name="department" data-department-id="null" id="department" required class="form-control select2">
+                                                    <option value="{{ mapping.department.id }}">{{ mapping.department }}</option>
+                                                    {% for department in departments %}
+                                                        <option value="{{ department.id }}">{{ department.department }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="program" class="required">Program</label>
+                                                <select name="program" data-program-id="null" id="program" required class="form-control select2">
+                                                    <option value="{{ mapping.program.id }}">{{ mapping.program }}</option>
+                                                    {% for program in programs %}
+                                                        <option value="{{ program.id }}">{{ program.program }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="semester" class="required">Semester</label>
+                                                <select name="semester" data-semester-id="null" id="semester" required class="form-control select2">
+                                                    <option value="{{ mapping.semester.id }}">{{ mapping.semester }}</option>
+                                                    {% for semester in semesters %}
+                                                        <option value="{{ semester.id }}">{{ semester.semester }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="section" class="required">Section</label>
+                                                <select name="section" id="section" required class="form-control select2">
+                                                    <option value="{{ mapping.section.id }}">{{ mapping.section }}</option>
+                                                    {% for section in sections %}
+                                                        <option value="{{ section.id }}">{{ section.section }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mg-t-5">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="teacher" class="required">Teacher</label>
+                                                <select name="teacher" id="teacher" required class="form-control select2">
+                                                    <option value="{{ mapping.teacher.id }}">{{ mapping.teacher }}</option>
+                                                    {% for teacher in teachers %}
+                                                    <option value="{{ teacher.id }}">{{ teacher.email }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="course" class="required">Course</label>
+                                                <select name="course" id="course" required class="form-control select2">
+                                                    <option value="{{ mapping.course.id }}">{{ mapping.course }}</option>
+                                                    {% for course in courses %}
+                                                        <option value="{{ course.id }}">{{ course.course ~ ' (' ~ course.courseCode ~ ')' }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-layout-footer">
+                                        <button class="btn btn-primary" type="submit">Update Teacher</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            //parsely form errors
+            // $('#teacherCourseMap').parsley();
+            //init select2
+            $('.select2').select2();
+        //jquery close here
+        });
+    </script>
+{% endblock %}

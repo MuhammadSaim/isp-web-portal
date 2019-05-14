@@ -3,7 +3,7 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/lib/jquery-toggles/css/toggles-full.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -14,8 +14,8 @@
             <div class="container">
                 <div class="slim-pageheader">
                     <ol class="breadcrumb slim-breadcrumb">
-{#                        <li class="breadcrumb-item"><a href="#">Home</a></li>#}
-{#                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>#}
+                        {#                        <li class="breadcrumb-item"><a href="#">Home</a></li>#}
+                        {#                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>#}
                     </ol>
                     <h6 class="slim-pagetitle">Edit Profile</h6>
                 </div><!-- slim-pageheader -->
@@ -31,40 +31,82 @@
                                         </div>
                                     {% endfor %}
                                 {% endfor %}
-                                <form action="" method="post" id="editProfile">
-                                    <div class="row mg-b-5 mg-t-20">
+                                <form action="" method="post" id="editProfile" enctype="multipart/form-data">
+                                    <div class="row mg-b-5 mg-t-5">
+                                        {% for label, messages in app.flashes %}
+                                            {% for message in messages %}
+                                                <div class="alert alert-{{ label }}">
+                                                    {{ message }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
                                         <div class="col-lg-4">
-                                            <img src="" alt="">
+                                            <img height="240" src="{{ asset('assets/upload/avatar/' ~ details.avatar) }}" alt="profile pic" class="img-thumbnail">
+                                            <div class="form-group mt-2">
+                                                <div class="custom-file">
+                                                    <input type="file" name="profile_pic" class="custom-file-input" id="customFile2">
+                                                    <label class="custom-file-label custom-file-label-primary" for="customFile">Choose file</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-8"></div>
-                                    </div>
-                                <div class="row">
-                                    <div class="col-lg-3">
-
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <div id="slParsleyWrapper" class="parsley-select">
-                                                
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="fullname">Full Name</label>
+                                                        <input class="form-control" pattern="[a-zA-Z\s]+" data-parsley-trigger="keyup" type="text" name="fullname" placeholder="Full Name" value="{{ details.fullname | default }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="phonenumber">Phone Number</label>
+                                                        <input class="form-control" data-parsley-trigger="keyup" minlength="11" maxlength="11" pattern="[0-9]+" type="text" name="phone" placeholder="Phone Number" value="{{ details.phoneNumber | default }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mg-b-5 mg-t-5">
+                                                <div class="col-lg-6">
+                                                    <label for="phone_available">Public phone number</label>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="toggle-wrapper">
+                                                        <div class="toggle toggle-light primary phone-number" data-status="{{ details.isPhoneAvailable }}"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="twitter">Twitter Profile</label>
+                                                        <input class="form-control" data-parsley-trigger="keyup" type="url" name="twitter" placeholder="Twitter Profile" value="{{ details.twitterProfile | default }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="facebook">Facebook Profile</label>
+                                                        <input class="form-control" data-parsley-trigger="keyup" type="url" name="facebook" placeholder="Facebook Profile" value="{{ details.facebookProfile | default }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="google">Google Profile</label>
+                                                        <input class="form-control" data-parsley-trigger="keyup" type="url" name="google" placeholder="Google Profile" value="{{ details.googleProfile | default }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="website">Website</label>
+                                                        <input class="form-control" data-parsley-trigger="keyup" type="url" name="website" placeholder="Website" value="{{ details.siteUrl | default }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-layout-footer float-right">
+                                                <button type="submit" class="btn btn-primary bd-0">UPDATE</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            {{ form_label(form.departments) }}
-                                            {{ form_widget(form.departments) }}
-                                            {{ form_errors(form.departments) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-layout-footer">
-                                    <button type="submit" class="btn btn-primary bd-0">UPDATE</button>
-                                </div>
                                 </form>
                             </div>
                         </div>
@@ -76,8 +118,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+    <script src="{{ asset('assets/lib/jquery-toggles/js/toggles.min.js') }}"></script>
 {% endblock %}
 
 {% block editionalScripts %}
@@ -90,9 +132,46 @@
             $('.form-layout .form-control').on('focusout', function () {
                 $(this).closest('.form-group').removeClass('form-group-active');
             });
-            $('.s2-depart, .s2-courses').select2();
 
             $('#editProfile').parsley();
+
+            //is phone available
+            var phoneOpen = $('.phone-number').attr('data-status');
+            if(phoneOpen == 1){
+                $('.phone-number').toggles({
+                    on: true,
+                    height: 26
+                });
+            }else{
+                $('.phone-number').toggles({
+                    on: false,
+                    height: 26
+                });
+            }
+
+
+            $('.phone-number').on('toggle', function(e, active) {
+                if (active) {
+                    $.post('{{ url('api_public_phone_student') }}', function (data) {
+                        if(data.status){
+                            $('.phone-number').toggles({
+                                on: true,
+                                height: 26
+                            });
+                        }
+                    });
+                } else {
+                    $.post('{{ url('api_public_phone_student_close') }}', function (data) {
+                        if(data.status){
+                            $('.phone-number').toggles({
+                                on: false,
+                                height: 26
+                            });
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 {% endblock %}

@@ -18,43 +18,43 @@ class Examination
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="studentResults")
-     * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="student_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $student;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="teacherResults")
-     * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $teacher;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="results")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $department;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Programs", inversedBy="results")
-     * @ORM\JoinColumn(name="program_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="program_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $program;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Courses", inversedBy="results")
-     * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $course;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Semesters", inversedBy="results")
-     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $semester;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sections", inversedBy="results")
-     * @ORM\JoinColumn(name="section_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="section_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $section;
 
@@ -80,9 +80,14 @@ class Examination
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sessions", inversedBy="exams")
-     * @ORM\JoinColumn(name="session_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="session_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $session;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $publish = 0;
 
     /**
      * @ORM\Column(type="datetime")
@@ -322,4 +327,22 @@ class Examination
     {
         $this->session = $session;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPublish()
+    {
+        return $this->publish;
+    }
+
+    /**
+     * @param mixed $publish
+     */
+    public function setPublish($publish): void
+    {
+        $this->publish = $publish;
+    }
+
+
 }

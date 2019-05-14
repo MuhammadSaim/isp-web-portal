@@ -36,7 +36,7 @@
                                                 </a>
                                             {% endif %}
                                             {% if is_granted('ROLE_TEACHER') == true  %}
-                                                <a href=""><i class="fa fa-trash-o"></i></a>
+                                                <a href="{{ url('lectures_delete', {'id' : lecture.id }) }}"><i class="fa fa-trash-o"></i></a>
                                             {% endif %}
                                         </div>
                                     </div><!-- row -->

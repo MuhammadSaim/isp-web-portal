@@ -21,34 +21,34 @@ class StudentDetails
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="studentDetails")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Semesters", inversedBy="studentDetails")
-     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $semester;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sections", inversedBy="studentDetails")
-     * @ORM\JoinColumn(name="section_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="section_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $section;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="studentDetails")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $department;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Programs", inversedBy="studentDetails")
-     * @ORM\JoinColumn(name="program_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="program_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $program;
 

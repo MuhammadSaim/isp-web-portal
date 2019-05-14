@@ -47,7 +47,9 @@ class AssignmentController extends AbstractController
     {
         if ($this->isGranted('ROLE_TEACHER')) {
             $topFiveAssignments = $this->getDoctrine()->getRepository(Assignments::class)->getTopAssignmentsOfTeacher($this->getUser());
-            $courses = $this->getUniqueCourses();
+            $courses = $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
+                'teacher' => $this->getUser()
+            ]);;
 //            dump($courses);
 //            die();
             return $this->render('dashboard/assignment/top_assignments.html.twig', [
@@ -58,15 +60,15 @@ class AssignmentController extends AbstractController
             ]);
         }
         $topFiveAssignments = $this->getDoctrine()->getRepository(Assignments::class)->getTopAssignmentsOfStudents($this->getUser()->getStudentDetails());
-        $courses = $this->getDoctrine()->getRepository(SemesterCourseMapping::class)->findBy([
+        $courses = $this->getDoctrine()->getRepository(SemesterCourseMapping::class)->findOneBy([
             'department' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getDepartment(),
             'program' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getProgram(),
             'semester' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getSemester()
         ]);
         return $this->render('dashboard/assignment/top_assignments.html.twig', [
             'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
-            'coursesIds' => $courses[0]->getCourseIds(),
-            'course' => $courses[0],
+            'coursesIds' => $courses->getCourseIds(),
+            'course' => $courses,
             'topFiveAssignments' => $topFiveAssignments,
             'active' => ''
         ]);
@@ -84,15 +86,15 @@ class AssignmentController extends AbstractController
                 'semester' => $semesterId,
                 'course'   => $this->getDoctrine()->getRepository(Courses::class)->findBy(['slug' => $courseSlug])
             ]);
-            $courses = $this->getDoctrine()->getRepository(SemesterCourseMapping::class)->findBy([
+            $courses = $this->getDoctrine()->getRepository(SemesterCourseMapping::class)->findOneBy([
                 'department' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getDepartment(),
                 'program' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getProgram(),
                 'semester' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getSemester(),
             ]);
             return $this->render('dashboard/assignment/all_assignments.html.twig', [
                 'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
-                'coursesIds' => $courses[0]->getCourseIds(),
-                'course' => $courses[0],
+                'coursesIds' => $courses->getCourseIds(),
+                'course' => $courses,
                 'assignments' => $assignments,
                 'active' => $courseSlug
             ]);
@@ -309,6 +311,7 @@ class AssignmentController extends AbstractController
     }
 
     /**
+     * @Security("is_granted('ROLE_TEACHER')", statusCode=404)
      * @Route("/evaluate/{assignmentSlug}", name="evaluation")
      */
     public function assignmentEvaluation(Request $request, $assignmentSlug)
@@ -360,6 +363,25 @@ class AssignmentController extends AbstractController
             'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
             'assignments' => $submitedAssignments
         ]);
+    }
+
+    /**
+     * @param $slug
+     * @Security("is_granted('ROLE_TEACHER')", statusCode=404)
+     * @Route("/delete/{slug}", name="delete")
+     */
+    public function deleteAssignment($slug)
+    {
+        $assignment = $this->getDoctrine()->getRepository(Assignments::class)->findOneBy([
+            'slug' => $slug
+        ]);
+        if($assignment == null){
+            throw new NotFoundHttpException();
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($assignment);
+        $em->flush();
+        return $this->redirectToRoute('assignment_all');
     }
 
     private function getUniqueCourses()

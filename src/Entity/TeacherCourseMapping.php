@@ -25,39 +25,45 @@ class TeacherCourseMapping
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departments", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $department;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Programs", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="program_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="program_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $program;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Semesters", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $semester;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sections", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="section_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="section_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $section;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="teacher_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $teacher;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Courses", inversedBy="teacherCourseMap")
-     * @ORM\JoinColumn(name="course_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="course_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $course;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sessions", inversedBy="teacherCourseMapping")
+     * @ORM\JoinColumn(name="session_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $session;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\TimeTable", mappedBy="tcmId", fetch="EXTRA_LAZY")
@@ -221,6 +227,22 @@ class TeacherCourseMapping
     public function setTimetable($timetable): void
     {
         $this->timetable[] = $timetable;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param mixed $session
+     */
+    public function setSession($session): void
+    {
+        $this->session = $session;
     }
 
 }

@@ -18,9 +18,9 @@
             <a href="{{ url('announcement_all') }}" class="sidebar-nav-link"><i class="fa fa-bullhorn mr-3"></i> Announcements</a>
         </li>
         {% if is_granted('ROLE_TEACHER') == true or is_granted('ROLE_COORDINATOR') == true %}
-        <li class="sidebar-nav-item">
-            <a href="{{ url('attendence_all') }}" class="sidebar-nav-link"><i class="fa fa-bullhorn mr-3"></i> Attendence</a>
-        </li>
+{#        <li class="sidebar-nav-item">#}
+{#            <a href="{{ url('attendence_all') }}" class="sidebar-nav-link"><i class="fa fa-bullhorn mr-3"></i> Attendence</a>#}
+{#        </li>#}
         {% endif %}
         {% endif %}
         {% if is_granted(['ROLE_ADMIN']) %}
@@ -28,15 +28,21 @@
             <a href="{{ url('designation_all') }}" class="sidebar-nav-link"><i class="fa fa-bullhorn mr-3"></i> Designations</a>
         </li>
         {% endif %}
-        {% if is_granted('ROLE_STUDENT') == true or is_granted('ROLE_TEACHER') == true or is_granted('ROLE_EXAMINER') == true %}
+{#        is_granted('ROLE_STUDENT') == true or#}
+        {% if  is_granted('ROLE_STUDENT') == true or is_granted('ROLE_TEACHER') == true or is_granted('ROLE_EXAMINER') == true %}
         <li class="sidebar-nav-item with-sub">
             <a href="" class="sidebar-nav-link"><i class="fa fa-map-signs mr-3"></i> Examination</a>
             <ul class="nav sidebar-nav-sub">
-                {% if is_granted('ROLE_STUDENT') == true or is_granted('ROLE_TEACHER') == true %}
+                {% if is_granted('ROLE_STUDENT') == true %}
+                    <li class="nav-sub-item"><a href="{{ url('exams_result') }}" class="nav-sub-link">Exams</a></li>
+                    <li class="nav-sub-item"><a href="{{ url('exams_all') }}" class="nav-sub-link">Transcript</a></li>
+                {% endif %}
+                {% if is_granted('ROLE_TEACHER') == true %}
                 <li class="nav-sub-item"><a href="{{ url('exams_all') }}" class="nav-sub-link">Exams</a></li>
                 {% endif %}
                 {% if is_granted('ROLE_EXAMINER') == true %}
                 <li class="nav-sub-item"><a href="{{ url('exams_open') }}" class="nav-sub-link">Open Exam</a></li>
+                <li class="nav-sub-item"><a href="{{ url('exams_status') }}" class="nav-sub-link">Statusr</a></li>
                 <li class="nav-sub-item"><a href="{{ url('exams_details') }}" class="nav-sub-link">Details</a></li>
                 {% endif %}
             </ul>

@@ -48,6 +48,21 @@ class ExaminationRepository extends ServiceEntityRepository
     }
     */
 
+    public function getResults($session)
+    {
+        return $this->createQueryBuilder('e')
+                    ->select('IDENTITY(e.department) as department , IDENTITY(e.program) as program, IDENTITY(e.semester) as semester, e.publish')
+                    ->from('App\Entity\Examination', 'exam')
+                    ->groupBy('e.department')
+                    ->addGroupBy('e.program')
+                    ->addGroupBy('e.semester')
+                    ->addGroupBy('e.publish')
+                    ->where('e.session = :session')
+                    ->setParameter('session', $session)
+                    ->getQuery()
+                    ->getResult();
+    }
+
     public function findFinalResults(array $param)
     {
         $qb = $this->createQueryBuilder('e');

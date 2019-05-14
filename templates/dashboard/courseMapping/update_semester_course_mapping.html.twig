@@ -1,0 +1,113 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Semester course mapping{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/lib/select2/css/select2.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <a href="{{ url('course_mapping_all_course_mapping') }}" class="btn btn-primary">All Courses</a>
+                    </ol>
+                    <h6 class="slim-pagetitle">Semester Course mapping</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">Course Mapping</label>
+                            <form action="" id="semesterCourseMapping" method="post">
+                            <div class="form-layout">
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ label }}">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                <div class="row mg-t-25 mg-b-25">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="department">Department</label>
+                                            <select name="department" id="department" required class="select2 form-control">
+                                                <option value="{{ mapping.department.id }}">{{ mapping.department }}</option>
+                                                {% for department in departments %}
+                                                    <option value="{{ department.id }}">{{ department.department }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="program">Program</label>
+                                            <select name="program" id="program" required class="select2 form-control">
+                                                <option value="{{ mapping.program.id }}">{{ mapping.program }}</option>
+                                                {% for program in programs %}
+                                                    <option value="{{ program.id }}">{{ program.program }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="semester">Semester</label>
+                                            <select name="semester" id="semester" required class="select2 form-control">
+                                                <option value="{{ mapping.semester.id }}">{{ mapping.semester }}</option>
+                                                {% for semester in semesters %}
+                                                    <option value="{{ semester.id }}">{{ semester.semester }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mg-b-20">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="courses">Courses</label>
+                                            <select name="courses[]" id="courses" multiple required class="select2 form-control">
+                                                {% for course in courses %}
+                                                    <option value="{{ course.id }}" {% if course.id in mapping.courseIds %} selected {% endif %}>{{ course.course ~ ' (' ~ course.courseCode ~ ')' }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-layout-footer">
+                                <button class="btn btn-primary" type="submit">UPDATE MAPPING</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $('.form-layout .form-control').on('focusin', function () {
+                $(this).closest('.form-group').addClass('form-group-active');
+            });
+
+            $('.form-layout .form-control').on('focusout', function () {
+                $(this).closest('.form-group').removeClass('form-group-active');
+            });
+            $('.select2').select2();
+
+            $('#semesterCourseMapping').parsley();
+        });
+    </script>
+{% endblock %}

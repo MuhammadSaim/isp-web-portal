@@ -18,13 +18,13 @@ class AssignmentSubmissions
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Assignments", inversedBy="assignmentSubmissions")
-     * @ORM\JoinColumn(name="assignment_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="assignment_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $assignment;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="assignmentSubmissions")
-     * @ORM\JoinColumn(name="student_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="student_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $student;
 

@@ -6,6 +6,7 @@
 parameters:
     locale: 'en'
     boys_avatar: '%kernel.project_dir%/public/assets/upload/avatar/boys/'
+    profile_avatar: '%kernel.project_dir%/public/assets/upload/avatar/'
     girls_avatar: '%kernel.project_dir%/public/assets/upload/avatar/girls/'
     lecture_upload: '%kernel.project_dir%/public/uploads/lectures/'
     assignment_upload: '%kernel.project_dir%/public/uploads/assignments/'
