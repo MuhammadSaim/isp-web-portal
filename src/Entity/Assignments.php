@@ -56,6 +56,12 @@ class Assignments
     private $semester;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sessions", inversedBy="assignments")
+     * @ORM\JoinColumn(name="session_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $session;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sections", inversedBy="assignments")
      * @ORM\JoinColumn(name="section_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -433,6 +439,22 @@ class Assignments
     public function setAssignmentSubmissions($assignmentSubmissions): void
     {
         $this->assignmentSubmissions = $assignmentSubmissions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param mixed $session
+     */
+    public function setSession($session): void
+    {
+        $this->session = $session;
     }
 
 }

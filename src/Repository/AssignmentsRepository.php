@@ -48,10 +48,12 @@ class AssignmentsRepository extends ServiceEntityRepository
     }
     */
 
-    public function getTopAssignmentsOfTeacher($user, $numberOfLectures = 10)
+    public function getTopAssignmentsOfTeacher($user, $session, $numberOfLectures = 10)
     {
         return $this->createQueryBuilder('a')
             ->where('a.teacher = :teacherId')
+            ->andWhere('a.session = :session')
+            ->setParameter('session', $session)
             ->setParameter('teacherId', $user)
             ->orderBy('a.createdAt', 'DESC')
             ->setMaxResults($numberOfLectures)
@@ -59,13 +61,15 @@ class AssignmentsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getTopAssignmentsOfStudents($user, $numberOfLectures = 5)
+    public function getTopAssignmentsOfStudents($user, $session, $numberOfLectures = 5)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.startDate <= :currentDate')
             ->andWhere('a.department = :department')
             ->andWhere('a.program = :program')
             ->andWhere('a.semester = :semester')
+            ->andWhere('a.session = :session')
+            ->setParameter('session', $session)
             ->setParameter('currentDate', new \DateTime)
             ->setParameter('department', $user->getDepartment())
             ->setParameter('program', $user->getProgram())

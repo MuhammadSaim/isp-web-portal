@@ -1,0 +1,62 @@
+{% extends 'dashboard_base.html.twig' %}
+
+{% block title %}Add Department{% endblock %}
+
+{% block body %}
+    {% include 'partials/header.html.twig' %}
+    <div class="slim-body">
+        {% include 'partials/sidebar.html.twig' with departments %}
+        <div class="slim-mainpanel">
+            <div class="container">
+                <div class="slim-pageheader">
+                    <ol class="breadcrumb slim-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                    </ol>
+                    <h6 class="slim-pagetitle">Add Session</h6>
+                </div><!-- slim-pageheader -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="section-wrapper">
+                            <label class="section-title">add session</label>
+                            <form action="" id="addSession" method="post">
+                                <div class="form-layout">
+                                    {% for label, messages in app.flashes %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-{{ label }}">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    <div class="row mg-t-25 mg-b-25">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="semester">Session</label>
+                                                <input type="text" name="session" data-parsley-trigger="keyup" pattern="[a-zA-Z0-9\s]+" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-layout-footer">
+                                        <button type="submit" class="btn btn-primary">ADD SESSION</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $("#addSession").parsley();
+        });
+    </script>
+{% endblock %}

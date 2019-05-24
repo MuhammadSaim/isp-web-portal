@@ -156,6 +156,11 @@
 {% block editionalScripts %}
     <script>
         $(document).ready(function () {
+            //start_date
+            var now = new Date();
+            minDate = now.toISOString().substring(0,10);
+            $('#start_date').attr('min', minDate).attr('value', minDate);
+            //select
             $(".select2").select2();
             $("#addAssignment").parsley();
         });

@@ -72,6 +72,7 @@ class Sections
      */
     private $attendence;
 
+
     /**
      * @ORM\Column(type="string")
      */

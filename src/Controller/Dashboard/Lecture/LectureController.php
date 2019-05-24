@@ -10,6 +10,7 @@ use App\Entity\Programs;
 use App\Entity\Sections;
 use App\Entity\SemesterCourseMapping;
 use App\Entity\Semesters;
+use App\Entity\Sessions;
 use App\Entity\StudentDetails;
 use App\Entity\TeacherCourseMapping;
 use App\Utils\HelperFunction;
@@ -46,7 +47,8 @@ class LectureController extends AbstractController
         if ($this->isGranted('ROLE_TEACHER')) {
             $topFiveLectures = $this->getDoctrine()->getRepository(Lectures::class)->getTopLecturesOfTeacher($this->getUser());
             $courses = $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
-                'teacher' => $this->getUser()
+                'teacher' => $this->getUser(),
+                'session' => $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted()
             ]);;
 //            dump($topFiveLectures);
 //            die();
@@ -188,7 +190,8 @@ class LectureController extends AbstractController
                 'teacher' => $this->getUser()
             ]);
             $courses = $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
-                'teacher' => $this->getUser()
+                'teacher' => $this->getUser(),
+                'session' => $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted()
             ]);
             return $this->render('dashboard/lecture/all_lectures.html.twig', [
                 'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),

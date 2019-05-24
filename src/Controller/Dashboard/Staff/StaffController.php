@@ -173,6 +173,7 @@ class StaffController extends AbstractController
             if($teacherData['gender'] === 'female' or $teacherData['gender'] === 'other'){
                 $avatar = $this->helperFunc->getRandomGirlImage($this->getParameter('girls_avatar'));
             }
+            $fullname = $teacherData['fullname'];
             $data = array(
                 'email' => $teacherData['email'],
                 'password' => $password
@@ -190,6 +191,7 @@ class StaffController extends AbstractController
                 $em->persist($user);
                 $teacherDetails->setUser($user);
                 $teacherDetails->setAvatar($avatar);
+                $teacherDetails->setFullname($fullname);
                 $teacherDetails->setDepartment($teacherData['department']);
                 $teacherDetails->setDesignation($teacherData['designation']);
                 $teacherDetails->setCreatedAt(new \DateTime());

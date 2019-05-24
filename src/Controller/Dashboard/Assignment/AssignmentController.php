@@ -11,6 +11,7 @@ use App\Entity\Programs;
 use App\Entity\Sections;
 use App\Entity\SemesterCourseMapping;
 use App\Entity\Semesters;
+use App\Entity\Sessions;
 use App\Entity\StudentDetails;
 use App\Entity\TeacherCourseMapping;
 use App\Form\AddAssignmentType;
@@ -45,11 +46,14 @@ class AssignmentController extends AbstractController
      */
     public function assignments()
     {
+
+        $session = $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted();
         if ($this->isGranted('ROLE_TEACHER')) {
-            $topFiveAssignments = $this->getDoctrine()->getRepository(Assignments::class)->getTopAssignmentsOfTeacher($this->getUser());
+            $topFiveAssignments = $this->getDoctrine()->getRepository(Assignments::class)->getTopAssignmentsOfTeacher($this->getUser(), $session);
             $courses = $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
-                'teacher' => $this->getUser()
-            ]);;
+                'teacher' => $this->getUser(),
+                'session' => $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted()
+            ]);
 //            dump($courses);
 //            die();
             return $this->render('dashboard/assignment/top_assignments.html.twig', [
@@ -59,7 +63,7 @@ class AssignmentController extends AbstractController
                 'active' => ''
             ]);
         }
-        $topFiveAssignments = $this->getDoctrine()->getRepository(Assignments::class)->getTopAssignmentsOfStudents($this->getUser()->getStudentDetails());
+        $topFiveAssignments = $this->getDoctrine()->getRepository(Assignments::class)->getTopAssignmentsOfStudents($this->getUser()->getStudentDetails(), $session);
         $courses = $this->getDoctrine()->getRepository(SemesterCourseMapping::class)->findOneBy([
             'department' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getDepartment(),
             'program' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getProgram(),
@@ -90,6 +94,7 @@ class AssignmentController extends AbstractController
                 'department' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getDepartment(),
                 'program' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getProgram(),
                 'semester' => $this->getDoctrine()->getRepository(StudentDetails::class)->findBy(['user' => $this->getUser()])[0]->getSemester(),
+                'session' => $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted()
             ]);
             return $this->render('dashboard/assignment/all_assignments.html.twig', [
                 'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
@@ -107,7 +112,11 @@ class AssignmentController extends AbstractController
                 'course'   => $this->getDoctrine()->getRepository(Courses::class)->findBy(['slug' => $courseSlug]),
                 'teacher' => $this->getUser()
             ]);
-            $courses = $this->getUniqueCourses();
+            $courses = $courses = $this->getDoctrine()->getRepository(TeacherCourseMapping::class)->findBy([
+                'teacher' => $this->getUser(),
+                'session' => $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted()
+            ]);
+            //$courses = $this->getUniqueCourses();
             return $this->render('dashboard/assignment/all_assignments.html.twig', [
                 'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
                 'courses'     => $courses,
@@ -232,7 +241,7 @@ class AssignmentController extends AbstractController
         if($request->isMethod('post')){
             $file = $request->files->get('assignment_file');
             if($file != null){
-                $file = $request->files->get('lecture');
+                //$file = $request->files->get('assignment_file');
                 $extension = $file->guessExtension();
                 $fileSize = $this->helperFunction->convert_filesize($file->getSize(), 0);
                 $client_name = $file->getClientOriginalName();
@@ -292,6 +301,7 @@ class AssignmentController extends AbstractController
             $assignment->setTotalMarks($request->request->get('total_marks'));
             $assignment->setAssignmentTitle($assignment_title);
             $assignment->setSlug($slug);
+            $assignment->setSession($this->getDoctrine()->getRepository(Sessions::class)->findLastInserted());
             $assignment->setCreatedAt(new \DateTime());
             $assignment->setModifiedAt(new \DateTime());
             $em = $this->getDoctrine()->getManager();

@@ -1,10 +1,10 @@
 <div class="slim-sidebar ps ps--theme_default ps--active-y">
     <label class="sidebar-label">Navigation</label>
     <ul class="nav nav-sidebar">
-        {% if is_granted('ROLE_STUDENT') == true or is_granted('ROLE_TEACHER') == true %}
         <li class="sidebar-nav-item">
             <a href="{{ url('dashboard_home') }}" class="sidebar-nav-link active"><i class="fa fa-home mr-3"></i> Dashboard</a>
         </li>
+        {% if is_granted('ROLE_STUDENT') == true or is_granted('ROLE_TEACHER') == true %}
         <li class="sidebar-nav-item">
             <a href="{{ url('lectures_all') }}" class="sidebar-nav-link"><i class="fa fa-paperclip mr-3"></i> Lectures</a>
         </li>
@@ -23,18 +23,13 @@
 {#        </li>#}
         {% endif %}
         {% endif %}
-        {% if is_granted(['ROLE_ADMIN']) %}
-        <li class="sidebar-nav-item">
-            <a href="{{ url('designation_all') }}" class="sidebar-nav-link"><i class="fa fa-bullhorn mr-3"></i> Designations</a>
-        </li>
-        {% endif %}
 {#        is_granted('ROLE_STUDENT') == true or#}
         {% if  is_granted('ROLE_STUDENT') == true or is_granted('ROLE_TEACHER') == true or is_granted('ROLE_EXAMINER') == true %}
         <li class="sidebar-nav-item with-sub">
             <a href="" class="sidebar-nav-link"><i class="fa fa-map-signs mr-3"></i> Examination</a>
             <ul class="nav sidebar-nav-sub">
                 {% if is_granted('ROLE_STUDENT') == true %}
-                    <li class="nav-sub-item"><a href="{{ url('exams_result') }}" class="nav-sub-link">Exams</a></li>
+{#                    <li class="nav-sub-item"><a href="{{ url('exams_result') }}" class="nav-sub-link">Exams</a></li>#}
                     <li class="nav-sub-item"><a href="{{ url('exams_all') }}" class="nav-sub-link">Transcript</a></li>
                 {% endif %}
                 {% if is_granted('ROLE_TEACHER') == true %}
@@ -64,6 +59,9 @@
         <li class="sidebar-nav-item with-sub">
             <a href="" class="sidebar-nav-link"><i class="fa fa-university mr-3"></i> Departments</a>
             <ul class="nav sidebar-nav-sub">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-sub-item"><a href="{{ path('department_add') }}" class="nav-sub-link">Add Department</a></li>
+                {% endif %}
                 {% for department in departments %}
                     <li class="nav-sub-item"><a href="{{ path('department_teacher', {'slug': department.slug }) }}" class="nav-sub-link">{{ department.department }}</a></li>
                 {% endfor %}
@@ -95,6 +93,9 @@
         </li>
         {% endif %}
         {% if is_granted('ROLE_ADMIN') %}
+        <li class="sidebar-nav-item">
+            <a href="{{ url('designation_all') }}" class="sidebar-nav-link"><i class="fa fa-bullhorn mr-3"></i> Designations</a>
+        </li>
         <li class="sidebar-nav-item with-sub">
             <a href="" class="sidebar-nav-link"><i class="fa fa-file-text mr-3"></i>Programs</a>
             <ul class="nav sidebar-nav-sub">
@@ -115,6 +116,9 @@
                 <li class="nav-sub-item"><a href="{{ url('semester_new') }}" class="nav-sub-link">Add Section</a></li>
                 <li class="nav-sub-item"><a href="{{ url('section_all') }}" class="nav-sub-link">All Sections</a></li>
             </ul>
+        </li>
+        <li class="sidebar-nav-item">
+            <a href="{{ url('department_add_session') }}" class="sidebar-nav-link"><i class="fa fa-file-text mr-3"></i> Session</a>
         </li>
         {% endif %}
     </ul>

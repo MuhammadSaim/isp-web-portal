@@ -20,7 +20,7 @@
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <div class="section-wrapper">
                             <label class="section-title">add course</label>
-                            {{ form_start(form) }}
+                            {{ form_start(form, {'attr': { 'id': 'addCourse' }}) }}
                             <div class="form-layout">
                                 {% for label, messages in app.flashes %}
                                     {% for message in messages %}
@@ -63,5 +63,15 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/lib/parsleyjs/js/parsley.js') }}"></script>
+{% endblock %}
+{% block editionalScripts %}
+    <script>
+        $(document).ready(function () {
+            $("#addCourse").parsley();
+        });
+    </script>
 {% endblock %}
 

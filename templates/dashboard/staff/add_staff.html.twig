@@ -33,7 +33,16 @@
                                         </div>
                                     {% endfor %}
                                 {% endfor %}
-                                <div class="row mg-b-5 mg-t-5">
+                                <div class="row mg-b-5  mg-t-5">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            {{ form_label(form.fullname) }}
+                                            {{ form_widget(form.fullname) }}
+                                            {{ form_errors(form.fullname) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mg-b-5">
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             {{ form_label(form.email) }}
@@ -104,6 +113,7 @@
     <script>
         $(document).ready(function () {
             $(".select2").select2();
+            $("#addStaff").parsley();
         });
     </script>
 {% endblock %}

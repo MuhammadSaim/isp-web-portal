@@ -227,7 +227,7 @@ class StudentController extends AbstractController
             if($studentData['gender'] === 'female' or $studentData['gender'] === 'other'){
                 $avatar = $this->helperFunc->getRandomGirlImage($this->getParameter('girls_avatar'));
             }
-
+            $fullname = $studentData['fullname'];
             $data = array(
                 'email' => $studentData['email'],
                 'password' => $password
@@ -249,6 +249,7 @@ class StudentController extends AbstractController
                 $studentDetails->setSection($studentData['sections']);
                 $studentDetails->setSemester($studentData['semesters']);
                 $studentDetails->setAvatar($avatar);
+                $studentDetails->setFullname($fullname);
                 $studentDetails->setRegNo(strtoupper($studentData['regno']));
                 $studentDetails->setCreatedAt(new \DateTime());
                 $studentDetails->setModifiedAt(new \DateTime());

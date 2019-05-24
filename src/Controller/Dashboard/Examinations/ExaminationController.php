@@ -395,8 +395,20 @@ class ExaminationController extends AbstractController
             'session'  => $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted(),
             'publish'  => 1
         ]);
-        dump($result);
+
+        $midIsavailabel = $this->getDoctrine()->getRepository(Examination::class)->getMidResult(
+            $this->getUser(),
+            $this->getDoctrine()->getRepository(Sessions::class)->findLastInserted()
+        );
+
+        dump($midIsavailabel);
         die();
+        return $this->render('dashboard/Examination/current_result.html.twig', [
+            'departments' => $this->getDoctrine()->getRepository(Departments::class)->findAll(),
+            'results'     => $result
+        ]);
+//        dump($result);
+//        die();
     }
 
 }

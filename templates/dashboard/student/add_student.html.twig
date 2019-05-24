@@ -33,7 +33,14 @@
                                     {% endfor %}
                                 {% endfor %}
                                 {{ form_start(form, {'attr': { 'id': 'addStudent' }}) }}
-                                <div class="row mg-b-25 mg-t-25">
+                                <div class="row mg-b-25">
+                                    <div class="col-lg-12">
+                                        {{ form_label(form.fullname) }}
+                                        {{ form_widget(form.fullname) }}
+                                        {{ form_errors(form.fullname) }}
+                                    </div>
+                                </div>
+                                <div class="row mg-b-25">
                                     <div class="col-lg-3">
                                         {{ form_label(form.email) }}
                                         {{ form_widget(form.email) }}

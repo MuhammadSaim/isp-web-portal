@@ -24,6 +24,17 @@ class AddStudentType extends AbstractType
     {
 
         $builder
+            ->add('fullname', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Full Name',
+                    'pattern' => "[a-zA-Z\s]+",
+                    "data-parsley-trigger" => "keyup"
+                ],
+                'label_attr' => [
+                    'class' => 'form-control-label'
+                ]
+            ])
             ->add('email', EmailType::class, [
                 'attr' => [
                     'class' => 'form-control',
@@ -36,7 +47,9 @@ class AddStudentType extends AbstractType
             ->add('regno', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Reg No.'
+                    'placeholder' => 'Reg No.',
+                    'pattern' => "([a-zA-Z]{3,})[\-]([a-zA-Z0-9]+)[\-](\d)+",
+                    "data-parsley-trigger" => "keyup"
                 ],
                 'label' => 'Reg No.',
                 'label_attr' => [

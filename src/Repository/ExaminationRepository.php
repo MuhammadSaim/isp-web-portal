@@ -85,4 +85,19 @@ class ExaminationRepository extends ServiceEntityRepository
                     ->getQuery()
                     ->getResult();
     }
+
+    public function getMidResult($user, $session)
+    {
+        return $this->createQueryBuilder('q')
+                    ->where('q.final IS NULL')
+                    ->andWhere('q.sestional  IS NULL')
+                    ->andWhere('q.student = :student')
+                    ->andWhere('q.session = :session')
+                    ->andWhere('q.semester = :semester')
+                    ->setParameter('student', $user)
+                    ->setParameter('session', $session)
+                    ->setParameter('semester', $user->getStudentDetails()->getSemester())
+                    ->getQuery()
+                    ->getResult();
+    }
 }

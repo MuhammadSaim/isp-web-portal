@@ -16,6 +16,7 @@ class Sessions
     {
         $this->exams = new ArrayCollection();
         $this->teacherCourseMapping = new ArrayCollection();
+        $this->assignments = new ArrayCollection();
     }
 
     /**
@@ -39,6 +40,11 @@ class Sessions
      * @ORM\OneToMany(targetEntity="App\Entity\Examination", mappedBy="session")
      */
     private $exams;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Assignments", mappedBy="session")
+     */
+    private $assignments;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\TeacherCourseMapping", mappedBy="session")
@@ -154,6 +160,22 @@ class Sessions
     public function setTeacherCourseMapping($teacherCourseMapping): void
     {
         $this->teacherCourseMapping[] = $teacherCourseMapping;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignments()
+    {
+        return $this->assignments;
+    }
+
+    /**
+     * @param mixed $assignments
+     */
+    public function setAssignments($assignments): void
+    {
+        $this->assignments[] = $assignments;
     }
 
 }

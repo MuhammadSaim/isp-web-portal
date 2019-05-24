@@ -19,7 +19,9 @@ class AddCourseType extends AbstractType
             ->add('course', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Course'
+                    'placeholder' => 'Course',
+                    'pattern'     => "[a-zA-Z]+",
+                    "data-parsley-trigger" => "keyup"
                 ],
                 'label_attr' => [
                     'class' => 'form-control-label'
@@ -28,7 +30,9 @@ class AddCourseType extends AbstractType
             ->add('courseCode', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Course Code'
+                    'placeholder' => 'Course Code',
+                    'pattern'     => "([A-Z]{2,})[\-](\d)+",
+                    "data-parsley-trigger" => "keyup"
                 ],
                 'label_attr' => [
                     'class' => 'form-control-label'
@@ -37,7 +41,9 @@ class AddCourseType extends AbstractType
             ->add('creditHours', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Credit Hours'
+                    'placeholder' => 'Credit Hours',
+                    'pattern'     => "([A-Z]{2,})[\-](\d)+",
+                    "data-parsley-trigger" => "keyup"
                 ],
                 'label_attr' => [
                     'class' => 'form-control-label'

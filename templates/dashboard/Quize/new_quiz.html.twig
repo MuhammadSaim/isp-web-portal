@@ -42,7 +42,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="quiz_date">Quiz Date</label>
-                                                <input type="date" name="quiz_date" class="form-control" placeholder="MM/DD/YYYY" required>
+                                                <input id="quiz_date" type="date" name="quiz_date" class="form-control" placeholder="MM/DD/YYYY" required>
                                             </div>
                                         </div>
                                     </div>
@@ -139,6 +139,10 @@
 {% block editionalScripts %}
     <script>
         $(document).ready(function () {
+            //start_date
+            var now = new Date();
+            minDate = now.toISOString().substring(0,10);
+            $('#quiz_date').attr('min', minDate);
             $(".select2").select2();
             $("#addQuiz").parsley();
         });

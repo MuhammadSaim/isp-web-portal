@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Departments;
 use App\Entity\Designations;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,6 +19,17 @@ class AddTeacherType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('fullname', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Full Name',
+                    'pattern' => "[a-zA-Z\s]+",
+                    "data-parsley-trigger" => "keyup"
+                ],
+                'label_attr' => [
+                    'class' => 'form-control-label'
+                ]
+            ])
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new NotBlank(),

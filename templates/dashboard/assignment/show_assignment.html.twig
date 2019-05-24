@@ -70,7 +70,9 @@
                             {% endif %}
                         {% endif %}
                         {% if is_granted('ROLE_TEACHER') == true %}
-                            <a href="{{ url('assignment_evaluation', { 'assignmentSlug' : assignment.slug }) }}" class="btn btn-primary">Evaluate</a>
+                            {% if assignment.submissionDate > date() %}
+                                <a href="{{ url('assignment_evaluation', { 'assignmentSlug' : assignment.slug }) }}" class="btn btn-primary">Evaluate</a>
+                            {% endif %}
                             <a href="{{ url('assignment_submitted', { 'assignmentSlug' : assignment.slug }) }}" class="btn btn-primary">All Assignments</a>
                         {% endif %}
                     </div>
